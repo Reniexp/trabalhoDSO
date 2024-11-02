@@ -1,43 +1,115 @@
-class TelaFuncionario():
-    def tela_opcoes(self):
-        print("-------- FUNCIONARIOS ----------")
-        print("Escolha a opcao")
-        print("1 - Incluir Funcionario")
-        print("2 - Alterar Funcionario")
-        print("3 - Listar Funcionario")
-        print("4 - Excluir Funcionario")
-        print("0 - Retornar")
+class TelaFuncionario:
+    def tela_opcoes(self) -> int:
+        opcao_valida = False
+        while not opcao_valida:
+            print("-------- FUNCIONARIOS ----------")
+            print("Escolha a opção:")
+            print("1 - Incluir Funcionário")
+            print("2 - Alterar Funcionário")
+            print("3 - Listar Funcionários")
+            print("4 - Excluir Funcionário")
+            print("0 - Retornar")
 
-        opcao = int(input("Escolha a opcao: "))
+            opcao = input("Escolha a opção: ")
+            try:
+                opcao = int(opcao)
+                if opcao in [0, 1, 2, 3, 4]:
+                    opcao_valida = True
+                else:
+                    print("Opção inválida! Escolha um número entre 0 e 4.")
+            except ValueError:
+                print("Entrada inválida! Digite um número inteiro.")
         return opcao
 
-# fazer aqui tratamento dos dados, caso a entrada seja diferente do esperado
-    def pega_dados_funcionario(self):
+    def pega_dados_funcionario(self) -> dict:
         print("-------- DADOS FUNCIONARIO ----------")
-        nome = input("Nome: ")
-        cpf = input("CPF: ")
-        id_funcionario = input("ID: ")
-        cargo = input("Cargo: ")
-        salario = input("Salario: ")
-        periodo = input("Periodo: ")
-
-        return {"nome": nome, "cpf": cpf, "id_funcionario": id_funcionario, "cargo": cargo, "salario": salario, "periodo": periodo}
-    
-# fazer aqui tratamento dos dados, caso a entrada seja diferente do esperado
-    def mostra_funcionario(self, dados_funcionario):
-        print("NOME DO FUNCIONARIO: ", dados_funcionario["nome"])
-        print("CPF DO FUNCIONARIO: ", dados_funcionario["cpf"])
-        print("ID DO FUNCIONARIO: ", dados_funcionario["id_funcionario"])
-        print("CARGO DO FUNCIONARIO: ", dados_funcionario["cargo"])
-        print("SALARIO DO FUNCIONARIO: ", dados_funcionario["salario"])
-        print("PERIODO DO FUNCIONARIO: ", dados_funcionario["periodo"])
-        print("\n")
         
-#fazer aqui tratamento dos dados, caso a entrada seja diferente do esperado
-    def seleciona_funcionario(self):
-        cpf = input("CPF do funcionario que deseja selecionar: ")
+        # Validação do nome
+        nome = input("Nome: ")
+        while nome == "":
+            print("O nome não pode ser vazio.")
+            nome = input("Nome: ")
+
+        # Validação do CPF
+        cpf = input("CPF (somente números): ")
+        while not self.valida_cpf(cpf):
+            print("CPF inválido. Digite exatamente 11 dígitos numéricos.")
+            cpf = input("CPF (somente números): ")
+
+        # Validação do ID do funcionário
+        id_funcionario = input("ID: ")
+        while not self.valida_id_funcionario(id_funcionario):
+            print("ID inválido! Deve ser um número inteiro.")
+            id_funcionario = input("ID: ")
+        id_funcionario = int(id_funcionario)
+
+        # Validação do cargo
+        cargo = input("Cargo: ")
+        while cargo == "":
+            print("O cargo não pode ser vazio.")
+            cargo = input("Cargo: ")
+
+        # Validação do salário
+        salario = input("Salário: ")
+        while not self.valida_salario(salario):
+            print("Salário inválido! Deve ser um número.")
+            salario = input("Salário: ")
+        salario = float(salario)
+
+        # Validação do período
+        periodo = input("Período: ")
+        while periodo == "":
+            print("O período não pode ser vazio.")
+            periodo = input("Período: ")
+
+        return {
+            "nome": nome,
+            "cpf": cpf,
+            "id_funcionario": id_funcionario,
+            "cargo": cargo,
+            "salario": salario,
+            "periodo": periodo
+        }
+
+    def valida_cpf(self, cpf):
+        if len(cpf) != 11:
+            return False
+        for caractere in cpf:
+            if caractere < '0' or caractere > '9':  # Verifica se cada caractere é numérico
+                return False
+        return True
+
+    def valida_id_funcionario(self, id_funcionario):
+        try:
+            int(id_funcionario)
+            return True
+        except ValueError:
+            return False
+
+    def valida_salario(self, salario):
+        try:
+            float(salario)
+            return True
+        except ValueError:
+            return False
+
+    def mostra_funcionario(self, dados_funcionario: dict):
+        print("-------- DADOS DO FUNCIONARIO ----------")
+        print("NOME: ", dados_funcionario["nome"])
+        print("CPF: ", dados_funcionario["cpf"])
+        print("ID: ", dados_funcionario["id_funcionario"])
+        print("CARGO: ", dados_funcionario["cargo"])
+        print("SALARIO: ", dados_funcionario["salario"])
+        print("PERIODO: ", dados_funcionario["periodo"])
+        print("\n")
+
+    def seleciona_funcionario(self) -> str:
+        cpf = input("CPF do funcionário que deseja selecionar: ")
+        while not self.valida_cpf(cpf):
+            print("CPF inválido. Digite exatamente 11 dígitos numéricos.")
+            cpf = input("CPF do funcionário que deseja selecionar: ")
         return cpf
 
-
-    def mostra_mensagem(self, msg):
+    def mostra_mensagem(self, msg: str):
         print(msg)
+
