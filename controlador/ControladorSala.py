@@ -1,5 +1,5 @@
-from trabalhoDSO.tela.TelaSala import TelaSala
-from trabalhoDSO.entidade.EntidadeSala import EntidadeSala
+from tela.TelaSala import TelaSala
+from entidade.EntidadeSala import EntidadeSala
 
 class ControladorSala():
     def __init__(self):

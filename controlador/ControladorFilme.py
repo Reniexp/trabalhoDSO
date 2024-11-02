@@ -1,5 +1,5 @@
-from trabalhoDSO.tela.TelaFilme import TelaFilme
-from trabalhoDSO.entidade.EntidadeFilme import EntidadeFilme
+from tela.TelaFilme import TelaFilme
+from entidade.EntidadeFilme import EntidadeFilme
 
 class ControladorFilme():
     def __init__(self):

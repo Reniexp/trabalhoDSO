@@ -1,5 +1,5 @@
-from entidade_funcionario import EntidadeFuncionario
-from tela_funcionario import TelaFuncionario
+from entidade.funcionario import EntidadeFuncionario
+from tela.tela_funcionario import TelaFuncionario
 
 # Definição da exceção personalizada para funcionários repetidos
 class FuncionarioRepetidoException(Exception):

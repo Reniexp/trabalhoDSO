@@ -1,5 +1,5 @@
-from trabalhoDSO.entidade.cliente import EntidadeCliente
-from trabalhoDSO.tela.tela_cliente import TelaCliente
+from entidade.cliente import EntidadeCliente
+from tela.tela_cliente import TelaCliente
 
 class ControladorCliente:
     def __init__(self, controlador_sistema):
@@ -22,8 +22,9 @@ class ControladorCliente:
             cliente = EntidadeCliente(dados_cliente["cpf"], dados_cliente["id_cliente"], dados_cliente["nome"], dados_cliente["filmesVistos", dados_cliente["sessoesAguardando"]])
             self.__clientes.append(cliente)
           else:
+            pass
             #raise KeyError
-            raise AmigoRepetidoException(cpf)
+            #raise AmigoRepetidoException(cpf)
         
         #alternativa com exceção já existente
         #except KeyError:
