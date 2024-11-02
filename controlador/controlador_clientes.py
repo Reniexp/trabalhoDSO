@@ -1,4 +1,5 @@
-from cliente import EntidadeCliente
+from trabalhoDSO.entidade.cliente import EntidadeCliente
+from trabalhoDSO.tela.tela_cliente import TelaCliente
 
 class ControladorCliente:
     def __init__(self, controlador_sistema):
@@ -8,7 +9,7 @@ class ControladorCliente:
 
     def pega_cliente_por_id(self, cpf: int):
         for client in self.__clientes:
-            if(cliente.id_cliente == id_cliente):
+            if client.id_cliente == cpf:
                 return client
         return None
     
@@ -18,7 +19,7 @@ class ControladorCliente:
         cliente = self.pega_cliente_por_id(id_cliente)
         try:
           if cliente == None:
-            cliente = Cliente(dados_cliente["cpf"], dados_cliente["id_cliente"], dados_cliente["nome"], dados_cliente["filmesVistos", dados_cliente["sessoesAguardando"]])
+            cliente = EntidadeCliente(dados_cliente["cpf"], dados_cliente["id_cliente"], dados_cliente["nome"], dados_cliente["filmesVistos", dados_cliente["sessoesAguardando"]])
             self.__clientes.append(cliente)
           else:
             #raise KeyError

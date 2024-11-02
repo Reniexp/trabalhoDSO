@@ -1,5 +1,5 @@
-from cliente import Cliente
-from sessao import Sessao
+from trabalhoDSO.entidade.cliente import Cliente
+from trabalhoDSO.entidade.sessao import Sessao
 
 class Ingresso:
     def __init__(self, idIngresso: int, assento: str, valor: float, cliente:Cliente, sessao : Sessao):

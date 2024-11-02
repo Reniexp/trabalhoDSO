@@ -1,4 +1,4 @@
-from controlador_clientes import ControladorCliente
+from trabalhoDSO.controlador.controlador_clientes import ControladorCliente
 
 class TelaCliente():
     def __init__(self) -> None:
