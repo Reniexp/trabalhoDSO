@@ -1,4 +1,4 @@
-from entidade.cliente import EntidadeCliente
+from entidade.EntidadeCliente import EntidadeCliente
 from tela.tela_cliente import TelaCliente
 
 class ControladorCliente:
