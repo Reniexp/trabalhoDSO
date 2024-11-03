@@ -129,6 +129,3 @@ class ControladorFilme():
                 print("Genero: ",filme.genero)
                 print("-----------------------------")
                 print()
-
-cont = ControladorFilme()
-cont.abre_tela_filme()

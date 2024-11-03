@@ -1,5 +1,5 @@
-from filme import Filme
-from sala import Sala
+from .filme import Filme
+from .sala import Sala
 
 
 class Sessao:
