@@ -42,6 +42,29 @@ class TelaFilme():
                 valid_id = True
         return id_filme
 
+    def pega_tipo_de_exibicao(self):
+        invalidInput = True
+        firstTry = True
+
+        while invalidInput:
+            if not firstTry:
+                print("ESCOLHA UM INTEIRO VÁLIDO")
+            print()
+            print("Qual o tipo de exibição do filme?")
+            print("\t1 - Dublado")
+            print("\t2 - Legendado")
+            print("\t3 - Dublado e Legendado")
+
+            opcao_escolhida = input("Escolha uma opcao: ")
+            try:
+                opcao_escolhida = int(opcao_escolhida)
+            except:
+                firstTry = False
+                continue
+            else:
+                invalidInput = False
+        return opcao_escolhida
+
     def pega_dados_novo_filme(self):
         valid_id = False
         id_filme = input("Id do filme: ")
@@ -79,10 +102,7 @@ class TelaFilme():
             print("Não pode ser texto vazio")
             genero = input("Genero do filme: ")
 
-        tipo_de_exibicao = input("Tipo de exibicao: ")
-        while tipo_de_exibicao == "":
-            print("Não pode ser texto vazio")
-            tipo_de_exibicao = input("Tipo de exibicao do filme: ")
+        tipo_de_exibicao = self.pega_tipo_de_exibicao()
 
         return {
             "idFilme" : id_filme,
@@ -127,3 +147,8 @@ class TelaFilme():
             "genero" : genero,
             "tipoExibicao" : tipo_de_exibicao
         }
+
+
+        
+
+        
