@@ -24,15 +24,9 @@ class ControladorSistema:
             elif opcao == 3:
                  self.__controlador_filme.abre_tela_filme()
             elif opcao == 4:
-<<<<<<< HEAD:controlador/controlador_sistema
                  self.__controlador_sala.abre_tela()
             elif opcao == 5:
                  self.__controlador_sessao.abre_tela()
-=======
-                 self.__controlador_sala.abre_tela_sala()
-            #elif opcao == 5:
-                 #self.__controlador_sessao.abre_tela()
->>>>>>> 1b166aad1be1c9f4181f73bcd0cefb092a82e9f1:controlador/controlador_sistema.py
             elif opcao == 0:
                 print("Saindo do sistema...")
                 break

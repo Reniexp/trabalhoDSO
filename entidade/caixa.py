@@ -6,3 +6,5 @@ class Caixa:
     def registrar_venda(self, ingresso):
         self.total_vendas += ingresso.preco
         self.ingressos_vendidos.append(ingresso)
+
+    

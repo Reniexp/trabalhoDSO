@@ -1,10 +1,6 @@
-<<<<<<< HEAD
-from entidade.entidade_sessao import EntidadeSessao
-=======
-from entidade.entidade_sessao import Sessao
+from entidade.sessao import Sessao
 from entidade.filme import Filme
 from entidade.sala import Sala
->>>>>>> 1b166aad1be1c9f4181f73bcd0cefb092a82e9f1
 
 class ControladorSessao:
     def __init__(self):

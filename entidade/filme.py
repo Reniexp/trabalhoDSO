@@ -1,5 +1,7 @@
+from genero import Genero
+
 class Filme:
-    def __init__(self, idFilme: int, titulo: str, duracaoMinutos: int, genero: str, tipoExibicao: int):
+    def __init__(self, idFilme: int, titulo: str, duracaoMinutos: int, genero: Genero, tipoExibicao: int):
         self.__idFilme = idFilme
         self.__titulo = titulo
         self.__duracaoMinutos = duracaoMinutos
@@ -45,19 +47,3 @@ class Filme:
     @tipoExibicao.setter
     def tipoExibicao(self, tipoExibicao: int):
         self.__tipoExibicao = tipoExibicao
-        
-    def cadastrarFilme(self):
-        Filme.filmes.append(self)
-
-    def editarFilme(self, novoTitulo=None, novaDuracao=None, novoGenero=None, novoTipoExibicao=None):
-        if novoTitulo != None : self.titulo = novoTitulo
-        if novaDuracao != None: self.duracaoMinutos = novaDuracao
-        if novoGenero != None: self.genero = novoGenero
-        if novoTipoExibicao != None : self.tipoExibicao = novoTipoExibicao
-
-    def excluirFilme(self):
-        Filme.filmes.remove(self)
-
-    @classmethod
-    def listarFilmes(cls):
-        return cls.filmes
