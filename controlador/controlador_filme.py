@@ -1,5 +1,5 @@
-from tela.TelaFilme import TelaFilme
-from entidade.EntidadeFilme import EntidadeFilme
+from tela.tela_filme import TelaFilme
+from entidade.filme import Filme
 
 class ControladorFilme():
     def __init__(self):
@@ -39,7 +39,7 @@ class ControladorFilme():
         
         if not filmeJaExiste:
             self.__filmes.append(
-            EntidadeFilme(
+            Filme(
                     idFilme,
                     titulo,
                     duracaoMinutos,

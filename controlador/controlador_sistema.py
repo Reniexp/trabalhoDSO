@@ -1,7 +1,7 @@
-from controlador.controlador_clientes import ControladorCliente
-from controlador.controlador_funcionarios import ControladorFuncionarios
-from controlador.controlador_filme import ControladorFilme
-from controlador.controlador_sala import ControladorSala
+from controlador_clientes import ControladorCliente
+from controlador_funcionarios import ControladorFuncionarios
+from controlador_filme import ControladorFilme
+from controlador_sala import ControladorSala
 from tela.tela_sistema import TelaSistema
 #from controlador_sessao import ControladorSessao
 
@@ -22,9 +22,9 @@ class ControladorSistema:
             elif opcao == 2:
                  self.__controlador_funcionario.abre_tela()
             elif opcao == 3:
-                 self.__controlador_filme.abre_tela()
+                 self.__controlador_filme.abre_tela_filme()
             elif opcao == 4:
-                 self.__controlador_sala.abre_tela()
+                 self.__controlador_sala.abre_tela_sala()
             #elif opcao == 5:
                  #self.__controlador_sessao.abre_tela()
             elif opcao == 0:

@@ -1,7 +1,5 @@
-from entidade.EntidadeCliente import EntidadeCliente
+from entidade.cliente import Cliente
 from tela.tela_cliente import TelaCliente
-
-
 class ControladorCliente:
     def __init__(self, controlador_sistema):
         self.__clientes = []
@@ -19,7 +17,7 @@ class ControladorCliente:
         cliente = self.pega_cliente_por_id(dados_cliente["id_cliente"])
 
         if cliente is None:
-            novo_cliente = EntidadeCliente(
+            novo_cliente = Cliente(
                 dados_cliente["cpf"], dados_cliente["id_cliente"], dados_cliente["nome"]
             )
             self.__clientes.append(novo_cliente)
@@ -34,9 +32,9 @@ class ControladorCliente:
 
         if cliente is not None:
             novos_dados_cliente = self.__tela_cliente.pega_dados_cliente()
-            cliente._EntidadeCliente__cpf = novos_dados_cliente["cpf"]
-            cliente._EntidadeCliente__id_cliente = novos_dados_cliente["id_cliente"]
-            cliente._EntidadeCliente__nome = novos_dados_cliente["nome"]
+            cliente._Cliente__cpf = novos_dados_cliente["cpf"]
+            cliente._Cliente__id_cliente = novos_dados_cliente["id_cliente"]
+            cliente._Cliente__nome = novos_dados_cliente["nome"]
             self.__tela_cliente.mostra_mensagem("Cliente alterado com sucesso!")
         else:
             self.__tela_cliente.mostra_mensagem("Cliente não encontrado.")

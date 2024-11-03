@@ -1,5 +1,5 @@
-from tela.TelaSala import TelaSala
-from entidade.EntidadeSala import EntidadeSala
+from tela.tela_sala import TelaSala
+from entidade.sala import Sala
 
 class ControladorSala():
     def __init__(self):
@@ -36,7 +36,7 @@ class ControladorSala():
         print()
         if not salaJaExiste:
             self.__salas.append(
-                EntidadeSala(
+                Sala(
                     idSala,
                     nomeSala,
                     capacidade
