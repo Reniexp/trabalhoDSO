@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 class TipoDeExibicao():
     def __init__(self, codigo_do_tipo_de_exibicao: int):
         if codigo_do_tipo_de_exibicao == 1:
@@ -25,12 +24,6 @@ class TipoDeExibicao():
 
 class Filme:
     def __init__(self, idFilme: int, titulo: str, duracaoMinutos: int, genero: str, tipoExibicao: TipoDeExibicao ):
-=======
-from genero import Genero
-
-class Filme:
-    def __init__(self, idFilme: int, titulo: str, duracaoMinutos: int, genero: Genero, tipoExibicao: int):
->>>>>>> f11c30ad220395d9a46c5438fea16c04bd76eeb4
         self.__idFilme = idFilme
         self.__titulo = titulo
         self.__duracaoMinutos = duracaoMinutos
