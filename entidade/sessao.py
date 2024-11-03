@@ -1,9 +1,7 @@
 class Sessao:
-    def __init__(self, idSessao, horario, filme, sala, assentosDisponiveis, valorIngresso):
+    def __init__(self, idSessao: int, horario: str, filme: Filme, sala: Sala):
         self.__idSessao = idSessao
         self.__horario = horario
-        self.__assentosDisponiveis = assentosDisponiveis
-        self.__valorIngresso = valorIngresso
         self.__filme = filme
         self.__sala = sala
     
@@ -11,38 +9,30 @@ class Sessao:
     def idSessao(self):
         return self.__idSessao
     
+    @idSessao.setter
+    def idSessao(self, idSessao: int):
+        self.__idSessao = idSessao
+
     @property
     def horario(self):
         return self.__horario
     
-    @property
-    def assentosDisponiveis(self):
-        return self.__assentosDisponiveis
-    
-    @property
-    def valorIngresso(self):
-        return self.__valorIngresso
-    
+    @horario.setter
+    def horario(self, horario: str):
+        self.__horario = horario
+
     @property
     def filme(self):
         return self.__filme
+    
+    @filme.setter
+    def filme(self, filme: Filme):
+        self.__filme = filme
 
     @property
     def sala(self):
         return self.__sala
     
-    def criarSessao(self):
-        Sessao.sessoes.append(self)
-
-    def editarSessao(self, novoHorario=None, novaSala=None, novosAssentos=None, novoValorIngresso=None):
-        if novoHorario: self.horario = novoHorario
-        if novaSala: self.sala = novaSala
-        if novosAssentos: self.assentosDisponiveis = novosAssentos
-        if novoValorIngresso: self.valorIngresso = novoValorIngresso
-
-    def excluirSessao(self):
-        Sessao.sessoes.remove(self)
-
-    @classmethod
-    def listarSessoes(cls):
-        return cls.sessoes
+    @sala.setter
+    def sala(self, sala: Sala):
+        self.__sala = sala

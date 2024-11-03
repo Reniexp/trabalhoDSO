@@ -1,4 +1,4 @@
-from entidade.entidade_sessao import Sessao
+from entidade.sessao import Sessao
 from entidade.filme import Filme
 from entidade.sala import Sala
 

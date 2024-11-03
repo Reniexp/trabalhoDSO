@@ -3,7 +3,7 @@ from controlador_funcionarios import ControladorFuncionarios
 from controlador_filme import ControladorFilme
 from controlador_sala import ControladorSala
 from tela.tela_sistema import TelaSistema
-#from controlador_sessao import ControladorSessao
+from controlador_sessao import ControladorSessao
 
 class ControladorSistema:
     def __init__(self):
@@ -11,7 +11,7 @@ class ControladorSistema:
         self.__controlador_funcionario = ControladorFuncionarios(self)
         self.__controlador_filme = ControladorFilme(self)
         self.__controlador_sala = ControladorSala(self)
-        #self.__controlador_sessao = ControladorSessao(self)
+        self.__controlador_sessao = ControladorSessao(self)
         self.__tela_sistema = TelaSistema()
 
     def abre_tela(self):
@@ -24,9 +24,9 @@ class ControladorSistema:
             elif opcao == 3:
                  self.__controlador_filme.abre_tela_filme()
             elif opcao == 4:
-                 self.__controlador_sala.abre_tela_sala()
-            #elif opcao == 5:
-                 #self.__controlador_sessao.abre_tela()
+                 self.__controlador_sala.abre_tela()
+            elif opcao == 5:
+                 self.__controlador_sessao.abre_tela()
             elif opcao == 0:
                 print("Saindo do sistema...")
                 break
