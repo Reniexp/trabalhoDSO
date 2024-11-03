@@ -1,4 +1,4 @@
-class EntidadeSessao:
+class Sessao:
     def __init__(self, idSessao: int, horario: str, filme: Filme, sala: Sala):
         self.__idSessao = idSessao
         self.__horario = horario

@@ -1,4 +1,4 @@
-class EntidadeCaixa:
+class Caixa:
     def __init__(self):
         self.total_vendas = 0.0
         self.ingressos_vendidos = []

@@ -1,10 +1,10 @@
-from entidade.EntidadeIngresso import EntidadeIngresso
-from entidade.EntidadeCaixa import EntidadeCaixa
-from tela.TelaCaixa import TelaCaixa
+from entidade.ingresso import Ingresso
+from entidade.caixa import Caixa
+from tela.tela_caixa import TelaCaixa
 
 class ControladorCaixa:
     def __init__(self):
-        self.__caixa = EntidadeCaixa()
+        self.__caixa = Caixa()
         self.__tela_caixa = TelaCaixa()
 
     def vender_ingresso(self):
@@ -16,7 +16,7 @@ class ControladorCaixa:
         horario = dados_ingresso["horario"]
         preco = dados_ingresso["preco"]
 
-        ingresso = EntidadeIngresso(id_ingresso, filme, sala, horario, preco)
+        ingresso = Ingresso(id_ingresso, filme, sala, horario, preco)
 
         self.__caixa.registrar_venda(ingresso)
 

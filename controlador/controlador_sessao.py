@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 from entidade.entidade_sessao import EntidadeSessao
+=======
+from entidade.entidade_sessao import Sessao
+from entidade.filme import Filme
+from entidade.sala import Sala
+>>>>>>> 1b166aad1be1c9f4181f73bcd0cefb092a82e9f1
 
 class ControladorSessao:
     def __init__(self):
@@ -14,7 +20,7 @@ class ControladorSessao:
         
         if not sessaoJaExiste:
             self.__sessoes.append(
-            EntidadeSessao(
+            Sessao(
                     idSessao,
                     horario,
                     filme,
@@ -76,3 +82,16 @@ class ControladorSessao:
                 print("Sala: ",sessao.sala.nomeSala)
                 print("-----------------------------")
                 print()
+
+
+cont = ControladorSessao()
+cont.criar_sessao(
+    123,
+    "13:45",
+    Filme(
+        1,"A vida da bezerra",120,"acao","dublado"
+    ),
+    Sala(
+        2,"A1",200
+    )
+)
