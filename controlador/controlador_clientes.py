@@ -1,5 +1,7 @@
 from entidade.cliente import Cliente
 from tela.tela_cliente import TelaCliente
+
+
 class ControladorCliente:
     def __init__(self, controlador_sistema):
         self.__clientes = []

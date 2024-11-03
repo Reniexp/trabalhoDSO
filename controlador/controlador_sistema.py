@@ -14,6 +14,41 @@ class ControladorSistema:
         self.__controlador_sessao = ControladorSessao(self)
         self.__tela_sistema = TelaSistema()
 
+    @property
+    def controlador_cliente(self):
+        return self.__controlador_cliente
+    
+    @property
+    def controlador_funcionario(self):
+        return self.__controlador_funcionario
+    
+    @property
+    def controlador_filme(self):
+        return self.__controlador_filme
+    
+    @property
+    def controlador_sala(self):
+        return self.__controlador_sala
+    
+    @property
+    def controlador_sessao(self):
+        return self.__controlador_sessao
+    
+    def inicializa_sistema(self):
+        self.abre_tela()
+
+    def cadastra_cliente(self):
+        self.__controlador_clientes.abre_tela()
+
+    def cadastra_funcionario(self):
+        self.__controlador_funcionarios.abre_tela()
+
+    def cadastra_sessao(self):
+        self.__controlador_sessao.abre_tela()
+
+    def encerra_sistema(self):
+        exit(0)
+
     def abre_tela(self):
         while True:
             opcao = self.menu_principal()
@@ -33,12 +68,4 @@ class ControladorSistema:
             else:
                 print("Opção inválida.")
 
-    def menu_principal(self):
-        print("\nMenu Principal:")
-        print("1 - Gerenciar Clientes")
-        print("2 - Gerenciar Funcionários")
-        print("3 - Gerenciar Filmes")
-        print("4 - Gerenciar Salas")
-        print("5 - Gerenciar Sessões")
-        print("0 - Sair")
-        return int(input("Selecione uma opção: "))
+    

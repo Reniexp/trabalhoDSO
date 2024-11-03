@@ -28,11 +28,3 @@ class Sala:
     def capacidade(self, capacidade: int):
         self.__capacidade = capacidade
         
-    def comprarIngresso(self, sessao):
-        self.sessoesAguardando.append(sessao)
-
-    def listarFilmesVistos(self):
-        return self.filmesVistos
-
-    def listarSessoesAguardando(self):
-        return self.sessoesAguardando
