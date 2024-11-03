@@ -1,3 +1,6 @@
+from filme import Filme
+from sala import Sala
+
 class Sessao:
     def __init__(self, idSessao: int, horario: str, filme: Filme, sala: Sala):
         self.__idSessao = idSessao

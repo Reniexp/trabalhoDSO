@@ -13,10 +13,6 @@ class Ingresso:
         return self.__idIngresso
     
     @property
-    def valor(self):
-        return self.__valor
-    
-    @property
     def assento(self):
         return self.__assento
     

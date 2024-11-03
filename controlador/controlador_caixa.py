@@ -46,3 +46,18 @@ class ControladorCaixa:
                 break
             else:
                 self.__tela_caixa.mostrar_mensagem("Opção inválida.")
+
+        def obter_relatorios_salas(self):
+            salas_com_vendas = dict()
+            for venda in self.__caixa.ingressos_vendidos:
+              sala = venda.sessao.sala
+              salas_com_vendas[sala] = salas_com_vendas.get(sala, 0) + 1
+
+            maior_num_de_vendas = 0
+            sala_com_mais_vendas = ""
+            for sala,num_vendas in salas_com_vendas.items():
+                if num_vendas > maior_num_de_vendas:
+                    maior_num_de_vendas = num_vendas
+                    sala_com_mais_vendas = sala
+            print(f"Sala {sala_com_mais_vendas} é a que possui mais vendas ({maior_num_de_vendas} assentos vendidos ao todo)")
+                
