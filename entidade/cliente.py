@@ -2,7 +2,7 @@ from pessoa_abstrata import Pessoa
 
 class Cliente(Pessoa):
     def __init__(self, cpf: int, id_cliente: int, nome: str):
-        super().__init__(cpf,nome)
+        super().__init__(cpf, nome)
         
         self.__cpf = cpf
         self.__id_cliente = id_cliente
