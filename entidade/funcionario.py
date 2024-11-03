@@ -1,8 +1,8 @@
-from pessoa_abstrata import Pessoa
+#from pessoa_abstrata import Pessoa
 
 class EntidadeFuncionario():
     def __init__(self, cpf, id_funcionario, nome, cargo, salario, periodo):
-        super().__init__(cpf, nome)
+        #super().__init__(cpf, nome)
         
         self.__cpf = cpf
         self.__id_funcionario = id_funcionario
