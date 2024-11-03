@@ -122,7 +122,3 @@ class ControladorSala():
         else:
             print("Sala altualizada com sucesso!")
         print()
-
-
-sala = ControladorSala()
-sala.abre_tela_sala()
