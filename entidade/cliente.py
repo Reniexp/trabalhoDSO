@@ -14,6 +14,10 @@ class Cliente(Pessoa):
     def cpf(self):
         return self.__cpf
     
+    @cpf.setter
+    def cpf(self, cpf: int):
+        self.__cpf = cpf
+    
     @property
     def id_cliente(self):
         return self.__id_cliente
@@ -21,6 +25,10 @@ class Cliente(Pessoa):
     @property
     def nome(self):
         return self.__nome
+    
+    @nome.setter
+    def nome(self, nome: str):
+        self.__nome = nome
     
     @property
     def filmes_vistos(self):

@@ -7,4 +7,10 @@ class Caixa:
         self.total_vendas += ingresso.preco
         self.ingressos_vendidos.append(ingresso)
 
-    
+    @property
+    def ingressos_vendidos(self):
+        return self.__ingressos_vendidos
+
+    def adicionar_ingresso(self, ingresso):
+        self.__ingressos_vendidos.append(ingresso)
+
