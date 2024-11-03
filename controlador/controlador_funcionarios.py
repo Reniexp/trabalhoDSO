@@ -1,10 +1,6 @@
 from entidade.funcionario import EntidadeFuncionario
 from tela.tela_funcionario import TelaFuncionario
 
-# Definição da exceção personalizada para funcionários repetidos
-class FuncionarioRepetidoException(Exception):
-    def __init__(self, id_funcionario):
-        super().__init__(f"Funcionário com ID {id_funcionario} já existe.")
 
 class ControladorFuncionarios:
     def __init__(self, controlador_sistema):
@@ -118,4 +114,10 @@ class ControladorFuncionarios:
                     continua = False
             else:
                 self.__tela_funcionario.mostra_mensagem("Opção inválida.")
+
+
+# Definição da exceção personalizada para funcionários repetidos
+class FuncionarioRepetidoException(Exception):
+    def __init__(self, id_funcionario):
+        super().__init__(f"Funcionário com ID {id_funcionario} já existe.")
 

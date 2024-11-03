@@ -1,10 +1,10 @@
 from controlador.controlador_clientes import ControladorCliente
-from controlador_funcionarios import ControladorFuncionarios
-from controlador_filme import ControladorFilme
-from controlador_sala import ControladorSala
+from controlador.controlador_funcionarios import ControladorFuncionarios
+from controlador.controlador_filme import ControladorFilme
+from controlador.controlador_sala import ControladorSala
 from tela.tela_sistema import TelaSistema
-from controlador_sessao import ControladorSessao
-from controlador_caixa import ControladorCaixa
+from controlador.controlador_sessao import ControladorSessao
+from controlador.controlador_caixa import ControladorCaixa
 
 
 class ControladorSistema:

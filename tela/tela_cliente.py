@@ -1,4 +1,4 @@
-from controlador.controlador_clientes import ControladorCliente
+#from controlador.controlador_clientes import ControladorCliente
 
 class TelaCliente:
     def tela_opcoes(self):
