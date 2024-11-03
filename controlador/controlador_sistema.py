@@ -9,13 +9,14 @@ from controlador.controlador_caixa import ControladorCaixa
 
 class ControladorSistema:
     def __init__(self):
+        self.__tela_sistema = TelaSistema()
         self.__controlador_clientes = ControladorCliente(self)
         self.__controlador_funcionarios = ControladorFuncionarios(self)
         self.__controlador_filme = ControladorFilme(self)
         self.__controlador_sala = ControladorSala(self)
         self.__controlador_sessao = ControladorSessao(self)
         self.__controlador_caixa = ControladorCaixa(self)
-        self.__tela_sistema = TelaSistema()
+        
 
     @property
     def controlador_cliente(self):
@@ -42,7 +43,7 @@ class ControladorSistema:
         return self.__controlador_caixa
     
     def inicializa_sistema(self):
-        self.abre_tela()
+        self.abre_tela_sistema()
 
     def cadastra_cliente(self):
         self.__controlador_clientes.abre_tela()
@@ -53,9 +54,9 @@ class ControladorSistema:
     def encerra_sistema(self):
         exit(0)
 
-    def abre_tela(self):
+    def abre_tela_sistema(self):
         while True:
-            opcao = self.menu_principal()
+            opcao = self.__tela_sistema.tela_opcoes_sistema()
             if opcao == 1:
                 self.__controlador_clientes.abre_tela()
             elif opcao == 2:
