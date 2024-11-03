@@ -1,4 +1,4 @@
-from trabalhoDSO.entidade.entidade_sessao import EntidadeSessao
+from entidade.entidade_sessao import EntidadeSessao
 
 class ControladorSessao:
     def __init__(self):
