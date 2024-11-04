@@ -92,8 +92,12 @@ class ControladorFuncionarios:
         else:
             self.__tela_funcionario.mostra_mensagem("ATENÇÃO: Funcionário não existente")
 
+    #def retornar(self):
+    #    self.__controlador_sistema.abre_tela() #aqui estava chamando o metodo errado, por isso esta comentado
+
     def retornar(self):
-        self.__controlador_sistema.abre_tela()
+        self.__controlador_sistema.abre_tela_sistema()  #corrigido
+
 
     def abre_tela(self):
         lista_opcoes = {
