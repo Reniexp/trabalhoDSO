@@ -1,5 +1,3 @@
-import os
-
 class TelaFilme():
     def tela_opcoes_filme(self) -> int:
         invalidInput = True
@@ -42,13 +40,42 @@ class TelaFilme():
                 valid_id = True
         return id_filme
 
+    def pega_genero_filme(self):
+        invalidInput = True
+        firstTry = True
+
+        while invalidInput:
+            if not firstTry:
+                print("ESCOLHA UM INTEIRO VÁLIDO : 1 , 2, 3 OU 4")
+            print()
+            print("Qual o genero do filme?")
+            print("\t1 - Acao")
+            print("\t2 - Comedia")
+            print("\t3 - Romance")
+            print("\t4 - Ficcao Cientifica")
+
+            opcao_escolhida = input("Escolha uma opcao: ")
+            try:
+                opcao_escolhida = int(opcao_escolhida)
+                
+                if opcao_escolhida not in [1,2,3,4]:
+                    firstTry = False
+                    continue
+            except:
+                firstTry = False
+                continue
+            else:
+                invalidInput = False
+        return opcao_escolhida
+
+
     def pega_tipo_de_exibicao(self):
         invalidInput = True
         firstTry = True
 
         while invalidInput:
             if not firstTry:
-                print("ESCOLHA UM INTEIRO VÁLIDO")
+                print("ESCOLHA UM INTEIRO VÁLIDO : 1 , 2 OU 3")
             print()
             print("Qual o tipo de exibição do filme?")
             print("\t1 - Dublado")
@@ -58,6 +85,10 @@ class TelaFilme():
             opcao_escolhida = input("Escolha uma opcao: ")
             try:
                 opcao_escolhida = int(opcao_escolhida)
+                
+                if opcao_escolhida not in [1,2,3]:
+                    firstTry = False
+                    continue
             except:
                 firstTry = False
                 continue
@@ -97,10 +128,7 @@ class TelaFilme():
             else:
                 valid_duracao = True
 
-        genero = input("Genero do filme: ")
-        while genero == "":
-            print("Não pode ser texto vazio")
-            genero = input("Genero do filme: ")
+        genero = self.pega_genero_filme()
 
         tipo_de_exibicao = self.pega_tipo_de_exibicao()
 
@@ -131,15 +159,9 @@ class TelaFilme():
             else:
                 valid_duracao = True
 
-        genero = input("Genero do filme: ")
-        while genero == "":
-            print("Não pode ser texto vazio")
-            genero = input("Genero do filme: ")
+        genero = self.pega_genero_filme()
 
-        tipo_de_exibicao = input("Tipo de exibicao: ")
-        while tipo_de_exibicao == "":
-            print("Não pode ser texto vazio")
-            tipo_de_exibicao = input("Tipo de exibicao do filme: ")
+        tipo_de_exibicao = self.pega_tipo_de_exibicao()
 
         return {
             "titulo" : titulo,

@@ -61,8 +61,28 @@ class ControladorFilme():
             if filme.idFilme == id_filme:
                 print("Titulo: ", filme.titulo)
                 print("Duracao Em Minutos: ", filme.duracaoMinutos)
-                print("Genero: ", filme.genero)
-                print("Tipo de Exibicao: ", filme.tipoExibicao)
+
+                genero = ""
+                if filme.genero == 1:
+                    genero = "acao"
+                elif filme.genero == 2:
+                    genero = "comedia"
+                elif filme.genero == 3:
+                    genero = "romance"
+                elif filme.genero == 4:
+                    genero = "ficcao cientifica"
+
+                print("Genero: ", genero)
+                
+                tipo_de_exibicao = ""
+                if filme.tipoExibicao == 1:
+                    tipo_de_exibicao = "dublado"
+                elif filme.tipoExibicao == 2:
+                    tipo_de_exibicao = "legendado"
+                elif filme.tipoExibicao == 3:
+                    tipo_de_exibicao = "dublado e legendado"
+
+                print("Tipo de Exibicao: ", tipo_de_exibicao)
 
                 filmeAchado = True
                 break
@@ -127,7 +147,26 @@ class ControladorFilme():
                 print("IdFilme: ",filme.idFilme)
                 print("Titulo: ",filme.titulo)
                 print("Duracao Em Minutos: ",filme.duracaoMinutos)
-                print("Tipo De Exibicao: ",filme.tipoExibicao)
-                print("Genero: ",filme.genero)
+                tipo_de_exibicao = ""
+                if filme.tipoExibicao == 1:
+                    tipo_de_exibicao = "dublado"
+                elif filme.tipoExibicao == 2:
+                    tipo_de_exibicao = "legendado"
+                elif filme.tipoExibicao == 3:
+                    tipo_de_exibicao = "dublado e legendado"
+
+                print("Tipo de Exibicao: ", tipo_de_exibicao)
+
+                genero = ""
+                if filme.genero == 1:
+                    genero = "acao"
+                elif filme.genero == 2:
+                    genero = "comedia"
+                elif filme.genero == 3:
+                    genero = "romance"
+                elif filme.genero == 4:
+                    genero = "ficcao cientifica"
+                    
+                print("Genero: ", genero)
                 print("-----------------------------")
                 print()
