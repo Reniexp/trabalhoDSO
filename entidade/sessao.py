@@ -43,9 +43,9 @@ class Sessao:
         self.__sala = sala
 
     @property
-    def funcioanrio(self):
-        return self.__funcioanrio
+    def funcionario(self):
+        return self.__funcionario
     
-    @funcioanrio.setter
-    def funcioanrio(self, funcioanrio: EntidadeFuncionario):
-        self.__funcioanrio = funcioanrio
+    @funcionario.setter
+    def funcionario(self, funcionario: EntidadeFuncionario):
+        self.__funcionario = funcionario

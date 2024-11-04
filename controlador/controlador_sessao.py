@@ -4,115 +4,122 @@ from entidade.sala import Sala
 from entidade.funcionario import EntidadeFuncionario
 from tela.tela_sessao import TelaSessao
 
+
 class ControladorSessao:
     def __init__(self, controlador_sistema):
         self.__sessoes = []
         self.__controlador_sistema = controlador_sistema
         self.__tela_sessao = TelaSessao()
 
+    def abre_tela_sessao(self):
+        while True:
+            opcao_escolhida = self.__tela_sessao.tela_opcoes_sessao()
+            if opcao_escolhida == 1:
+                self.lista_sessoes()
+            elif opcao_escolhida == 2:
+                self.criar_sessao()
+            elif opcao_escolhida == 3:
+                self.mostrar_dados_sessao()
+            elif opcao_escolhida == 4:
+                self.editar_sessao()
+            elif opcao_escolhida == 5:
+                self.excluir_sessao()
+            elif opcao_escolhida == 6:
+                print("Saindo da Tela de Sessão...")
+                break
 
     def criar_sessao(self):
         print("\n")
-
         dados = self.__tela_sessao.pega_dados_nova_sessao()
-        id_filme = dados["idFilme"]
-        id_sala = dados["idSala"]
-        id_sessao = dados["idSessao"]
-        id_funcionario = dados["idFuncionario"]
-        horario = dados["horario"]
-
-        filme = self.__controlador_sistema.pega_filme(id_filme)
-        if filme == -1 :
-            print()
+        
+        filme = self.__controlador_sistema.pega_filme(dados["idFilme"])
+        if filme == -1:
             print("NÃO EXISTE FILME COM ESTE ID, VALOR INVÁLIDO")
-            print()
             return
 
-        sala = self.__controlador_sistema.pega_sala(id_sala)
-        if filme == -1 :
-            print()
+        sala = self.__controlador_sistema.pega_sala(dados["idSala"])
+        if sala == -1:
             print("NÃO EXISTE SALA COM ESTE ID, VALOR INVÁLIDO")
-            print()
             return
-        
-        funcionario = self.__controlador_sistema.pega_funcionario(id_funcionario)
-        if filme == None :
-            print()
+
+        funcionario = self.__controlador_sistema.pega_funcionario(dados["idFuncionario"])
+        if funcionario is None:
             print("NÃO EXISTE FUNCIONARIO COM ESTE ID, VALOR INVÁLIDO")
-            print()
             return
-        
-        sessaoJaExiste = False
-        for sessao in self.__sessoes:
-            if sessao.idSessao == id_sessao:
-                sessaoJaExiste = True
-        
+
+        sessaoJaExiste = any(sessao.idSessao == dados["idSessao"] for sessao in self.__sessoes)
         if not sessaoJaExiste:
-            self.__sessoes.append(
-            Sessao(
-                    id_sessao,
-                    horario,
-                    filme,
-                    sala,
-                    funcionario,
-                )
+            nova_sessao = Sessao(
+                dados["idSessao"],
+                dados["horario"],
+                filme,
+                sala,
+                funcionario
             )
-        print("Sessão criada com sucesso!")
-        print(self.__sessoes[0].idSessao)
-    
-    def editar_sessao(self,idSessao:int, horario: str, filme: Filme, sala: Sala, funcionario_responsavel: EntidadeFuncionario):
+            self.__sessoes.append(nova_sessao)
+            print("Sessão criada com sucesso!")
+        else:
+            print("Uma sessão com este Id já existe")
+
+    def editar_sessao(self):
         print()
+        idSessao = self.__tela_sessao.pega_id_valido_sessao()
 
         sessao_encontrada = False
-
         for sessao in self.__sessoes:
             if sessao.idSessao == idSessao:
                 sessao_encontrada = True
+                dados_atualizados = self.__tela_sessao.pega_dados_nova_sessao()
                 
-                sessao.horario = horario
-                sessao.filme = filme
-                sessao.sala = sala
-                sessao.funcionario = funcionario_responsavel
-        print()
+                sessao.horario = dados_atualizados["horario"]
+                sessao.filme = self.__controlador_sistema.pega_filme(dados_atualizados["idFilme"])
+                sessao.sala = self.__controlador_sistema.pega_sala(dados_atualizados["idSala"])
+                sessao.funcionario = self.__controlador_sistema.pega_funcionario(dados_atualizados["idFuncionario"])
+                print("Sessão atualizada com sucesso!")
+                break
+
         if not sessao_encontrada:
             print("Id inválido, não há sessão com este id")
-        else:
-            print("Sessão altualizada com sucesso!")
-        print()
 
-    def excluir_sessao(self, idSessao: int):
+    def excluir_sessao(self):
+        idSessao = self.__tela_sessao.pega_id_valido_sessao()
+        
         sessao_encontrada = False
-
         i = 0
         while i < len(self.__sessoes):
-            sessao = self.__sessoes[i]
-            if sessao.idSessao == idSessao:
+            if self.__sessoes[i].idSessao == idSessao:
                 sessao_encontrada = True
                 break
             i += 1
 
-        print()       
         if sessao_encontrada:
             self.__sessoes.pop(i)
-            print("Sessão deletado com sucesso!")
+            print("Sessão deletada com sucesso!")
         else:
             print("Id inválido, não há sessão com este id")
-        print()
-    
+
     def lista_sessoes(self):
-        if len(self.__sessoes) == 0:
-            print()
+        if not self.__sessoes:
             print("Não há sessão criada ainda")
-            print()
         else:
             for sessao in self.__sessoes:
                 print("-----------------------------")
-                print("IdSessão: ",sessao.idSessao)
-                print("Horário: ",sessao.horario)
-                print("Filme: ",sessao.filme.titulo)
-                print("Sala: ",sessao.sala.nomeSala)
+                print(f"IdSessão: {sessao.idSessao}")
+                print(f"Horário: {sessao.horario}")
+                print(f"Filme: {sessao.filme.titulo}")
+                print(f"Sala: {sessao.sala.nomeSala}")
+                print(f"Funcionário: {sessao.funcionario.nome}")
                 print("-----------------------------")
-                print()
 
-    def abre_tela_sessao(self):
-        opcao = self.__tela_sessao.tela_opcoes_sessao()
+    def mostrar_dados_sessao(self):
+        idSessao = self.__tela_sessao.pega_id_valido_sessao()
+        sessao_encontrada = next((sessao for sessao in self.__sessoes if sessao.idSessao == idSessao), None)
+
+        if sessao_encontrada:
+            print(f"IdSessão: {sessao_encontrada.idSessao}")
+            print(f"Horário: {sessao_encontrada.horario}")
+            print(f"Filme: {sessao_encontrada.filme.titulo}")
+            print(f"Sala: {sessao_encontrada.sala.nomeSala}")
+            print(f"Funcionário: {sessao_encontrada.funcionario.nome}")
+        else:
+            print("Não existe sessão com este id")
