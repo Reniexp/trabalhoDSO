@@ -59,6 +59,7 @@ class ControladorFilme():
         filmeAchado = False
         for filme in self.__filmes:
             if filme.idFilme == id_filme:
+                print("Id: ",filme.idFilme)
                 print("Titulo: ", filme.titulo)
                 print("Duracao Em Minutos: ", filme.duracaoMinutos)
 

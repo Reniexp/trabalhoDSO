@@ -5,7 +5,6 @@ class Pessoa(ABC):
     def __init__(self, cpf:int, nome:str):
         pass
     
-  
     @property
     def cpf(self):
         pass

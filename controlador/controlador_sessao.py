@@ -1,6 +1,7 @@
 from entidade.sessao import Sessao
 from entidade.filme import Filme
 from entidade.sala import Sala
+from entidade.funcionario import EntidadeFuncionario
 
 class ControladorSessao:
     def __init__(self, controlador_sistema):
@@ -8,7 +9,7 @@ class ControladorSessao:
         self.__controlador_sistema = controlador_sistema
 
 
-    def criar_sessao(self, idSessao: int, horario: str, filme: Filme, sala: Sala):
+    def criar_sessao(self, idSessao: int, horario: str, filme: Filme, sala: Sala, funcionario_responsavel: EntidadeFuncionario):
         print("\n")
         
         sessaoJaExiste = False
@@ -23,12 +24,13 @@ class ControladorSessao:
                     horario,
                     filme,
                     sala,
+                    funcionario_responsavel,
                 )
             )
         print("Sessão criada com sucesso!")
         print(self.__sessoes[0].idSessao)
     
-    def editar_sessao(self,idSessao:int, horario: str, filme: Filme, sala: Sala):
+    def editar_sessao(self,idSessao:int, horario: str, filme: Filme, sala: Sala, funcionario_responsavel: EntidadeFuncionario):
         print()
 
         sessao_encontrada = False
@@ -40,6 +42,7 @@ class ControladorSessao:
                 sessao.horario = horario
                 sessao.filme = filme
                 sessao.sala = sala
+                sessao.funcionario = funcionario_responsavel
         print()
         if not sessao_encontrada:
             print("Id inválido, não há sessão com este id")
