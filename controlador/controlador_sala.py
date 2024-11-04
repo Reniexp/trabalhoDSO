@@ -2,9 +2,11 @@ from tela.tela_sala import TelaSala
 from entidade.sala import Sala
 
 class ControladorSala():
-    def __init__(self):
+    def __init__(self, controlador_sistema):
         self.__telaSala = TelaSala()
         self.__salas = []
+        self.__controlador_sistema = controlador_sistema
+
 
     def abre_tela_sala(self):
         opcao_escolhida = 0

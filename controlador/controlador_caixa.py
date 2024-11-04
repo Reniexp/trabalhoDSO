@@ -3,9 +3,11 @@ from entidade.caixa import Caixa
 from tela.tela_caixa import TelaCaixa
 
 class ControladorCaixa:
-    def __init__(self):
+    def __init__(self, controlador_sistema):
         self.__caixa = Caixa()
         self.__tela_caixa = TelaCaixa()
+        self.__controlador_sistema = controlador_sistema
+        
 
     def vender_ingresso(self):
         dados_ingresso = self.__tela_caixa.pegar_dados_ingresso()

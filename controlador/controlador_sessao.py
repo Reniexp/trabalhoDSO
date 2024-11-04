@@ -3,8 +3,10 @@ from entidade.filme import Filme
 from entidade.sala import Sala
 
 class ControladorSessao:
-    def __init__(self):
+    def __init__(self, controlador_sistema):
         self.__sessoes = []
+        self.__controlador_sistema = controlador_sistema
+
 
     def criar_sessao(self, idSessao: int, horario: str, filme: Filme, sala: Sala):
         print("\n")
@@ -24,7 +26,7 @@ class ControladorSessao:
                 )
             )
         print("Sessão criada com sucesso!")
-        print(self.__sessaos[0].idSessao)
+        print(self.__sessoes[0].idSessao)
     
     def editar_sessao(self,idSessao:int, horario: str, filme: Filme, sala: Sala):
         print()
@@ -79,15 +81,3 @@ class ControladorSessao:
                 print("-----------------------------")
                 print()
 
-
-cont = ControladorSessao()
-cont.criar_sessao(
-    123,
-    "13:45",
-    Filme(
-        1,"A vida da bezerra",120,"acao","dublado"
-    ),
-    Sala(
-        2,"A1",200
-    )
-)

@@ -80,7 +80,7 @@ class ControladorCliente:
             self.__tela_cliente.mostra_mensagem("Cliente não encontrado.")
 
     def retornar(self):
-        self.__controlador_sistema.abre_tela()
+        self.__controlador_sistema.abre_tela_sistema()
 
     def abre_tela(self):
         continua = True

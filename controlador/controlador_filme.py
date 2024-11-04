@@ -2,9 +2,11 @@ from tela.tela_filme import TelaFilme
 from entidade.filme import Filme
 
 class ControladorFilme():
-    def __init__(self):
+    def __init__(self, controlador_sistema):
         self.__filmes = []
         self.__telaFilme = TelaFilme()
+        self.__controlador_sistema = controlador_sistema
+
 
     def abre_tela_filme(self):
         opcao_escolhida = 0
