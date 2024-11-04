@@ -17,6 +17,7 @@ class ControladorSistema:
         self.__controlador_sala = ControladorSala(self)
         self.__controlador_sessao = ControladorSessao(self)
         self.__controlador_caixa = ControladorCaixa(self)
+        self.sessoes = []
 
 
     @property
@@ -42,6 +43,12 @@ class ControladorSistema:
     @property
     def controlador_caixa(self):
         return self.__controlador_caixa
+    
+    def obter_sessao_por_id(self, id_sessao):
+        for sessao in self.sessoes:
+            if sessao.id == id_sessao:  # Supondo que cada sessão tenha um atributo 'id'
+                return sessao
+        return None 
 
 
     # Verifica se existe ao menos uma sala, um filme e um funcionário
