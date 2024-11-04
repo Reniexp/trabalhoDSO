@@ -1,3 +1,5 @@
+from exceptions.EntradaInvalidaNoPrompt import EntradaInvalidaNoPrompt
+
 class TelaFilme():
     def tela_opcoes_filme(self) -> int:
         invalidInput = True
@@ -5,7 +7,10 @@ class TelaFilme():
 
         while invalidInput:
             if not firstTry:
-                print("ESCOLHA UM INTEIRO VÁLIDO")
+                print()
+                print("ESCOLHA UM INTEIRO VÁLIDO DE 1 A 6")
+                print()
+                
             print("Tela filme")
             print("\t(1) Mostrar Filmes Disponíveis")
             print("\t(2) Cadastrar Novo Filme")
@@ -18,6 +23,8 @@ class TelaFilme():
             opcao_escolhida = input("Escolha uma opcao: ")
             try:
                 opcao_escolhida = int(opcao_escolhida)
+                if opcao_escolhida not in [1,2,3,4,5,6]:
+                    raise EntradaInvalidaNoPrompt()
             except:
                 firstTry = False
                 continue

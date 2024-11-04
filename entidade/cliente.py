@@ -1,6 +1,6 @@
-from pessoa_abstrata import Pessoa
+#from pessoa_abstrata import Pessoa
 
-class Cliente(Pessoa):
+class Cliente():
     def __init__(self, cpf: int, id_cliente: int, nome: str):
         super().__init__(cpf, nome)
         

@@ -1,5 +1,6 @@
-class TelaSala():
-    
+from exceptions.EntradaInvalidaNoPrompt import EntradaInvalidaNoPrompt
+
+class TelaSala(): 
     def pega_dados_nova_sala(self):
         valid_id = False
         id_sala = input("Id da sala: ")
@@ -56,10 +57,14 @@ class TelaSala():
     def tela_opcoes_sala(self) -> int:
         invalidInput = True
         firstTry = True
+ 
 
         while invalidInput:
             if not firstTry:
-                print("ESCOLHA UM INTEIRO VÁLIDO")
+                print()
+                print("ESCOLHA UM INTEIRO VÁLIDO DE 1 A 6")
+                print()
+
             print("Tela Sala")
             print("\t(1) Mostrar Salas Disponíveis")
             print("\t(2) Cadastrar Nova Sala")
@@ -72,6 +77,8 @@ class TelaSala():
             opcao_escolhida = input("Escolha uma opcao: ")
             try:
                 opcao_escolhida = int(opcao_escolhida)
+                if opcao_escolhida not in [1,2,3,4,5,6]:
+                    raise EntradaInvalidaNoPrompt()
             except:
                 firstTry = False
                 continue
