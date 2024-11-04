@@ -24,7 +24,7 @@ class TelaFilme():
             try:
                 opcao_escolhida = int(opcao_escolhida)
                 if opcao_escolhida not in [1,2,3,4,5,6]:
-                    raise EntradaInvalidaNoPrompt()
+                    raise EntradaInvalidaNoPrompt(opcao_escolhida)
             except:
                 firstTry = False
                 continue
