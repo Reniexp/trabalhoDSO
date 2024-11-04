@@ -1,13 +1,14 @@
 from .filme import Filme
 from .sala import Sala
-
+from .funcionario import EntidadeFuncionario
 
 class Sessao:
-    def __init__(self, idSessao: int, horario: str, filme: Filme, sala: Sala):
+    def __init__(self, idSessao: int, horario: str, filme: Filme, sala: Sala, funcionario: EntidadeFuncionario):
         self.__idSessao = idSessao
         self.__horario = horario
         self.__filme = filme
         self.__sala = sala
+        self.__funcionario = funcionario
     
     @property
     def idSessao(self):
@@ -40,3 +41,11 @@ class Sessao:
     @sala.setter
     def sala(self, sala: Sala):
         self.__sala = sala
+
+    @property
+    def funcioanrio(self):
+        return self.__funcioanrio
+    
+    @funcioanrio.setter
+    def funcioanrio(self, funcioanrio: EntidadeFuncionario):
+        self.__funcioanrio = funcioanrio
