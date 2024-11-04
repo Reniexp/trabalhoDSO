@@ -2,16 +2,24 @@ from entidade.sessao import Sessao
 from entidade.filme import Filme
 from entidade.sala import Sala
 from entidade.funcionario import EntidadeFuncionario
-
+from tela.tela_sessao import TelaSessao
 
 class ControladorSessao:
     def __init__(self, controlador_sistema):
         self.__sessoes = []
         self.__controlador_sistema = controlador_sistema
+        self.__tela_sessao = TelaSessao()
 
 
-    def criar_sessao(self, idSessao: int, horario: str, id_filme: int, id_sala: int, id_funcionario_responsavel: int):
+    def criar_sessao(self):
         print("\n")
+
+        dados = self.__tela_sessao.pega_dados_nova_sessao()
+        id_filme = dados["idFilme"]
+        id_sala = dados["idSala"]
+        id_sessao = dados["idSessao"]
+        id_funcionario = dados["idFuncionario"]
+        horario = dados["horario"]
 
         filme = self.__controlador_sistema.pega_filme(id_filme)
         if filme == -1 :
@@ -27,7 +35,7 @@ class ControladorSessao:
             print()
             return
         
-        funcionario = self.__controlador_sistema.pega_funcionario(id_funcionario_responsavel)
+        funcionario = self.__controlador_sistema.pega_funcionario(id_funcionario)
         if filme == None :
             print()
             print("NÃO EXISTE FUNCIONARIO COM ESTE ID, VALOR INVÁLIDO")
@@ -36,13 +44,13 @@ class ControladorSessao:
         
         sessaoJaExiste = False
         for sessao in self.__sessoes:
-            if sessao.idSessao == idSessao:
+            if sessao.idSessao == id_sessao:
                 sessaoJaExiste = True
         
         if not sessaoJaExiste:
             self.__sessoes.append(
             Sessao(
-                    idSessao,
+                    id_sessao,
                     horario,
                     filme,
                     sala,
@@ -106,3 +114,5 @@ class ControladorSessao:
                 print("-----------------------------")
                 print()
 
+    def abre_tela_sessao(self):
+        opcao = self.__tela_sessao.tela_opcoes_sessao()

@@ -12,6 +12,7 @@ class TelaSistema:
             print("\t(3) Gerenciar Filmes")
             print("\t(4) Gerenciar Salas")
             print("\t(5) Gerenciar Caixa")
+            print("\t(6) Gerenciar Sessões")
             print("\t(0) Sair")
             print()
             

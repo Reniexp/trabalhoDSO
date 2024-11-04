@@ -48,9 +48,9 @@ class TelaSessao:
         return id_sessao
     
     def pega_dados_nova_sessao(self):
-        valid_id = False
         id_sessao = input("Id da sessao: ")
 
+        valid_id = False
         while not valid_id:
             try:
                 id_sessao = int(id_sessao)
@@ -65,6 +65,51 @@ class TelaSessao:
         while horario == "":
             print("Não pode ser texto vazio")
             horario = input("Horario da sessao: ")
+        
+        id_filme = input("Id do filme: ")
+        valid_id_filme = False
+        while not valid_id_filme:
+            try:
+                id_filme = int(id_filme)
+            except:
+                print("ID É UM VALOR INTEIRO")
+                id_filme = input("Id do filme: ")
+                continue
+            else:
+                valid_id_filme = True
+
+
+        id_sala = input("Id da sala: ")
+        valid_id_sala = False
+        while not valid_id_sala:
+            try:
+                id_sala = int(id_sala)
+            except:
+                print("ID É UM VALOR INTEIRO")
+                id_sala = input("Id da sala: ")
+                continue
+            else:
+                valid_id_sala = True
+
+        id_funcionario = input("Id do funcionario responsavel: ")
+        valid_id_funcionario = False
+        while not valid_id_funcionario:
+            try:
+                id_funcionario = int(id_funcionario)
+            except:
+                print("ID É UM VALOR INTEIRO")
+                id_funcionario = input("Id do funcionario responsavel: ")
+                continue
+            else:
+                valid_id_funcionario = True
+        return {
+            "idSessao": id_sessao,
+            "idFilme": id_filme,
+            "idSala": id_sala,
+            "idFuncionario": id_funcionario,
+            "horario": horario
+        }
+        
 
 
         

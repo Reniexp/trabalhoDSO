@@ -5,6 +5,7 @@ from controlador.controlador_sala import ControladorSala
 from tela.tela_sistema import TelaSistema
 from controlador.controlador_sessao import ControladorSessao
 from controlador.controlador_caixa import ControladorCaixa
+from controlador.controlador_sessao import ControladorSessao
 
 
 class ControladorSistema:
@@ -67,6 +68,8 @@ class ControladorSistema:
                  self.__controlador_sala.abre_tela_sala()
             elif opcao == 5:
                  self.__controlador_caixa.abre_tela()
+            elif opcao == 6:
+                 self.__controlador_sessao.abre_tela_sessao()
             elif opcao == 0:
                 print("Saindo do sistema...")
                 break
