@@ -131,3 +131,6 @@ class ControladorSala():
             if sala.idSala == id_sala:
                 return sala
         return -1
+    
+    def existe_sala(self):
+        return len(self.__salas) > 0

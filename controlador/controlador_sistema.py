@@ -17,7 +17,7 @@ class ControladorSistema:
         self.__controlador_sala = ControladorSala(self)
         self.__controlador_sessao = ControladorSessao(self)
         self.__controlador_caixa = ControladorCaixa(self)
-        
+
 
     @property
     def controlador_cliente(self):
@@ -42,6 +42,37 @@ class ControladorSistema:
     @property
     def controlador_caixa(self):
         return self.__controlador_caixa
+
+
+    # Verifica se existe ao menos uma sala, um filme e um funcionário
+    def requisitos_para_sessao(self):
+        if not self.__controlador_sala.existe_sala() or not self.__controlador_filme.existe_filme() or not self.__controlador_funcionarios.existe_funcionario():
+            self.__tela_sistema.mostra_mensagem("Erro: Certifique-se de que pelo menos uma sala, um filme e um funcionário estejam cadastrados antes de criar uma sessão.")
+            return False
+        return True
+
+    def abre_tela_sistema(self):
+        while True:
+            opcao = self.__tela_sistema.tela_opcoes_sistema()
+            if opcao == 1:
+                self.__controlador_clientes.abre_tela()
+            elif opcao == 2:
+                self.__controlador_funcionarios.abre_tela()
+            elif opcao == 3:
+                self.__controlador_filme.abre_tela_filme()
+            elif opcao == 4:
+                self.__controlador_sala.abre_tela_sala()
+            elif opcao == 5:
+                self.__controlador_caixa.abre_tela()
+            elif opcao == 6:
+                if self.requisitos_para_sessao():
+                    self.__controlador_sessao.abre_tela_sessao()
+            elif opcao == 0:
+                print("Saindo do sistema...")
+                break
+            else:
+                print("Opção inválida.")
+        
     
     def inicializa_sistema(self):
         self.abre_tela_sistema()
@@ -54,27 +85,6 @@ class ControladorSistema:
 
     def encerra_sistema(self):
         exit(0)
-
-    def abre_tela_sistema(self):
-        while True:
-            opcao = self.__tela_sistema.tela_opcoes_sistema()
-            if opcao == 1:
-                self.__controlador_clientes.abre_tela()
-            elif opcao == 2:
-                 self.__controlador_funcionarios.abre_tela()
-            elif opcao == 3:
-                 self.__controlador_filme.abre_tela_filme()
-            elif opcao == 4:
-                 self.__controlador_sala.abre_tela_sala()
-            elif opcao == 5:
-                 self.__controlador_caixa.abre_tela()
-            elif opcao == 6:
-                 self.__controlador_sessao.abre_tela_sessao()
-            elif opcao == 0:
-                print("Saindo do sistema...")
-                break
-            else:
-                print("Opção inválida.")
     
     def pega_filme(self,id_filme):
         return self.__controlador_filme.pega_filme_pelo_id(id_filme)

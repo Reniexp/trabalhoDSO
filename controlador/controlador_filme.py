@@ -177,3 +177,6 @@ class ControladorFilme():
             if filme.idFilme == id_filme:
                 return filme
         return -1
+    
+    def existe_filme(self):
+        return len(self.__filmes) > 0

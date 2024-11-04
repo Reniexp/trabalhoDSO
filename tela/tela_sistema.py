@@ -23,7 +23,7 @@ class TelaSistema:
                 first_try = False
                 continue
             else:
-                if opcao_escolhida in [0, 1, 2, 3, 4, 5]:
+                if opcao_escolhida in [0, 1, 2, 3, 4, 5, 6]:
                     invalid_input = False
                 else:
                     print("Opção inválida. Por favor, escolha uma das opções listadas.")
