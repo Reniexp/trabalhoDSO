@@ -104,11 +104,11 @@ class TelaFuncionario:
         print("\n")
 
     def seleciona_funcionario(self) -> str:
-        cpf = input("CPF do funcionário que deseja selecionar: ")
-        while not self.valida_cpf(cpf):
-            print("CPF inválido. Digite exatamente 11 dígitos numéricos.")
-            cpf = input("CPF do funcionário que deseja selecionar: ")
-        return cpf
+        id_funcionario = input("ID do funcionário que deseja selecionar: ")
+        while not self.valida_id_funcionario(id_funcionario):
+            print("ID inválido. Digite Novamente.")
+            id_funcionario = input("id do funcionário que deseja selecionar: ")
+        return id_funcionario
 
     def mostra_mensagem(self, msg: str):
         print(msg)
