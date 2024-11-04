@@ -124,3 +124,10 @@ class ControladorSala():
         else:
             print("Sala altualizada com sucesso!")
         print()
+
+
+    def pega_sala_pelo_id(self,id_sala:int):
+        for sala in self.__salas:
+            if sala.idSala == id_sala:
+                return sala
+        return -1

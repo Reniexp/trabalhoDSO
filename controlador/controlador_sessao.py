@@ -3,14 +3,36 @@ from entidade.filme import Filme
 from entidade.sala import Sala
 from entidade.funcionario import EntidadeFuncionario
 
+
 class ControladorSessao:
     def __init__(self, controlador_sistema):
         self.__sessoes = []
         self.__controlador_sistema = controlador_sistema
 
 
-    def criar_sessao(self, idSessao: int, horario: str, filme: Filme, sala: Sala, funcionario_responsavel: EntidadeFuncionario):
+    def criar_sessao(self, idSessao: int, horario: str, id_filme: int, id_sala: int, id_funcionario_responsavel: int):
         print("\n")
+
+        filme = self.__controlador_sistema.pega_filme(id_filme)
+        if filme == -1 :
+            print()
+            print("NÃO EXISTE FILME COM ESTE ID, VALOR INVÁLIDO")
+            print()
+            return
+
+        sala = self.__controlador_sistema.pega_sala(id_sala)
+        if filme == -1 :
+            print()
+            print("NÃO EXISTE SALA COM ESTE ID, VALOR INVÁLIDO")
+            print()
+            return
+        
+        funcionario = self.__controlador_sistema.pega_funcionario(id_funcionario_responsavel)
+        if filme == None :
+            print()
+            print("NÃO EXISTE FUNCIONARIO COM ESTE ID, VALOR INVÁLIDO")
+            print()
+            return
         
         sessaoJaExiste = False
         for sessao in self.__sessoes:
@@ -24,7 +46,7 @@ class ControladorSessao:
                     horario,
                     filme,
                     sala,
-                    funcionario_responsavel,
+                    funcionario,
                 )
             )
         print("Sessão criada com sucesso!")

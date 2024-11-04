@@ -72,7 +72,12 @@ class ControladorSistema:
                 break
             else:
                 print("Opção inválida.")
-
-                
-
     
+    def pega_filme(self,id_filme):
+        return self.__controlador_filme.pega_filme_pelo_id(id_filme)
+    
+    def pega_sala(self,id_sala):
+        return self.__controlador_sala.pega_sala_pelo_id(id_sala)
+    
+    def pega_funcionario(self,id_funcionario):
+        return self.__controlador_funcionarios.pega_funcionario_por_id(id_funcionario)

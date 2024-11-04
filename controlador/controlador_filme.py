@@ -171,3 +171,9 @@ class ControladorFilme():
                 print("Genero: ", genero)
                 print("-----------------------------")
                 print()
+
+    def pega_filme_pelo_id(self,id_filme:int):
+        for filme in self.__filmes:
+            if filme.idFilme == id_filme:
+                return filme
+        return -1
