@@ -32,7 +32,7 @@ class ControladorCaixa:
         ingresso = Ingresso(id_ingresso,assento,cliente,sessao)
         
         self.__caixa.registrar_venda(ingresso)
-        sessao.assentos_disponiveis -= 1  # Reduzir a quantidade de assentos disponíveis
+        sessao.assentos_disponiveis -= 1
 
         self.__tela_caixa.mostrar_mensagem(f"Ingresso para '{sessao.filme.titulo}' vendido com sucesso!")
 
@@ -50,12 +50,12 @@ class ControladorCaixa:
     def obter_sessoes_populares(self):
         sessoes_com_vendas = dict()
         
-        # Contar ingressos vendidos por sessão
+        
         for venda in self.__caixa.ingressos_vendidos:
             sessao = venda.sessao
             sessoes_com_vendas[sessao] = sessoes_com_vendas.get(sessao, 0) + 1
 
-        # Determinar a sessão mais popular
+        
         maior_num_de_vendas = 0
         sessao_popular = None
         for sessao, num_vendas in sessoes_com_vendas.items():

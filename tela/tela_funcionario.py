@@ -24,39 +24,38 @@ class TelaFuncionario:
     def pega_dados_funcionario(self) -> dict:
         print("-------- DADOS FUNCIONARIO ----------")
         
-        # Validação do nome
+        
         nome = input("Nome: ")
         while nome == "":
             print("O nome não pode ser vazio.")
             nome = input("Nome: ")
 
-        # Validação do CPF
+        
         cpf = input("CPF (somente números): ")
         while not self.valida_cpf(cpf):
             print("CPF inválido. Digite exatamente 11 dígitos numéricos.")
             cpf = input("CPF (somente números): ")
 
-        # Validação do ID do funcionário
         id_funcionario = input("ID: ")
         while not self.valida_id_funcionario(id_funcionario):
             print("ID inválido! Deve ser um número inteiro.")
             id_funcionario = input("ID: ")
         id_funcionario = int(id_funcionario)
 
-        # Validação do cargo
+        
         cargo = input("Cargo: ")
         while cargo == "":
             print("O cargo não pode ser vazio.")
             cargo = input("Cargo: ")
 
-        # Validação do salário
+        
         salario = input("Salário: ")
         while not self.valida_salario(salario):
             print("Salário inválido! Deve ser um número.")
             salario = input("Salário: ")
         salario = float(salario)
 
-        # Validação do período
+        
         periodo = input("Período: ")
         while periodo == "":
             print("O período não pode ser vazio.")
@@ -75,7 +74,7 @@ class TelaFuncionario:
         if len(cpf) != 11:
             return False
         for caractere in cpf:
-            if caractere < '0' or caractere > '9':  # Verifica se cada caractere é numérico
+            if caractere < '0' or caractere > '9':
                 return False
         return True
 

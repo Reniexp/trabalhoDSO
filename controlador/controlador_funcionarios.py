@@ -122,7 +122,7 @@ class ControladorFuncionarios:
     def existe_funcionario(self):
         return len(self.__funcionarios) > 0
 
-# Definição da exceção personalizada para funcionários repetidos
+
 class FuncionarioRepetidoException(Exception):
     def __init__(self, id_funcionario):
         super().__init__(f"Funcionário com ID {id_funcionario} já existe.")

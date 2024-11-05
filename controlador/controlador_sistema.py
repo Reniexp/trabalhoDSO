@@ -48,18 +48,18 @@ class ControladorSistema:
     def obter_sessao_por_id(self, id_sessao):
         self.sessoes = self.__controlador_sessao.sessoes
         for sessao in self.sessoes:
-            if sessao.idSessao == id_sessao:  # Supondo que cada sessão tenha um atributo 'id'
+            if sessao.idSessao == id_sessao:
                 return sessao
         return None 
 
     def obter_cliente_por_id(self, id_cliente):
         self.clientes = self.__controlador_clientes.clientes
         for cliente in self.clientes:
-            if cliente.id_cliente == id_cliente:  # Supondo que cada sessão tenha um atributo 'id'
+            if cliente.id_cliente == id_cliente:
                 return cliente
         return None 
 
-    # Verifica se existe ao menos uma sala, um filme e um funcionário
+    
     def requisitos_para_sessao(self):
         if not self.__controlador_sala.existe_sala() or not self.__controlador_filme.existe_filme() or not self.__controlador_funcionarios.existe_funcionario():
             self.__tela_sistema.mostra_mensagem("Erro: Certifique-se de que pelo menos uma sala, um filme e um funcionário estejam cadastrados antes de criar uma sessão.")
