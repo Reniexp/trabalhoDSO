@@ -17,7 +17,10 @@ class TelaCliente:
     def pega_dados_cliente(self):
         print("-------- DADOS CLIENTE ----------")
         nome = input("Nome: ")
-        cpf = int(input("CPF: "))
+        cpf = input("CPF: ")
+        while not self.valida_cpf(cpf):
+            print("CPF inválido. Digite exatamente 11 dígitos numéricos.")
+            cpf = input("CPF (somente números): ")
         id_cliente = int(input("ID: "))
 
         filmes_vistos = input("Filmes vistos (separe por vírgula ou digite '0' se não houver): ")
@@ -56,3 +59,11 @@ class TelaCliente:
 
     def mostra_mensagem(self, msg):
         print(msg)
+
+    def valida_cpf(self, cpf):
+        if len(cpf) != 11:
+            return False
+        for caractere in cpf:
+            if caractere < '0' or caractere > '9':  # Verifica se cada caractere é numérico
+                return False
+        return True
