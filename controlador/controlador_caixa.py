@@ -64,7 +64,7 @@ class ControladorCaixa:
                 sessao_popular = sessao
         
         if sessao_popular:
-            print(f"A sessão mais popular é: {sessao_popular} com {maior_num_de_vendas} ingressos vendidos.")
+            print(f"A sessão mais popular tem como id: {sessao_popular.idSessao} com {maior_num_de_vendas} ingressos vendidos.")
         else:
             print("Nenhuma sessão foi vendida.")
 
