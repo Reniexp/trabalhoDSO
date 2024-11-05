@@ -5,6 +5,8 @@ class TelaCaixa:
         print("1 - Vender Ingresso")
         print("2 - Mostrar Total de Vendas")
         print("3 - Listar Ingressos Vendidos")
+        print("4 - Mostrar Sessões Mais Populares")  
+        print("5 - Mostrar Filmes Mais Assistidos")  
         print("0 - Sair")
         return int(input("Escolha uma opção: "))
 
@@ -14,9 +16,9 @@ class TelaCaixa:
     def mostrar_detalhes_ingresso(self, ingresso):
         print("\n--- Ingresso Vendido ---")
         print(f"ID: {ingresso.id_ingresso}")
-        print(f"Filme: {ingresso.filme.titulo}")
-        print(f"Sala: {ingresso.sala.numero}")
-        print(f"Horário: {ingresso.horario}")
+        print(f"Filme: {ingresso.sessao.filme.titulo}")
+        print(f"Sala: {ingresso.sessao.sala.numero}")
+        print(f"Horário: {ingresso.sessao.horario}")
 
     def pegar_dados_ingresso(self):
         print("\n--- Dados do Ingresso ---")
@@ -35,14 +37,14 @@ class TelaCaixa:
                 valid_id_ingresso = True
 
         valid_id_sessao = False
-        id_sessao = input("Id da sessao: ")
+        id_sessao = input("Id da sessão: ")
 
         while not valid_id_sessao:
             try:
                 id_sessao = int(id_sessao)
             except:
                 print("ID É UM VALOR INTEIRO")
-                id_sessao = input("Id do ingresso: ")
+                id_sessao = input("Id da sessão: ")
                 continue
             else:
                 valid_id_sessao = True
@@ -60,16 +62,14 @@ class TelaCaixa:
             else:
                 valid_id_cliente = True
 
-
-        assento = input("Qual assento voce deseja: ")
+        assento = input("Qual assento você deseja: ")
         while assento == "":
-            print()
             print("Não pode ser texto vazio")
-            assento = input("Qual assento voce deseja: ")
+            assento = input("Qual assento você deseja: ")
 
         return {
             "id_ingresso": id_ingresso,
-            "id_cliente" : id_cliente,
-            "sessao" : id_sessao,
-            "assento" : assento
+            "id_cliente": id_cliente,
+            "sessao": id_sessao,
+            "assento": assento
         }

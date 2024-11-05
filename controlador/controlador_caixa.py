@@ -47,6 +47,48 @@ class ControladorCaixa:
             for ingresso in self.__caixa.ingressos_vendidos:
                 self.__tela_caixa.mostrar_detalhes_ingresso(ingresso)
 
+    def obter_sessoes_populares(self):
+        sessoes_com_vendas = dict()
+        
+        # Contar ingressos vendidos por sessão
+        for venda in self.__caixa.ingressos_vendidos:
+            sessao = venda.sessao
+            sessoes_com_vendas[sessao] = sessoes_com_vendas.get(sessao, 0) + 1
+
+        # Determinar a sessão mais popular
+        maior_num_de_vendas = 0
+        sessao_popular = None
+        for sessao, num_vendas in sessoes_com_vendas.items():
+            if num_vendas > maior_num_de_vendas:
+                maior_num_de_vendas = num_vendas
+                sessao_popular = sessao
+        
+        if sessao_popular:
+            print(f"A sessão mais popular é: {sessao_popular} com {maior_num_de_vendas} ingressos vendidos.")
+        else:
+            print("Nenhuma sessão foi vendida.")
+
+    def obter_filmes_populares(self):
+        filmes_com_vendas = dict()
+
+        
+        for venda in self.__caixa.ingressos_vendidos:
+            filme = venda.sessao.filme
+            filmes_com_vendas[filme] = filmes_com_vendas.get(filme, 0) + 1
+
+        
+        maior_num_de_vendas = 0
+        filme_popular = None
+        for filme, num_vendas in filmes_com_vendas.items():
+            if num_vendas > maior_num_de_vendas:
+                maior_num_de_vendas = num_vendas
+                filme_popular = filme
+
+        if filme_popular:
+            print(f"O filme mais assistido é: '{filme_popular.titulo}' com {maior_num_de_vendas} ingressos vendidos.")
+        else:
+            print("Nenhum ingresso foi vendido.")
+
     def abre_tela(self):
         while True:
             opcao = self.__tela_caixa.mostrar_opcoes()
@@ -56,6 +98,10 @@ class ControladorCaixa:
                 self.mostrar_total_vendas()
             elif opcao == 3:
                 self.listar_ingressos_vendidos()
+            elif opcao == 4:
+                self.obter_sessoes_populares()
+            elif opcao == 5:
+                self.obter_filmes_populares()
             elif opcao == 0:
                 break
             else:
