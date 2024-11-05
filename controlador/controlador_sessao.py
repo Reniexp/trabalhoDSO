@@ -11,6 +11,10 @@ class ControladorSessao:
         self.__controlador_sistema = controlador_sistema
         self.__tela_sessao = TelaSessao()
 
+    @property
+    def sessoes(self):
+        return self.__sessoes
+
     def abre_tela_sessao(self):
         while True:
             opcao_escolhida = self.__tela_sessao.tela_opcoes_sessao()

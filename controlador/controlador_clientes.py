@@ -7,6 +7,10 @@ class ControladorCliente:
         self.__tela_cliente = TelaCliente()
         self.__controlador_sistema = controlador_sistema
 
+    @property
+    def clientes(self):
+        return self.__clientes
+
     def pega_cliente_por_id(self, id_cliente: int):
         for cliente in self.__clientes:
             if cliente.id_cliente == id_cliente:

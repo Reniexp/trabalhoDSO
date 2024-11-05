@@ -9,27 +9,30 @@ class ControladorCaixa:
         self.__controlador_sistema = controlador_sistema
 
     def vender_ingresso(self):
-        # Obter o ID da sessão a partir da entrada do usuário
-        id_sessao = int(input("Digite o ID da sessão: "))
+        dados_ingresso = self.__tela_caixa.pegar_dados_ingresso()
+        id_sessao = dados_ingresso["sessao"]
+        assento = dados_ingresso["assento"]
+        id_ingresso = dados_ingresso["id_ingresso"]
+        id_cliente = dados_ingresso["id_cliente"]
 
-        # Verificar se a sessão correspondente ao ID está disponível
         sessao = self.__controlador_sistema.obter_sessao_por_id(id_sessao)
         if sessao is None:
             self.__tela_caixa.mostrar_mensagem("Sessão não encontrada ou indisponível.")
             return
+        
+        cliente = self.__controlador_sistema.obter_cliente_por_id(id_cliente)
+        if cliente is None:
+            self.__tela_caixa.mostrar_mensagem("Cliente não encontrado ou indisponível")
+            return
 
-        # Verificar a disponibilidade de assentos
-        if sessao.sala.assentos_disponiveis <= 0:
+        if sessao.assentos_disponiveis <= 0:
             self.__tela_caixa.mostrar_mensagem("Não há assentos disponíveis nesta sessão.")
             return
 
-        # Criar o ingresso e registrar a venda
-        id_ingresso = len(self.__caixa.ingressos_vendidos) + 1  # Geração simples de ID
-        ingresso = Ingresso(id_ingresso, sessao.filme, sessao.sala, sessao.horario, sessao.filme.preco)
+        ingresso = Ingresso(id_ingresso,assento,cliente,sessao)
         
-        # Registrar a venda e atualizar os assentos disponíveis
         self.__caixa.registrar_venda(ingresso)
-        sessao.sala.assentos_disponiveis -= 1  # Reduzir a quantidade de assentos disponíveis
+        sessao.assentos_disponiveis -= 1  # Reduzir a quantidade de assentos disponíveis
 
         self.__tela_caixa.mostrar_mensagem(f"Ingresso para '{sessao.filme.titulo}' vendido com sucesso!")
 

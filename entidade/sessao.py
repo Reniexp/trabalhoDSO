@@ -9,6 +9,7 @@ class Sessao:
         self.__filme = filme
         self.__sala = sala
         self.__funcionario = funcionario
+        self.__assentos_disponiveis = sala.capacidade
     
     @property
     def idSessao(self):
@@ -49,3 +50,11 @@ class Sessao:
     @funcionario.setter
     def funcionario(self, funcionario: EntidadeFuncionario):
         self.__funcionario = funcionario
+
+    @property
+    def assentos_disponiveis(self):
+        return self.__assentos_disponiveis
+    
+    @assentos_disponiveis.setter
+    def assentos_disponiveis(self, assentos_disponiveis: int):
+        self.__assentos_disponiveis = assentos_disponiveis
