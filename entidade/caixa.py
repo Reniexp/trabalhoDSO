@@ -12,6 +12,6 @@ class Caixa:
         return self.__ingressos_vendidos
     
     def registrar_venda(self, ingresso):
-        self.__total_vendas += 1
+        self.__total_vendas += 10
         self.ingressos_vendidos.append(ingresso)
 
