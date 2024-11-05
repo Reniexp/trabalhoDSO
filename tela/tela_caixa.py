@@ -15,9 +15,10 @@ class TelaCaixa:
 
     def mostrar_detalhes_ingresso(self, ingresso):
         print("\n--- Ingresso Vendido ---")
-        print(f"ID: {ingresso.id_ingresso}")
+        print(f"ID: {ingresso.idIngresso}")
+        print(f"Assento : {ingresso.assento}")
         print(f"Filme: {ingresso.sessao.filme.titulo}")
-        print(f"Sala: {ingresso.sessao.sala.numero}")
+        print(f"Sala: {str(ingresso.sessao.sala.idSala)}")
         print(f"Horário: {ingresso.sessao.horario}")
 
     def pegar_dados_ingresso(self):
