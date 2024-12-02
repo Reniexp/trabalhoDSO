@@ -9,6 +9,7 @@ from controlador.controlador_sessao import ControladorSessao
 
 
 class ControladorSistema:
+    __instance = None
     def __init__(self):
         self.__tela_sistema = TelaSistema()
         self.__controlador_clientes = ControladorCliente(self)
@@ -20,6 +21,11 @@ class ControladorSistema:
         self.sessoes = self.__controlador_sessao.sessoes
         self.clientes = self.__controlador_clientes.clientes
 
+
+    def __new__(cls):
+        if ControladorSistema.__instance is None:
+            ControladorSistema.__instance = object.__new__(cls)
+        return ControladorSistema.__instance
 
     @property
     def controlador_cliente(self):
