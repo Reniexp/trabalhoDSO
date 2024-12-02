@@ -10,62 +10,33 @@ class TelaSistema:
     def tela_opcoes_sistema(self) -> int:
         self.init_components()
         button, values = self.__window.Read()
-        invalid_input = True
-        first_try = True
         opcao = 0
 
-        while invalid_input:
-            if not first_try:
-                if values['1']:
-                    opcao = 1
-                
-                if values['2']:
-                    opcao = 2
-
-                if values['3']:
-                    opcao = 3
-
-                if values['4']:
-                    opcao = 4
-
-                if values['5']:
-                    opcao = 5
-
-                if values['6']:
-                    opcao = 6
-
-                if values['0'] or button in (None, 'Cancelar'):
-                    opcao = 0
-
-                self.close()
-                return opcao
+    
+        if values['1']:
+            opcao = 1
             
+        if values['2']:
+            opcao = 2
 
+        if values['3']:
+            opcao = 3
 
-                print("ESCOLHA UM INTEIRO VÁLIDO")
-            print("\nMenu Principal do Sistema:")
-            print("\t(1) Gerenciar Clientes")
-            print("\t(2) Gerenciar Funcionários")
-            print("\t(3) Gerenciar Filmes")
-            print("\t(4) Gerenciar Salas")
-            print("\t(5) Gerenciar Caixa")
-            print("\t(6) Gerenciar Sessões")
-            print("\t(0) Sair")
-            print()
+        if values['4']:
+            opcao = 4
+
+        if values['5']:
+            opcao = 5
+
+        if values['6']:
+            opcao = 6
+
+        if values['0'] or button in (None, 'Cancelar'):
+            opcao = 0
+
+        self.close()
+        return opcao
             
-            opcao_escolhida = input("Escolha uma opção: ")
-            try:
-                opcao_escolhida = int(opcao_escolhida)
-            except:
-                first_try = False
-                continue
-            else:
-                if opcao_escolhida in [0, 1, 2, 3, 4, 5, 6]:
-                    invalid_input = False
-                else:
-                    print("Opção inválida. Por favor, escolha uma das opções listadas.")
-                    first_try = False
-        return opcao_escolhida
 
 
     def close(self):
@@ -86,31 +57,31 @@ class TelaSistema:
             [sg.Radio('Finalizar sistema',"RD1", key='0')],
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
         ]
-        self.__window =  sg.Window('Sistema de livros').Layout(layout)
+        self.__window =  sg.Window('Sistema de Cinema').Layout(layout)
 
     def mostra_mensagem(self, mensagem: str):
         """Exibe uma mensagem informativa ao usuário."""
         print(mensagem)
 
-    def pega_opcao_valida(self, prompt: str, opcoes_validas: list) -> int:
-        """Solicita uma opção válida e retorna o valor selecionado."""
-        invalid_input = True
-        first_try = True
+    #def pega_opcao_valida(self, prompt: str, opcoes_validas: list) -> int:
+    #    """Solicita uma opção válida e retorna o valor selecionado."""
+    #    invalid_input = True
+    #    first_try = True
 
-        while invalid_input:
-            if not first_try:
-                print("ESCOLHA UM INTEIRO VÁLIDO")
-            print(prompt)
-            
-            opcao_escolhida = input("Escolha uma opção: ")
-            try:
-                opcao_escolhida = int(opcao_escolhida)
-                if opcao_escolhida in opcoes_validas:
-                    invalid_input = False
-                else:
-                    print(f"Opção inválida. Selecione uma das opções: {opcoes_validas}")
-                    first_try = False
-            except:
-                first_try = False
-                continue
-        return opcao_escolhida
+    #    while invalid_input:
+    #        if not first_try:
+    #            print("ESCOLHA UM INTEIRO VÁLIDO")
+    #        print(prompt)
+    #        
+    #        opcao_escolhida = input("Escolha uma opção: ")
+    #        try:
+    #            opcao_escolhida = int(opcao_escolhida)
+    #            if opcao_escolhida in opcoes_validas:
+    #                invalid_input = False
+    #            else:
+    #                print(f"Opção inválida. Selecione uma das opções: {opcoes_validas}")
+    #                first_try = False
+    #        except:
+    #            first_try = False
+    #            continue
+    #    return opcao_escolhida
