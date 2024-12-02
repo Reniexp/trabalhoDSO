@@ -1,26 +1,87 @@
+import PySimpleGUI as sg
+
+
 class TelaCliente:
+    # def tela_opcoes(self) -> int:
+    #     opcao_valida = False
+    #     while not opcao_valida:
+    #         print("-------- CLIENTES ----------")
+    #         print("Escolha a opção:")
+    #         print("1 - Incluir Cliente")
+    #         print("2 - Alterar Cliente")
+    #         print("3 - Listar Clientes")
+    #         print("4 - Excluir Cliente")
+    #         print("0 - Retornar")
+
+    #         opcao = input("Escolha a opção: ")
+    #         try:
+    #             opcao = int(opcao)
+    #             if opcao in [0, 1, 2, 3, 4]:
+    #                 opcao_valida = True
+    #             else:
+    #                 print("Opção inválida! Escolha um número entre 0 e 4.")
+    #         except ValueError:
+    #             print("Entrada inválida! Digite um número inteiro.")
+    #     return opcao
+
+
+    def close(self):
+        self.__window.Close()
+
+    def init_components(self):
+        #sg.theme_previewer()
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+            [sg.Text('Bem vindo ao sistema de gestão de Clientes!', font=("Helvica",25))],
+            [sg.Text('Escolha sua opção', font=("Helvica",15))],
+            [sg.Radio('Cadastrar Novo Cliente',"RD1", key='1')],
+            [sg.Radio('Alterar Cliente',"RD1", key='2')],
+            [sg.Radio('Listar Clientes',"RD1", key='3')],
+            [sg.Radio('Excluir Cliente',"RD1", key='4')],
+            [sg.Radio('Sair da Tela Cliente',"RD1", key='6')],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window =  sg.Window('Sistema de Clientes').Layout(layout)
+
+    def __init__(self):
+        self.__window = None
+        self.init_components()
+
     def tela_opcoes(self) -> int:
-        opcao_valida = False
-        while not opcao_valida:
-            print("-------- CLIENTES ----------")
-            print("Escolha a opção:")
-            print("1 - Incluir Cliente")
-            print("2 - Alterar Cliente")
-            print("3 - Listar Clientes")
-            print("4 - Excluir Cliente")
-            print("0 - Retornar")
 
-            opcao = input("Escolha a opção: ")
-            try:
-                opcao = int(opcao)
-                if opcao in [0, 1, 2, 3, 4]:
-                    opcao_valida = True
-                else:
-                    print("Opção inválida! Escolha um número entre 0 e 4.")
-            except ValueError:
-                print("Entrada inválida! Digite um número inteiro.")
-        return opcao
+        self.init_components()
+        button, values = self.__window.Read()
+        invalid_input = True
+        first_try = True
+        opcao = 0
 
+        while invalid_input:
+            if not first_try:
+                if values['1']:
+                    opcao = 1
+                
+                if values['2']:
+                    opcao = 2
+
+                if values['3']:
+                    opcao = 3
+
+                if values['4']:
+                    opcao = 4
+
+                if values['5']:
+                    opcao = 5
+
+                if values['6']:
+                    opcao = 6
+
+                if values['0'] or button in (None, 'Cancelar'):
+                    opcao = 0
+
+                self.close()
+                return opcao
+
+                
     def pega_dados_cliente(self) -> dict:
         print("-------- DADOS CLIENTE ----------")
         
