@@ -11,9 +11,18 @@ class ControladorSessao:
         self.__controlador_sistema = controlador_sistema
         self.__tela_sessao = TelaSessao()
 
+    def load(self):
+        arq_sessoes = open('sessoes.pkl', "rb")
+        sessoes = pickle.load(arq_sessoes)
+        return sessoes
+    
+    def dump(self):
+        arq_sessoes_escrita = open('sessoes.pkl', "wb")
+        pickle.dump(self.__sessoes,arq_sessoes_escrita)
+
     @property
     def sessoes(self):
-        return self.__sessoes
+        return self.load()
 
     def abre_tela_sessao(self):
         while True:
@@ -61,17 +70,13 @@ class ControladorSessao:
                 funcionario
             )
             self.__sessoes.append(nova_sessao)
-            arq_sessoes_escrita = open('sessoes.pkl', "wb")
-            pickle.dump(self.__sessoes,arq_sessoes_escrita)
-
+            self.dump()
     def editar_sessao(self):
         print()
         idSessao = self.__tela_sessao.pega_id_valido_sessao()
 
         sessao_encontrada = False
-        arq_sessoes = open('sessoes.pkl', "rb")
-        sessoes = pickle.load(arq_sessoes)
-        for sessao in sessoes:
+        for sessao in self.load():
             if sessao.idSessao == idSessao:
                 sessao_encontrada = True
                 dados_atualizados = self.__tela_sessao.pega_dados_nova_sessao()
@@ -99,16 +104,12 @@ class ControladorSessao:
 
         if sessao_encontrada:
             self.__sessoes.pop(i)
-            arq_sessoes_escrita = open('sessoes.pkl', "wb")
-            pickle.dump(self.__sessoes,arq_sessoes_escrita)
-
+            self.dump()
     def lista_sessoes(self):
-        arq_sessoes = open('sessoes.pkl', "rb")
-        sessoes = pickle.load(arq_sessoes)
-        if not sessoes:
+        if not self.load():
             print("Não há sessão criada ainda")
         else:
-            for sessao in sessoes:
+            for sessao in self.load():
                 print("-----------------------------")
                 print(f"IdSessão: {sessao.idSessao}")
                 print(f"Horário: {sessao.horario}")
@@ -119,8 +120,7 @@ class ControladorSessao:
 
     def mostrar_dados_sessao(self):
         idSessao = self.__tela_sessao.pega_id_valido_sessao()
-        arq_sessoes = open('sessoes.pkl', "rb")
-        sessoes = pickle.load(arq_sessoes)
+        sessoes = self.load()
         sessao_encontrada = next((sessao for sessao in sessoes if sessao.idSessao == idSessao), None)
 
         if sessao_encontrada:

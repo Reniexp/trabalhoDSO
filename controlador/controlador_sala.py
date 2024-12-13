@@ -8,6 +8,14 @@ class ControladorSala():
         self.__salas = []
         self.__controlador_sistema = controlador_sistema
 
+    def load(self):
+        arq_salas = open('salas.pkl', "rb")
+        salas = pickle.load(arq_salas)
+        return salas
+    
+    def dump(self):
+        arq_salas_escrita = open('salas.pkl', "wb")
+        pickle.dump(self.__salas,arq_salas_escrita)
 
     def abre_tela_sala(self):
         opcao_escolhida = 0
@@ -32,9 +40,7 @@ class ControladorSala():
         capacidade = dados_nova_sala["capacidade"]
 
         salaJaExiste = False
-        arq_sala = open('salas.pkl', "rb")
-        salas = pickle.load(arq_sala)
-        for sala in salas:
+        for sala in self.load():
             if sala.idSala:
                 salaJaExiste = True
                 break
@@ -47,9 +53,7 @@ class ControladorSala():
                     capacidade
                 )
             )
-            arq_salas_escrita = open('salas.pkl', "wb")
-            pickle.dump(self.__salas,arq_salas_escrita)
-
+            self.dump()
 
     def excluir_sala(self):
         idSala = self.__telaSala.pega_id_valido_sala()
@@ -67,8 +71,7 @@ class ControladorSala():
         print()       
         if sala_encontrada:
             self.__salas.pop(i)
-            arq_salas_escrita = open('salas.pkl', "wb")
-            pickle.dump(self.__salas,arq_salas_escrita)
+            self.dump()
 
     def lista_salas(self):
         if len(self.__salas) == 0:
@@ -109,9 +112,7 @@ class ControladorSala():
         print()
         idSala = self.__telaSala.pega_id_valido_sala()
 
-        arq_salas = open('salas.pkl', "rb")
-        salas = pickle.load(arq_salas)
-        for sala in salas:
+        for sala in self.load():
             if sala.idSala == idSala:
                 sala_encontrada = True
                 
@@ -121,9 +122,7 @@ class ControladorSala():
                 sala.nomeSala = dados_alterados_da_sala["nomeSala"]
 
     def pega_sala_pelo_id(self,id_sala:int):
-        arq_salas = open('salas.pkl', "rb")
-        salas = pickle.load(arq_salas)
-        for sala in salas:
+        for sala in self.load():
             if sala.idSala == id_sala:
                 return sala
         return -1

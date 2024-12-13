@@ -3,25 +3,35 @@ from entidade.filme import Filme
 from exceptions.FilmeNaoEncontrado import FilmeNaoEncontrado
 from exceptions.FilmeJaExiste import FilmeJaExiste
 from exceptions.OpcaoValida import OpcaoValida
+import pickle
 
 class ControladorFilme:
     def __init__(self, controlador_sistema):
         self.__filmes = []
         self.__tela_filme = TelaFilme()
         self.__controlador_sistema = controlador_sistema
-
+    
+    def load(self):
+        arq_filmes = open('filmes.pkl', "rb")
+        filmes = pickle.load(arq_filmes)
+        return filmes
+    
+    def dump(self):
+        arq_filmes_escrita = open('filmes.pkl', "wb")
+        pickle.dump(self.__filmes,arq_filmes_escrita)
+    
     @property
     def filmes(self):
-        return self.__filmes
+        return self.load()
 
     def pega_filme_por_id(self, id_filme: int):
-        for filme in self.__filmes:
+        for filme in self.load():
             if filme.id_filme == id_filme:
                 return filme
         return None
     
     def mostrar_dados_filme(self):
-        if not self.__filmes:
+        if not self.load():
             self.__tela_filme.mostra_mensagem("Nenhum filme cadastrado.")
             return
 
@@ -102,7 +112,7 @@ class ControladorFilme:
                 return
 
     def listar_filmes(self):
-        if not self.__filmes:
+        if not self.load():
             self.__tela_filme.mostra_mensagem("Nenhum filme cadastrado.")
             try:
                 raise FilmeNaoEncontrado()
@@ -116,7 +126,7 @@ class ControladorFilme:
             self.__tela_filme.mostra_filme(dados_filmes)
 
     def excluir_filme(self):
-        if not self.__filmes:
+        if not self.load():
             self.__tela_filme.mostra_mensagem("Nenhum filme cadastrado para excluir.")
             return
 
@@ -129,6 +139,7 @@ class ControladorFilme:
 
         if filme is not None:
             self.__filmes.remove(filme)
+            self.dump()
             self.__tela_filme.mostra_mensagem("Filme excluído com sucesso.")
         else:
             try:
