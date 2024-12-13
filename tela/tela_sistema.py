@@ -62,26 +62,3 @@ class TelaSistema:
     def mostra_mensagem(self, mensagem: str):
         """Exibe uma mensagem informativa ao usuário."""
         print(mensagem)
-
-    #def pega_opcao_valida(self, prompt: str, opcoes_validas: list) -> int:
-    #    """Solicita uma opção válida e retorna o valor selecionado."""
-    #    invalid_input = True
-    #    first_try = True
-
-    #    while invalid_input:
-    #        if not first_try:
-    #            print("ESCOLHA UM INTEIRO VÁLIDO")
-    #        print(prompt)
-    #        
-    #        opcao_escolhida = input("Escolha uma opção: ")
-    #        try:
-    #            opcao_escolhida = int(opcao_escolhida)
-    #            if opcao_escolhida in opcoes_validas:
-    #                invalid_input = False
-    #            else:
-    #                print(f"Opção inválida. Selecione uma das opções: {opcoes_validas}")
-    #                first_try = False
-    #        except:
-    #            first_try = False
-    #            continue
-    #    return opcao_escolhida

@@ -1,173 +1,143 @@
 import PySimpleGUI as sg
 
-
 class TelaFuncionario:
-
-    def close(self):
-        self.__window.Close()
-
-    def init_components(self):
-        #sg.theme_previewer()
-        sg.ChangeLookAndFeel('DarkTeal4')
-        layout = [
-            [sg.Text('Bem vindo ao sistema de gestão de Funcionários!', font=("Helvica",25))],
-            [sg.Text('Escolha sua opção', font=("Helvica",15))],
-            [sg.Radio('Cadastrar Novo Funcionário',"RD1", key='1')],
-            [sg.Radio('Alterar Funcionário',"RD1", key='2')],
-            [sg.Radio('Listar Funcionários',"RD1", key='3')],
-            [sg.Radio('Excluir Funcionário',"RD1", key='4')],
-            [sg.Radio('Sair da Tela Funcionário',"RD1", key='6')],
-            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
-        ]
-        self.__window =  sg.Window('Sistema de Filmes').Layout(layout)
-
     def __init__(self):
         self.__window = None
-        self.init_components()
+        self.init_opcoes()
 
     def tela_opcoes(self) -> int:
-
-        self.init_components()
-        button, values = self.__window.Read()
-        invalid_input = True
-        first_try = True
+        self.init_opcoes()
+        button, values = self.open()
         opcao = 0
 
-        while invalid_input:
-            if not first_try:
-                if values['1']:
-                    opcao = 1
-                
-                if values['2']:
-                    opcao = 2
+        if values.get('1'):
+            opcao = 1
+        elif values.get('2'):
+            opcao = 2
+        elif values.get('3'):
+            opcao = 3
+        elif values.get('4'):
+            opcao = 4
+        elif values.get('0') or button in (None, 'Cancelar'):
+            opcao = 0
 
-                if values['3']:
-                    opcao = 3
+        self.close()
+        return opcao
 
-                if values['4']:
-                    opcao = 4
-
-                if values['5']:
-                    opcao = 5
-
-                if values['6']:
-                    opcao = 6
-
-                if values['0'] or button in (None, 'Cancelar'):
-                    opcao = 0
-
-                self.close()
-                return opcao
-    # def tela_opcoes(self) -> int:
-    #     opcao_valida = False
-    #     while not opcao_valida:
-    #         print("-------- FUNCIONARIOS ----------")
-    #         print("Escolha a opção:")
-    #         print("1 - Incluir Funcionário")
-    #         print("2 - Alterar Funcionário")
-    #         print("3 - Listar Funcionários")
-    #         print("4 - Excluir Funcionário")
-    #         print("0 - Retornar")
-
-    #         opcao = input("Escolha a opção: ")
-    #         try:
-    #             opcao = int(opcao)
-    #             if opcao in [0, 1, 2, 3, 4]:
-    #                 opcao_valida = True
-    #             else:
-    #                 print("Opção inválida! Escolha um número entre 0 e 4.")
-    #         except ValueError:
-    #             print("Entrada inválida! Digite um número inteiro.")
-    #     return opcao
+    def init_opcoes(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+            [sg.Text('Bem-vindo ao Sistema de Gestão de Funcionários!', font=("Helvetica", 25))],
+            [sg.Text('Escolha sua opção:', font=("Helvetica", 15))],
+            [sg.Radio('Cadastrar Novo Funcionário', "RD1", key='1')],
+            [sg.Radio('Alterar Funcionário', "RD1", key='2')],
+            [sg.Radio('Listar Funcionários', "RD1", key='3')],
+            [sg.Radio('Excluir Funcionário', "RD1", key='4')],
+            [sg.Radio('Sair da Tela Funcionário', "RD1", key='0')],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Sistema de Funcionários').Layout(layout)
 
     def pega_dados_funcionario(self) -> dict:
-        print("-------- DADOS FUNCIONARIO ----------")
-        
-        
-        nome = input("Nome: ")
-        while nome == "":
-            print("O nome não pode ser vazio.")
-            nome = input("Nome: ")
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+            [sg.Text('-------- DADOS FUNCIONÁRIO ----------', font=("Helvetica", 25))],
+            [sg.Text('Nome:', size=(15, 1)), sg.InputText('', key='nome')],
+            [sg.Text('CPF (11 dígitos):', size=(15, 1)), sg.InputText('', key='cpf')],
+            [sg.Text('ID do Funcionário (número):', size=(15, 1)), sg.InputText('', key='id_funcionario')],
+            [sg.Text('Cargo:', size=(15, 1)), sg.InputText('', key='cargo')],
+            [sg.Text('Salário:', size=(15, 1)), sg.InputText('', key='salario')],
+            [sg.Text('Período (Manhã/Tarde/Noite):', size=(15, 1)), sg.InputText('', key='periodo')],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Sistema de Funcionários').Layout(layout)
 
-        
-        cpf = input("CPF (somente números): ")
-        while not self.valida_cpf(cpf):
-            print("CPF inválido. Digite exatamente 11 dígitos numéricos.")
-            cpf = input("CPF (somente números): ")
+        button, values = self.open()
 
-        id_funcionario = input("ID: ")
-        while not self.valida_id_funcionario(id_funcionario):
-            print("ID inválido! Deve ser um número inteiro.")
-            id_funcionario = input("ID: ")
-        id_funcionario = int(id_funcionario)
+        if button != 'Confirmar':
+            self.close()
+            return None
 
-        
-        cargo = input("Cargo: ")
-        while cargo == "":
-            print("O cargo não pode ser vazio.")
-            cargo = input("Cargo: ")
+        nome = values['nome'].strip()
+        cpf = values['cpf'].strip()
+        id_funcionario = values['id_funcionario'].strip()
+        cargo = values['cargo'].strip()
+        salario = values['salario'].strip()
+        periodo = values['periodo'].strip()
 
-        
-        salario = input("Salário: ")
-        while not self.valida_salario(salario):
-            print("Salário inválido! Deve ser um número.")
-            salario = input("Salário: ")
-        salario = float(salario)
+        if (not nome or not self.valida_cpf(cpf) or not self.valida_id_funcionario(id_funcionario) or 
+                not cargo or not self.valida_salario(salario) or not periodo):
+            self.mostra_mensagem("Dados inválidos! Verifique as informações e tente novamente.")
+            self.close()
+            return self.pega_dados_funcionario()
 
-        
-        periodo = input("Período: ")
-        while periodo == "":
-            print("O período não pode ser vazio.")
-            periodo = input("Período: ")
-
+        self.close()
         return {
             "nome": nome,
             "cpf": cpf,
-            "id_funcionario": id_funcionario,
+            "id_funcionario": int(id_funcionario),
             "cargo": cargo,
-            "salario": salario,
+            "salario": float(salario),
             "periodo": periodo
         }
 
-    def valida_cpf(self, cpf):
-        if len(cpf) != 11:
-            return False
-        for caractere in cpf:
-            if caractere < '0' or caractere > '9':
-                return False
-        return True
+    def mostra_funcionarios(self, dados_funcionarios: list):
+        string_todos_funcionarios = ""
+        for dado in dados_funcionarios:
+            string_todos_funcionarios += (
+                f"NOME: {dado['nome']}\n"
+                f"CPF: {dado['cpf']}\n"
+                f"ID: {dado['id_funcionario']}\n"
+                f"CARGO: {dado['cargo']}\n"
+                f"SALÁRIO: {dado['salario']}\n"
+                f"PERÍODO: {dado['periodo']}\n\n"
+            )
 
-    def valida_id_funcionario(self, id_funcionario):
-        try:
-            int(id_funcionario)
-            return True
-        except ValueError:
-            return False
+        sg.Popup('-------- LISTA DE FUNCIONÁRIOS ----------', string_todos_funcionarios)
 
-    def valida_salario(self, salario):
+    def seleciona_funcionario(self) -> int:
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+            [sg.Text('-------- SELECIONAR FUNCIONÁRIO ----------', font=("Helvetica", 25))],
+            [sg.Text('Digite o ID do funcionário que deseja selecionar:', font=("Helvetica", 15))],
+            [sg.Text('ID:', size=(15, 1)), sg.InputText('', key='id_funcionario')],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Seleciona Funcionário').Layout(layout)
+
+        button, values = self.open()
+        if button != 'Confirmar':
+            self.close()
+            return None
+
+        id_funcionario = values['id_funcionario'].strip()
+        if not self.valida_id_funcionario(id_funcionario):
+            self.mostra_mensagem("ID inválido! Tente novamente.")
+            self.close()
+            return self.seleciona_funcionario()
+
+        self.close()
+        return int(id_funcionario)
+
+    def mostra_mensagem(self, msg: str):
+        sg.Popup('', msg)
+
+    def valida_cpf(self, cpf: str) -> bool:
+        return cpf.isdigit() and len(cpf) == 11
+
+    def valida_id_funcionario(self, id_funcionario: str) -> bool:
+        return id_funcionario.isdigit()
+
+    def valida_salario(self, salario: str) -> bool:
         try:
             float(salario)
             return True
         except ValueError:
             return False
 
-    def mostra_funcionario(self, dados_funcionario: dict):
-        print("-------- DADOS DO FUNCIONARIO ----------")
-        print("NOME: ", dados_funcionario["nome"])
-        print("CPF: ", dados_funcionario["cpf"])
-        print("ID: ", dados_funcionario["id_funcionario"])
-        print("CARGO: ", dados_funcionario["cargo"])
-        print("SALARIO: ", dados_funcionario["salario"])
-        print("PERIODO: ", dados_funcionario["periodo"])
-        print("\n")
+    def close(self):
+        self.__window.Close()
 
-    def seleciona_funcionario(self) -> str:
-        id_funcionario = input("ID do funcionário que deseja selecionar: ")
-        while not self.valida_id_funcionario(id_funcionario):
-            print("ID inválido. Digite Novamente.")
-            id_funcionario = input("id do funcionário que deseja selecionar: ")
-        return id_funcionario
-
-    def mostra_mensagem(self, msg: str):
-        print(msg)
-
+    def open(self):
+        button, values = self.__window.Read()
+        return button, values
