@@ -3,8 +3,9 @@ from entidade.filme import Filme
 from exceptions.FilmeNaoEncontrado import FilmeNaoEncontrado
 from exceptions.FilmeJaExiste import FilmeJaExiste
 from exceptions.OpcaoValida import OpcaoValida
+from exceptions.NaoFoiPossivelPersistirOsDados import NaoFoiPossivelPersistirOsDados
 import pickle
-
+import os
 
 class ControladorFilme:
     def __init__(self, controlador_sistema):
@@ -13,13 +14,22 @@ class ControladorFilme:
         self.__controlador_sistema = controlador_sistema
     
     def load(self):
-        arq_filmes = open('filmes.pkl', "rb")
-        filmes = pickle.load(arq_filmes)
-        return filmes
+        #rq_filmes = open('filmes.pkl', "rb")
+        #filmes = pickle.load(arq_filmes)
+        #return filmes
+    
+        try:
+            with open(os.getcwd()+r"\controlador\filmes.pkl", "rb") as arq_filmes:
+                return pickle.load(arq_filmes)
+        except EOFError:
+            return []
     
     def dump(self):
-        arq_filmes_escrita = open('filmes.pkl', "wb")
-        pickle.dump(self.__filmes,arq_filmes_escrita)
+        try:
+            with open(os.getcwd()+r"\controlador\filmes.pkl", "wb") as arq_filmes:
+                return pickle.load(arq_filmes)
+        except EOFError:
+            raise NaoFoiPossivelPersistirOsDados()
     
     @property
     def filmes(self):

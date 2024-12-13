@@ -3,8 +3,9 @@ from entidade.sala import Sala
 from exceptions.OpcaoValida import OpcaoValida
 from exceptions.SalaNaoEncontrada import SalaNaoEncontrada
 from exceptions.SalaJaExiste import SalaJaExiste
+from exceptions.NaoFoiPossivelPersistirOsDados import NaoFoiPossivelPersistirOsDados
 import pickle
-
+import os
 
 class ControladorSala:
     def __init__(self, controlador_sistema):
@@ -14,7 +15,24 @@ class ControladorSala:
 
     @property
     def salas(self):
-        return self.__salas
+        return self.load()
+
+    def load(self):
+        #arq_sessoes = open(os.getcwd()+"\controlador\sessoes.pkl", "rb")
+        #sessoes = pickle.load(arq_sessoes)
+        #return sessoes
+        try:
+            with open(os.getcwd()+"\controlador\salas.pkl", "rb") as arq_salas:
+                return pickle.load(arq_salas)
+        except EOFError:
+            return [] 
+    
+    def dump(self):
+        try:
+            with open(os.getcwd()+"\controlador\salas.pkl", "wb") as arq_salas_escrita:
+                pickle.dump(self.__salas,arq_salas_escrita)
+        except EOFError:
+            raise NaoFoiPossivelPersistirOsDados()
 
     def pega_sala_pelo_id(self, id_sala: int):
         for sala in self.__salas:

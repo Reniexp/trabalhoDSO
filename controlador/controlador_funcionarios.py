@@ -1,6 +1,8 @@
 from entidade.funcionario import EntidadeFuncionario
 from tela.tela_funcionario import TelaFuncionario
+from exceptions.NaoFoiPossivelPersistirOsDados import NaoFoiPossivelPersistirOsDados
 import pickle
+import os
 
 class ControladorFuncionarios:
     def __init__(self, controlador_sistema):
@@ -8,13 +10,21 @@ class ControladorFuncionarios:
         self.__tela_funcionario = TelaFuncionario()
         self.__controlador_sistema = controlador_sistema
     def load(self):
-        arq_funcionarios = open('funcionarios.pkl', "rb")
-        funcionarios = pickle.load(arq_funcionarios)
-        return funcionarios
+        #arq_funcionarios = open('funcionarios.pkl', "rb")
+        #funcionarios = pickle.load(arq_funcionarios)
+        #return funcionarios
+        try:
+            with open(os.getcwd()+r"\controlador\funcionarios.pkl", "rb") as arq_funcionarios:
+                return pickle.load(arq_funcionarios)
+        except EOFError:
+            return []
     
     def dump(self):
-        arq_funcionarios_escrita = open('funcionarios.pkl', "wb")
-        pickle.dump(self.__funcionarios,arq_funcionarios_escrita)
+        try:
+            with open(os.getcwd()+r"\controlador\funcionarios.pkl", "wb") as arq_funcionarios:
+                return pickle.load(arq_funcionarios)
+        except EOFError:
+            raise NaoFoiPossivelPersistirOsDados()
 
     def pega_funcionario_por_id(self, id_funcionario: int):
         for funcionario in self.load():

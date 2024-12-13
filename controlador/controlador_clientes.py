@@ -4,7 +4,9 @@ from exceptions.ClienteJaExiste import ClienteJaExiste
 from exceptions.ClienteNaoEncontrado import ClienteNaoEncontrado
 from exceptions.ClienteNaoCadastrado import ClienteNaoCadastrado
 from exceptions.OpcaoInvalida import OpcaoValida
+from exceptions.NaoFoiPossivelPersistirOsDados import NaoFoiPossivelPersistirOsDados
 import pickle
+import os
 
 class ControladorCliente:
     def __init__(self, controlador_sistema):
@@ -13,13 +15,22 @@ class ControladorCliente:
         self.__controlador_sistema = controlador_sistema
 
     def load(self):
-        arq_clientes = open('clientes.pkl', "rb")
-        clientes = pickle.load(arq_clientes)
-        return clientes
+        #arq_clientes = open('clientes.pkl', "rb")
+        #clientes = pickle.load(arq_clientes)
+        #return clientes
+    
+        try:
+            with open(os.getcwd()+r"\controlador\clientes.pkl", "rb") as arq_clientes:
+                return pickle.load(arq_clientes)
+        except EOFError:
+            return []
     
     def dump(self):
-        arq_clientes_escrita = open('clientes.pkl', "wb")
-        pickle.dump(self.__clientes,arq_clientes_escrita)
+        try:
+            with open(os.getcwd()+r"\controlador\clientes.pkl", "wb") as arq_clientes:
+                return pickle.load(arq_clientes)
+        except EOFError:
+            raise NaoFoiPossivelPersistirOsDados()
 
     @property
     def clientes(self):

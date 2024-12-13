@@ -2,9 +2,10 @@ from entidade.sessao import Sessao
 from entidade.filme import Filme
 from entidade.sala import Sala
 from entidade.funcionario import EntidadeFuncionario
+from exceptions.NaoFoiPossivelPersistirOsDados import NaoFoiPossivelPersistirOsDados
 from tela.tela_sessao import TelaSessao
 import pickle
-
+import os
 class ControladorSessao:
     def __init__(self, controlador_sistema):
         self.__sessoes = []
@@ -12,13 +13,21 @@ class ControladorSessao:
         self.__tela_sessao = TelaSessao()
 
     def load(self):
-        arq_sessoes = open('sessoes.pkl', "rb")
-        sessoes = pickle.load(arq_sessoes)
-        return sessoes
+        #arq_sessoes = open(os.getcwd()+"\controlador\sessoes.pkl", "rb")
+        #sessoes = pickle.load(arq_sessoes)
+        #return sessoes
+        try:
+            with open(os.getcwd()+"\controlador\sessoes.pkl", "rb") as arq_sessoes:
+                return pickle.load(arq_sessoes)
+        except EOFError:
+            return [] 
     
     def dump(self):
-        arq_sessoes_escrita = open('sessoes.pkl', "wb")
-        pickle.dump(self.__sessoes,arq_sessoes_escrita)
+        try:
+            with open(os.getcwd()+"\controlador\sessoes.pkl", "wb") as arq_sessoes_escrita:
+                pickle.dump(self.__sessoes,arq_sessoes_escrita)
+        except EOFError:
+            raise NaoFoiPossivelPersistirOsDados()
 
     @property
     def sessoes(self):
