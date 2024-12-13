@@ -1,6 +1,9 @@
 from entidade.cliente import Cliente
 from tela.tela_cliente import TelaCliente
-
+from exceptions.ClienteJaExiste import ClienteJaExiste
+from exceptions.ClienteNaoEncontrado import ClienteNaoEncontrado
+from exceptions.ClienteNaoCadastrado import ClienteNaoCadastrado
+from exceptions.OpcaoInvalida import OpcaoValida
 class ControladorCliente:
     def __init__(self, controlador_sistema):
         self.__clientes = []
@@ -28,7 +31,10 @@ class ControladorCliente:
             self.__clientes.append(novo_cliente)
             self.__tela_cliente.mostra_mensagem("Cliente incluído com sucesso!")
         else:
-            self.__tela_cliente.mostra_mensagem("Cliente já existente.")
+            try:
+                raise ClienteJaExiste()
+            except:
+                return
 
     def alterar_cliente(self):
         self.lista_clientes()
@@ -42,7 +48,10 @@ class ControladorCliente:
             cliente._Cliente__nome = novos_dados_cliente["nome"]
             self.__tela_cliente.mostra_mensagem("Cliente alterado com sucesso!")
         else:
-            self.__tela_cliente.mostra_mensagem("Cliente não encontrado.")
+            try:
+                raise ClienteNaoEncontrado()
+            except ClienteNaoEncontrado:
+                return
 
     def listar_filmes_vistos(self):
         id_cliente = self.__tela_cliente.seleciona_cliente()
@@ -50,7 +59,10 @@ class ControladorCliente:
         if cliente:
             self.__tela_cliente.mostra_filmes_vistos(cliente.listar_filmes_vistos())
         else:
-            self.__tela_cliente.mostra_mensagem("Cliente não encontrado.")
+            try:
+                raise ClienteNaoEncontrado()
+            except ClienteNaoEncontrado:
+                return
 
     def listar_sessoes_aguardando(self):
         id_cliente = self.__tela_cliente.seleciona_cliente()
@@ -58,11 +70,18 @@ class ControladorCliente:
         if cliente:
             self.__tela_cliente.mostra_sessoes_aguardando(cliente.listar_sessoes_aguardando())
         else:
-            self.__tela_cliente.mostra_mensagem("Cliente não encontrado.")
+            try:
+                raise ClienteNaoEncontrado()
+            except ClienteNaoEncontrado:
+                return
 
     def lista_clientes(self):
         if not self.__clientes:
             self.__tela_cliente.mostra_mensagem("Nenhum cliente cadastrado.")
+            try:
+                raise ClienteNaoCadastrado()
+            except ClienteNaoCadastrado:
+                return
         else:
             for cliente in self.__clientes:
                 dados_cliente = {
@@ -81,7 +100,10 @@ class ControladorCliente:
             self.__clientes.remove(cliente)
             self.__tela_cliente.mostra_mensagem("Cliente excluído com sucesso.")
         else:
-            self.__tela_cliente.mostra_mensagem("Cliente não encontrado.")
+            try:
+                raise ClienteNaoEncontrado()
+            except ClienteNaoEncontrado:
+                return
 
     def retornar(self):
         self.__controlador_sistema.abre_tela_sistema()
@@ -108,4 +130,8 @@ class ControladorCliente:
                 continua = False
             else:
                 self.__tela_cliente.mostra_mensagem("Opção inválida.")
+                try:
+                    raise OpcaoValida()
+                except OpcaoValida:
+                    return
 

@@ -1,6 +1,11 @@
 from entidade.ingresso import Ingresso
 from entidade.caixa import Caixa
 from tela.tela_caixa import TelaCaixa
+from exceptions.ClienteNaoEncontrado import ClienteNaoEncontrado
+from exceptions.SessaoNaoEncontrada import SessaoNaoEncontrada
+from exceptions.AusenciaDeAssentosDisponiveis import AusenciaDeAssentosDisponiveis
+from exceptions.NenhumIngressoVendido import NenhumIngressoVendido
+from exceptions.NenhumaSessaoVendida import NenhumaSessaoVendida
 
 class ControladorCaixa:
     def __init__(self, controlador_sistema):
@@ -17,17 +22,23 @@ class ControladorCaixa:
 
         sessao = self.__controlador_sistema.obter_sessao_por_id(id_sessao)
         if sessao is None:
-            self.__tela_caixa.mostrar_mensagem("Sessão não encontrada ou indisponível.")
-            return
+            try:
+                raise SessaoNaoEncontrada()
+            except SessaoNaoEncontrada:
+                return
         
         cliente = self.__controlador_sistema.obter_cliente_por_id(id_cliente)
         if cliente is None:
-            self.__tela_caixa.mostrar_mensagem("Cliente não encontrado ou indisponível")
-            return
+            try:
+                raise ClienteNaoEncontrado()
+            except ClienteNaoEncontrado:
+                return
 
         if sessao.assentos_disponiveis <= 0:
-            self.__tela_caixa.mostrar_mensagem("Não há assentos disponíveis nesta sessão.")
-            return
+            try:
+                raise AusenciaDeAssentosDisponiveis
+            except AusenciaDeAssentosDisponiveis:
+                return
 
         ingresso = Ingresso(id_ingresso,assento,cliente,sessao)
         
@@ -42,7 +53,10 @@ class ControladorCaixa:
 
     def listar_ingressos_vendidos(self):
         if not self.__caixa.ingressos_vendidos:
-            self.__tela_caixa.mostrar_mensagem("Nenhum ingresso vendido.")
+            try:
+                raise NenhumIngressoVendido()
+            except NenhumIngressoVendido:
+                return
         else:
             for ingresso in self.__caixa.ingressos_vendidos:
                 self.__tela_caixa.mostrar_detalhes_ingresso(ingresso)
@@ -66,7 +80,10 @@ class ControladorCaixa:
         if sessao_popular:
             print(f"A sessão mais popular tem como id: {sessao_popular.idSessao} com {maior_num_de_vendas} ingressos vendidos.")
         else:
-            print("Nenhuma sessão foi vendida.")
+            try:
+                raise NenhumaSessaoVendida()
+            except NenhumaSessaoVendida:
+                return
 
     def obter_filmes_populares(self):
         filmes_com_vendas = dict()
@@ -87,7 +104,10 @@ class ControladorCaixa:
         if filme_popular:
             print(f"O filme mais assistido é: '{filme_popular.titulo}' com {maior_num_de_vendas} ingressos vendidos.")
         else:
-            print("Nenhum ingresso foi vendido.")
+            try:
+                raise NenhumIngressoVendido()
+            except NenhumIngressoVendido:
+                return
 
     def abre_tela(self):
         while True:
