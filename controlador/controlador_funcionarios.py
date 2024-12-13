@@ -16,38 +16,43 @@ class ControladorFuncionarios:
 
     def incluir_funcionario(self):
         dados_funcionario = self.__tela_funcionario.pega_dados_funcionario()
+        if not dados_funcionario:
+            return
+
         id_funcionario = dados_funcionario["id_funcionario"]
         funcionario = self.pega_funcionario_por_id(id_funcionario)
-        try:
-            if funcionario is None:
-                funcionario = EntidadeFuncionario(
-                    dados_funcionario["cpf"],
-                    dados_funcionario["id_funcionario"],
-                    dados_funcionario["nome"],
-                    dados_funcionario["cargo"],
-                    dados_funcionario["salario"],
-                    dados_funcionario["periodo"]
-                )
-                self.__funcionarios.append(funcionario)
-                self.__tela_funcionario.mostra_mensagem("Funcionário incluído com sucesso.")
-            else:
-                raise FuncionarioRepetidoException(id_funcionario)
-        except FuncionarioRepetidoException as e:
-            self.__tela_funcionario.mostra_mensagem(str(e))
+
+        if funcionario is None:
+            funcionario = EntidadeFuncionario(
+                dados_funcionario["cpf"],
+                dados_funcionario["id_funcionario"],
+                dados_funcionario["nome"],
+                dados_funcionario["cargo"],
+                dados_funcionario["salario"],
+                dados_funcionario["periodo"]
+            )
+            self.__funcionarios.append(funcionario)
+            self.__tela_funcionario.mostra_mensagem("Funcionário incluído com sucesso.")
+        else:
+            self.__tela_funcionario.mostra_mensagem(f"Funcionário com ID {id_funcionario} já existe.")
 
     def alterar_funcionario(self):
+        if not self.__funcionarios:
+            self.__tela_funcionario.mostra_mensagem("Nenhum funcionário cadastrado para alterar.")
+            return
+
         self.lista_funcionarios()
         id_funcionario = self.__tela_funcionario.seleciona_funcionario()
-        try:
-            id_funcionario = int(id_funcionario)
-        except ValueError:
-            self.__tela_funcionario.mostra_mensagem("ID inválido! Deve ser um número inteiro.")
+        if id_funcionario is None:
             return
 
         funcionario = self.pega_funcionario_por_id(id_funcionario)
 
         if funcionario is not None:
             novos_dados_funcionario = self.__tela_funcionario.pega_dados_funcionario()
+            if novos_dados_funcionario is None:
+                return
+
             funcionario.nome = novos_dados_funcionario["nome"]
             funcionario.cpf = novos_dados_funcionario["cpf"]
             funcionario.id_funcionario = novos_dados_funcionario["id_funcionario"]
@@ -55,49 +60,46 @@ class ControladorFuncionarios:
             funcionario.salario = novos_dados_funcionario["salario"]
             funcionario.periodo = novos_dados_funcionario["periodo"]
 
-            self.lista_funcionarios()
             self.__tela_funcionario.mostra_mensagem("Funcionário atualizado com sucesso.")
         else:
-            self.__tela_funcionario.mostra_mensagem("ATENÇÃO: Funcionário não existente")
+            self.__tela_funcionario.mostra_mensagem("Funcionário não encontrado.")
 
     def lista_funcionarios(self):
         if not self.__funcionarios:
-            self.__tela_funcionario.mostra_mensagem("Lista de funcionários está vazia.")
+            self.__tela_funcionario.mostra_mensagem("Nenhum funcionário cadastrado.")
         else:
-            for funcionario in self.__funcionarios:
-                self.__tela_funcionario.mostra_funcionario({
-                    "nome": funcionario.nome,
-                    "cpf": funcionario.cpf,
-                    "id_funcionario": funcionario.id_funcionario,
-                    "cargo": funcionario.cargo,
-                    "salario": funcionario.salario,
-                    "periodo": funcionario.periodo
-                })
+            dados_funcionarios = [
+                {
+                    "nome": func.nome,
+                    "cpf": func.cpf,
+                    "id_funcionario": func.id_funcionario,
+                    "cargo": func.cargo,
+                    "salario": func.salario,
+                    "periodo": func.periodo
+                } for func in self.__funcionarios
+            ]
+            self.__tela_funcionario.mostra_funcionarios(dados_funcionarios)
 
     def excluir_funcionario(self):
+        if not self.__funcionarios:
+            self.__tela_funcionario.mostra_mensagem("Nenhum funcionário cadastrado para excluir.")
+            return
+
         self.lista_funcionarios()
         id_funcionario = self.__tela_funcionario.seleciona_funcionario()
-        try:
-            id_funcionario = int(id_funcionario)
-        except ValueError:
-            self.__tela_funcionario.mostra_mensagem("ID inválido! Deve ser um número inteiro.")
+        if id_funcionario is None:
             return
 
         funcionario = self.pega_funcionario_por_id(id_funcionario)
 
         if funcionario is not None:
             self.__funcionarios.remove(funcionario)
-            self.lista_funcionarios()
             self.__tela_funcionario.mostra_mensagem("Funcionário excluído com sucesso.")
         else:
-            self.__tela_funcionario.mostra_mensagem("ATENÇÃO: Funcionário não existente")
-
-    #def retornar(self):
-    #    self.__controlador_sistema.abre_tela() #aqui estava chamando o metodo errado, por isso esta comentado
+            self.__tela_funcionario.mostra_mensagem("Funcionário não encontrado.")
 
     def retornar(self):
-        self.__controlador_sistema.abre_tela_sistema()  #corrigido
-
+        self.__controlador_sistema.abre_tela_sistema()
 
     def abre_tela(self):
         lista_opcoes = {
@@ -108,23 +110,12 @@ class ControladorFuncionarios:
             0: self.retornar
         }
 
-        continua = True
-        while continua:
+        while True:
             opcao = self.__tela_funcionario.tela_opcoes()
-            funcao = lista_opcoes.get(opcao, None)
+            funcao = lista_opcoes.get(opcao)
             if funcao:
                 funcao()
                 if opcao == 0:
-                    continua = False
+                    break
             else:
                 self.__tela_funcionario.mostra_mensagem("Opção inválida.")
-
-    def existe_funcionario(self):
-        return len(self.__funcionarios) > 0
-
-
-class FuncionarioRepetidoException(Exception):
-    def __init__(self, id_funcionario):
-        super().__init__(f"Funcionário com ID {id_funcionario} já existe.")
-
-
