@@ -22,7 +22,7 @@ class ControladorFuncionarios:
     def dump(self):
         try:
             with open(os.getcwd()+r"\controlador\funcionarios.pkl", "wb") as arq_funcionarios:
-                return pickle.load(arq_funcionarios)
+                return pickle.dump(arq_funcionarios)
         except EOFError:
             raise NaoFoiPossivelPersistirOsDados()
 

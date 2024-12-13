@@ -27,7 +27,7 @@ class ControladorFilme:
     def dump(self):
         try:
             with open(os.getcwd()+r"\controlador\filmes.pkl", "wb") as arq_filmes:
-                return pickle.load(arq_filmes)
+                return pickle.dump(arq_filmes)
         except EOFError:
             raise NaoFoiPossivelPersistirOsDados()
     

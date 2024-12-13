@@ -28,7 +28,7 @@ class ControladorCliente:
     def dump(self):
         try:
             with open(os.getcwd()+r"\controlador\clientes.pkl", "wb") as arq_clientes:
-                return pickle.load(arq_clientes)
+                return pickle.dump(arq_clientes)
         except EOFError:
             raise NaoFoiPossivelPersistirOsDados()
 
