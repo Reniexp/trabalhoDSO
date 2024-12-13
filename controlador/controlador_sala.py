@@ -3,6 +3,7 @@ from entidade.sala import Sala
 from exceptions.OpcaoValida import OpcaoValida
 from exceptions.SalaNaoEncontrada import SalaNaoEncontrada
 from exceptions.SalaJaExiste import SalaJaExiste
+import pickle
 
 
 class ControladorSala:

@@ -1,15 +1,23 @@
 from entidade.funcionario import EntidadeFuncionario
 from tela.tela_funcionario import TelaFuncionario
-
+import pickle
 
 class ControladorFuncionarios:
     def __init__(self, controlador_sistema):
         self.__funcionarios = []
         self.__tela_funcionario = TelaFuncionario()
         self.__controlador_sistema = controlador_sistema
+    def load(self):
+        arq_funcionarios = open('funcionarios.pkl', "rb")
+        funcionarios = pickle.load(arq_funcionarios)
+        return funcionarios
+    
+    def dump(self):
+        arq_funcionarios_escrita = open('funcionarios.pkl', "wb")
+        pickle.dump(self.__funcionarios,arq_funcionarios_escrita)
 
     def pega_funcionario_por_id(self, id_funcionario: int):
-        for funcionario in self.__funcionarios:
+        for funcionario in self.load():
             if funcionario.id_funcionario == id_funcionario:
                 return funcionario
         return None
@@ -32,6 +40,7 @@ class ControladorFuncionarios:
                 dados_funcionario["periodo"]
             )
             self.__funcionarios.append(funcionario)
+            self.dump()
             self.__tela_funcionario.mostra_mensagem("Funcionário incluído com sucesso.")
         else:
             self.__tela_funcionario.mostra_mensagem(f"Funcionário com ID {id_funcionario} já existe.")
@@ -65,7 +74,7 @@ class ControladorFuncionarios:
             self.__tela_funcionario.mostra_mensagem("Funcionário não encontrado.")
 
     def lista_funcionarios(self):
-        if not self.__funcionarios:
+        if not self.load():
             self.__tela_funcionario.mostra_mensagem("Nenhum funcionário cadastrado.")
         else:
             dados_funcionarios = [
@@ -94,6 +103,7 @@ class ControladorFuncionarios:
 
         if funcionario is not None:
             self.__funcionarios.remove(funcionario)
+            self.dump()
             self.__tela_funcionario.mostra_mensagem("Funcionário excluído com sucesso.")
         else:
             self.__tela_funcionario.mostra_mensagem("Funcionário não encontrado.")
