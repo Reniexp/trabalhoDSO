@@ -1,136 +1,161 @@
 from tela.tela_sala import TelaSala
 from entidade.sala import Sala
+from exceptions.OpcaoValida import OpcaoValida
+from exceptions.SalaNaoEncontrada import SalaNaoEncontrada
+from exceptions.SalaJaExiste import SalaJaExiste
 
-class ControladorSala():
+
+class ControladorSala:
     def __init__(self, controlador_sistema):
-        self.__telaSala = TelaSala()
+        self.__tela_sala = TelaSala()
         self.__salas = []
         self.__controlador_sistema = controlador_sistema
 
+    @property
+    def salas(self):
+        return self.__salas
 
-    def abre_tela_sala(self):
-        opcao_escolhida = 0
-        while opcao_escolhida != 6:
-            opcao_escolhida = self.__telaSala.tela_opcoes_sala()
-            if opcao_escolhida == 1:
-                self.lista_salas()
-            elif opcao_escolhida == 2:
-                self.cadastrar_sala()
-            elif opcao_escolhida == 3:
-                self.mostrar_dados_sala()
-            elif opcao_escolhida == 4:
-                self.altera_sala()
-            elif opcao_escolhida == 5:
-                self.excluir_sala()
-    
-    def cadastrar_sala(self):
-        dados_nova_sala = self.__telaSala.pega_dados_nova_sala()
-
-        idSala = dados_nova_sala["idSala"]
-        nomeSala = dados_nova_sala["nomeSala"]
-        capacidade = dados_nova_sala["capacidade"]
-
-        salaJaExiste = False
+    def pega_sala_pelo_id(self, id_sala: int):
         for sala in self.__salas:
-            if sala.idSala:
-                salaJaExiste = True
-                break
-        print()
-        if not salaJaExiste:
-            self.__salas.append(
-                Sala(
-                    idSala,
-                    nomeSala,
-                    capacidade
-                )
-            )
-            print("Sala criada com sucesso!")
-        else:
-            print("Uma sala com este Id já existe")
-        print(self.__salas[0].idSala)
+            if sala.id_sala == id_sala:
+                return sala
+        return None
 
+    def mostrar_dados_sala(self):
+        if not self.__salas:
+            self.__tela_sala.mostra_mensagem("Nenhuma sala cadastrada.")
+            return
+
+        self.lista_salas()
+        id_sala = self.__tela_sala.seleciona_sala()
+        if id_sala is None:
+            return
+
+        sala = self.pega_sala_pelo_id(id_sala)
+
+        if sala is not None:
+            dados_sala = {
+                "id_sala": sala.id_sala,
+                "nome_sala": sala.nome_sala,
+                "capacidade": sala.capacidade
+            }
+            self.__tela_sala.mostra_dados_sala(dados_sala)
+        else:
+            try:
+                raise SalaNaoEncontrada()
+            except SalaNaoEncontrada:
+                return
+            
+    def cadastrar_sala(self):
+        dados_sala = self.__tela_sala.pega_dados_nova_sala()
+        if not dados_sala:
+            return
+        
+        id_sala = dados_sala["id_sala"]
+        sala = self.pega_sala_pelo_id(id_sala)
+
+        if sala is None:
+            nova_sala = Sala(
+                dados_sala["id_sala"],
+                dados_sala["nome_sala"],
+                dados_sala["capacidade"]
+            )
+            self.__salas.append(nova_sala)
+            self.__tela_sala.mostra_mensagem("Sala criada com sucesso!")
+        else:
+            try:
+                raise SalaJaExiste()
+            except SalaJaExiste:
+                return
+            
+
+    def alterar_sala(self):
+        if not self.__salas:
+            self.__tela_sala.mostra_mensagem("Nenhuma sala cadastrada para alterar.")
+            return
+
+        self.lista_salas()
+        id_sala = self.__tela_sala.seleciona_sala()
+        if id_sala is None:
+            return
+
+        sala = self.pega_sala_pelo_id(id_sala)
+
+        if sala is not None:
+            dados_alterados_sala = self.__tela_sala.pega_dados_atualizar_sala()
+
+            sala.capacidade = dados_alterados_sala["capacidade"]
+            sala.nome_sala = dados_alterados_sala["nome_sala"]
+
+            self.__tela_sala.mostra_mensagem("Sala atualizada com sucesso.")
+        else:
+            try:
+                raise SalaNaoEncontrada()
+            except SalaNaoEncontrada:
+                return
+            
+    def lista_salas(self):
+        if not self.__salas:
+            self.__tela_sala.mostra_mensagem("Nenhuma sala cadastrada.")
+            try:
+                raise SalaNaoEncontrada()
+            except SalaNaoEncontrada:
+                return    
+        
+        else:
+            dados_salas = [
+                {
+                    "id_sala": sala.id_sala,
+                    "nome_sala": sala.nome_sala,
+                    "capacidade": sala.capacidade
+                } for sala in self.__salas
+            ]
+            self.__tela_sala.mostra_sala(dados_salas)
 
     def excluir_sala(self):
-        idSala = self.__telaSala.pega_id_valido_sala()
-        
-        sala_encontrada = False
+        if not self.__salas:
+            self.__tela_sala.mostra_mensagem("Nenhuma sala cadastrada para excluir.")
+            return
 
-        i = 0
-        while i < len(self.__salas):
-            sala = self.__salas[i]
-            if sala.idSala == idSala:
-                sala_encontrada = True
+        self.lista_salas()
+        id_sala = self.__tela_sala.seleciona_sala()
+        if id_sala is None:
+            return
+
+        sala = self.pega_sala_pelo_id(id_sala)
+
+        if sala is not None:
+            self.__salas.remove(sala)
+            self.__tela_sala.mostra_mensagem("Sala excluída com sucesso.")
+        else:
+            try:
+                self.__tela_sala.mostra_mensagem("Sala kkkk com sucesso.")
+                raise SalaNaoEncontrada()
+            except SalaNaoEncontrada:
+                return
+            
+    def retornar(self):
+        self.__controlador_sistema.abre_tela_sistema()
+
+    def abre_tela_sala(self):
+        while True:
+            opcao = self.__tela_sala.tela_opcoes_sala()
+            if opcao == 1:
+                self.lista_salas()
+            elif opcao == 2:
+                self.cadastrar_sala()
+            elif opcao == 3:
+                self.mostrar_dados_sala()
+            elif opcao == 4:
+                self.alterar_sala()
+            elif opcao == 5:
+                self.excluir_sala()
+            elif opcao == 0:
+                self.retornar()
                 break
-            i += 1
-
-        print()       
-        if sala_encontrada:
-            self.__salas.pop(i)
-            print("Sala deletada com sucesso!")
-        else:
-            print("Id inválido, não há sala com este id")
-        print()
-
-    def lista_salas(self):
-        if len(self.__salas) == 0:
-            print()
-            print("Não há sala criada ainda")
-            print()
-        else:
-            for sala in self.__salas:
-                print("-----------------------------")
-                print("IdSala: ",sala.idSala)
-                print("Nome da Sala: ",sala.nomeSala)
-                print("Capacidade da sala: ",sala.capacidade)
-                print("-----------------------------")
-                print()
-        
-    def mostrar_dados_sala(self):
-        print()
-        id_sala = self.__telaSala.pega_id_valido_sala()
-        
-        salaAchada = False
-        for sala in self.__salas:
-            if sala.idSala == id_sala:
-                print("IdSala: ", id_sala)
-                print("Nome da Sala: ", sala.nomeSala)
-                print("Capacidade: ", sala.capacidade)
-
-                salaAchada = True
-                break
-        if not salaAchada:
-            print()
-            print("Não existe sala com este id")
-        
-        print("")
-
-    def altera_sala(self):
-        print()
-        idSala = self.__telaSala.pega_id_valido_sala()
-
-        sala_encontrada = False
-
-        for sala in self.__salas:
-            if sala.idSala == idSala:
-                sala_encontrada = True
-                
-                dados_alterados_da_sala = self.__telaSala.pega_dados_atualizar_sala()
-
-                sala.capacidade = dados_alterados_da_sala["capacidade"]
-                sala.nomeSala = dados_alterados_da_sala["nomeSala"]
-        print()
-        if not sala_encontrada:
-            print("Id inválido, não há sala com este id")
-        else:
-            print("Sala altualizada com sucesso!")
-        print()
-
-
-    def pega_sala_pelo_id(self,id_sala:int):
-        for sala in self.__salas:
-            if sala.idSala == id_sala:
-                return sala
-        return -1
-    
-    def existe_sala(self):
-        return len(self.__salas) > 0
+            else:
+                self.__tela_sala.mostra_mensagem("Opção inválida.")
+                try:
+                    raise OpcaoValida()
+                except OpcaoValida:
+                    return

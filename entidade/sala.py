@@ -1,24 +1,24 @@
 class Sala:
-    def __init__(self,idSala: int, nomeSala: str, capacidade: int):
-        self.__idSala = idSala
-        self.__nomeSala = nomeSala
+    def __init__(self,id_sala: int, nome_sala: str, capacidade: int):
+        self.__id_sala = id_sala
+        self.__nome_sala = nome_sala
         self.__capacidade = capacidade
 
     @property
-    def idSala(self):
-        return self.__idSala
+    def id_sala(self):
+        return self.__id_sala
     
-    @idSala.setter
-    def idSala(self, idSala: int):
-        self.__idSala = idSala
+    @id_sala.setter
+    def id_sala(self, id_sala: int):
+        self.__id_sala = id_sala
 
     @property
-    def nomeSala(self):
-        return self.__nomeSala
+    def nome_sala(self):
+        return self.__nome_sala
     
-    @nomeSala.setter
-    def nomeSala(self, nomeSala: str):
-        self.__nomeSala = nomeSala
+    @nome_sala.setter
+    def nome_sala(self, nome_sala: str):
+        self.__nome_sala = nome_sala
 
     @property
     def capacidade(self):

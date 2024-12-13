@@ -4,6 +4,7 @@ from exceptions.FilmeNaoEncontrado import FilmeNaoEncontrado
 from exceptions.FilmeJaExiste import FilmeJaExiste
 from exceptions.OpcaoValida import OpcaoValida
 
+
 class ControladorFilme:
     def __init__(self, controlador_sistema):
         self.__filmes = []

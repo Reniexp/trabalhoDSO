@@ -1,13 +1,98 @@
 from exceptions.EntradaInvalidaNoPrompt import EntradaInvalidaNoPrompt
 import PySimpleGUI as sg
 
-class TelaSala():
+class TelaSala:
+    def __init__(self):
+        self.__window = None
+        self.init_opcoes()
+
+    def tela_opcoes_sala(self) -> int:
+        self.init_opcoes()
+        button, values = self.open()
+        opcao = 0
+
+        if values.get('1'):
+            opcao = 1
+        elif values.get('2'):
+            opcao = 2
+        elif values.get('3'):
+            opcao = 3
+        elif values.get('4'):
+            opcao = 4
+        elif values.get('5'):
+            opcao = 5
+        elif values.get('6'):
+            opcao = 6
+        elif values.get('0') or button in (None, 'Cancelar'):
+            opcao = 0
+
+        self.close()
+        return opcao
+
+    def init_opcoes(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+            [sg.Text('Bem-vindo ao sistema de gestão de Salas!', font=("Helvica", 25))],
+            [sg.Text('Escolha sua opção', font=("Helvica", 15))],
+            [sg.Radio('Mostrar Salas Disponíveis', "RD1", key='1')],
+            [sg.Radio('Cadastrar Nova Sala', "RD1", key='2')],
+            [sg.Radio('Mostrar dados de Sala', "RD1", key='3')],
+            [sg.Radio('Alterar Sala', "RD1", key='4')],
+            [sg.Radio('Deletar Sala', "RD1", key='5')],
+            [sg.Radio('Sair da Tela Sala', "RD1", key='6')],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Sistema de Sala').Layout(layout)
+
     def pega_dados_nova_sala(self):
         sg.ChangeLookAndFeel('DarkTeal4')
         layout = [
-            [sg.Text('-------- CRIAR NOVA SALA ----------', font=("Helvica", 25))],
+            [sg.Text('-------- DADOS SALA ----------', font=("Helvica", 25))],
             [sg.Text('ID:', size=(15, 1)), sg.InputText('', key='id_sala')],
-            [sg.Text('Nome:', size=(15, 1)), sg.InputText('', key='nomeSala')],
+            [sg.Text('Nome:', size=(15, 1)), sg.InputText('', key='nome_sala')],
+            [sg.Text('Capacidade:', size=(15, 1)), sg.InputText('', key='capacidade')],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+
+        self.__window = sg.Window('Cadastro de Sala').Layout(layout)
+
+        button, values = self.open()
+        if button != 'Confirmar':
+            self.close()
+            return None
+
+        nome_sala = values['nome_sala'].strip()
+        capacidade = values['capacidade'].strip()
+        id_sala = values['id_sala'].strip()
+
+        
+        try:
+            if not id_sala.isdigit():
+                raise EntradaInvalidaNoPrompt("ID inválido! Deve ser um número.")
+            id_sala = int(id_sala)
+            
+            if not nome_sala:
+                raise EntradaInvalidaNoPrompt("Nome da sala não pode estar vazio.")
+            if not capacidade.isdigit() or int(capacidade) <= 0:
+                raise EntradaInvalidaNoPrompt("Capacidade inválida! Deve ser um número maior que 0.")
+            capacidade = int(capacidade)
+
+        except EntradaInvalidaNoPrompt as e:
+            self.mostra_mensagem(str(e))
+            return self.pega_dados_nova_sala()
+
+        self.close()
+        return {
+            "id_sala": id_sala,
+            "nome_sala": nome_sala,
+            "capacidade": capacidade
+        }
+
+    def pega_dados_atualizar_sala(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+            [sg.Text('-------- ALTERAR SALA ----------', font=("Helvica", 25))],
+            [sg.Text('Nome:', size=(15, 1)), sg.InputText('', key='nome_sala')],
             [sg.Text('Capacidade:', size=(15, 1)), sg.InputText('', key='capacidade')],
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
         ]
@@ -15,209 +100,76 @@ class TelaSala():
         self.__window = sg.Window('Sistema de Sala').Layout(layout)
 
         button, values = self.open()
-        nomeSala = values['nomeSala']
-        capacidade = values['capacidade']
-        id_sala = values['id_sala']
+        if button != 'Confirmar':
+            self.close()
+            return None
+
+        nome_sala = values['nome_sala'].strip()
+        capacidade = values['capacidade'].strip()
+
+        
+        try:
+            if not nome_sala:
+                raise EntradaInvalidaNoPrompt("Nome da sala não pode estar vazio.")
+            if not capacidade.isdigit() or int(capacidade) <= 0:
+                raise EntradaInvalidaNoPrompt("Capacidade inválida! Deve ser um número maior que 0.")
+            capacidade = int(capacidade)
+
+        except EntradaInvalidaNoPrompt as e:
+            self.mostra_mensagem(str(e))
+            return self.pega_dados_atualizar_sala()
 
         self.close()
 
-        # valid_id = False
-        # id_sala = input("Id da sala: ")
-
-        # while not valid_id:
-        #     try:
-        #         id_sala = int(id_sala)
-        #     except:
-        #         print("ID É UM VALOR INTEIRO")
-        #         id_sala = input("Id da sala: ")
-        #         continue
-        #     else:
-        #         valid_id = True
-
-        # nomeSala = input("Nome da sala: ")
-        # while nomeSala == "":
-        #     print("Não pode ser texto vazio")
-        #     nomeSala = input("Nome da sala: ")
-
-        # valid_capacidade = False
-        # capacidade = input("Capacidade da sala: ")
-
-        # while not valid_capacidade:
-        #     try:
-        #         capacidade = int(capacidade)
-        #     except:
-        #         print("CAPACIDADE É UM VALOR INTEIRO")
-        #         capacidade = input("Capacidade da sala: ")
-        #         continue
-        #     else:
-        #         valid_capacidade = True
-
         return {
-            "idSala" : id_sala,
-            "nomeSala" : nomeSala,
-            "capacidade" : capacidade
+            "nome_sala": nome_sala,
+            "capacidade": capacidade
         }
+    
+    def mostra_sala(self, dados_salas: list):
+        string_todas_salas = ""
+        for dado in dados_salas:
+            string_todas_salas += (
+                f"ID: {dado['id_sala']}\n"
+                f"NOME DA SALA: {dado['nome_sala']}\n"
+                f"CAPACIDADE: {dado['capacidade']} pessoas\n\n"
+            )
 
-    # 
-    # layout = [
-    #   [sg.Text('-------- DADOS AMIGO ----------', font=("Helvica", 25))],
-    #   [sg.Text('Nome:', size=(15, 1)), sg.InputText('', key='nome')],
-    #   [sg.Text('Telefone:', size=(15, 1)), sg.InputText('', key='telefone')],
-    #   [sg.Text('CPF:', size=(15, 1)), sg.InputText('', key='cpf')],
-    #   [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
-    # ]
-    # self.__window = sg.Window('Sistema de livros').Layout(layout)
+        sg.Popup('-------- LISTA DE SALAS ----------', string_todas_salas)
 
-    # button, values = self.open()
-    # nome = values['nome']
-    # telefone = values['telefone']
-    # cpf = values['cpf']
+    def seleciona_sala(self) -> int:
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+            [sg.Text('-------- SELECIONAR SALA ----------', font=("Helvica", 25))],
+            [sg.Text('Digite o ID da sala que deseja selecionar:', font=("Helvica", 15))],
+            [sg.Text('ID:', size=(15, 1)), sg.InputText('', key='id_sala')],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Selecionar Sala').Layout(layout)
 
-    # self.close()
-    # return {"nome": nome, "telefone": telefone, "cpf": cpf}
+        button, values = self.open()
+        if button != 'Confirmar':
+            self.close()
+            return None
 
-    def pega_id_valido_sala(self) -> int:
-        valid_id = False
-        id_sala = input("Id da sala: ")
+        id_sala = values['id_sala'].strip()
 
-        while not valid_id:
-            try:
-                id_sala = int(id_sala)
-            except:
-                print("ID É UM VALOR INTEIRO")
-                id_sala = input("Id da sala: ")
-                continue
-            else:
-                valid_id = True
-        return id_sala
+        
+        if not id_sala.isdigit():
+            self.mostra_mensagem("ID inválido! Tente novamente.")
+            self.close()
+            return self.seleciona_sala()
 
-    # def tela_opcoes_sala(self) -> int:
-    #     invalidInput = True
-    #     firstTry = True
+        self.close()
+        return int(id_sala)
 
-
-    #     while invalidInput:
-    #         if not firstTry:
-    #             print()
-    #             print("ESCOLHA UM INTEIRO VÁLIDO DE 1 A 6")
-    #             print()
-
-    #         print("Tela Sala")
-    #         print("\t(1) Mostrar Salas Disponíveis")
-    #         print("\t(2) Cadastrar Nova Sala")
-    #         print("\t(3) Mostrar Dados de Sala")
-    #         print("\t(4) Alterar Sala")
-    #         print("\t(5) Deletar Sala")
-    #         print("\t(6) SAIR da Tela da Sala")
-    #         print()
-
-    #         opcao_escolhida = input("Escolha uma opcao: ")
-    #         try:
-    #             opcao_escolhida = int(opcao_escolhida)
-    #             if opcao_escolhida not in [1,2,3,4,5,6]:
-    #                 raise EntradaInvalidaNoPrompt()
-    #         except:
-    #             firstTry = False
-    #             continue
-    #         else:
-    #             invalidInput = False
-    #     return opcao_escolhida
+    
+    def mostra_mensagem(self, msg: str):
+        sg.Popup('', msg)
 
     def close(self):
         self.__window.Close()
 
-    def init_components(self):
-        #sg.theme_previewer()
-        sg.ChangeLookAndFeel('DarkTeal4')
-        layout = [
-            [sg.Text('Bem vindo ao sistema de gestão de Salas!', font=("Helvica",25))],
-            [sg.Text('Escolha sua opção', font=("Helvica",15))],
-            [sg.Radio('Mostrar Salas Disponíveis',"RD1", key='1')],
-            [sg.Radio('Cadastrar Nova Sala',"RD1", key='2')],
-            [sg.Radio('Mostrar dados de Sala',"RD1", key='3')],
-            [sg.Radio('Alterar Sala',"RD1", key='4')],
-            [sg.Radio('Deletar Sala',"RD1", key='5')],
-            [sg.Radio('Sair da Tela Sala',"RD1", key='6')],
-            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
-        ]
-        self.__window =  sg.Window('Sistema de Sala').Layout(layout)
-
-    def __init__(self):
-        self.__window = None
-        self.init_components()
-
-    def tela_opcoes_sala(self) -> int:
-
-        self.init_components()
+    def open(self):
         button, values = self.__window.Read()
-        invalid_input = True
-        first_try = True
-        opcao = 0
-
-        while invalid_input:
-            if not first_try:
-                if values['1']:
-                    opcao = 1
-
-                if values['2']:
-                    opcao = 2
-
-                if values['3']:
-                    opcao = 3
-
-                if values['4']:
-                    opcao = 4
-
-                if values['5']:
-                    opcao = 5
-
-                if values['6']:
-                    opcao = 6
-
-                if values['0'] or button in (None, 'Cancelar'):
-                    opcao = 0
-
-                self.close()
-                return opcao
-
-    def pega_dados_atualizar_sala(self):
-
-        sg.ChangeLookAndFeel('DarkTeal4')
-        layout = [
-            [sg.Text('-------- ALTERAR SALA ----------', font=("Helvica", 25))],
-            [sg.Text('Nome:', size=(15, 1)), sg.InputText('', key='nomeSala')],
-            [sg.Text('Capacidade:', size=(15, 1)), sg.InputText('', key='capacidade')],
-            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
-        ]
-
-        self.__window = sg.Window('Sistema de Sala').Layout(layout)
-
-        button, values = self.open()
-        nomeSala = values['nomeSala']
-        capacidade = values['capacidade']
-
-        self.close()
-
-
-        # # nomeSala = input("Nome da sala: ")
-        # # while nomeSala == "":
-        # #     print("Não pode ser texto vazio")
-        # #     nomeSala = input("Nome da sala: ")
-
-        # # valid_capacidade = False
-        # # capacidade = input("Capacidade da sala: ")
-
-        # # while not valid_capacidade:
-        # #     try:
-        # #         capacidade = int(capacidade)
-        # #     except:
-        # #         print("CAPACIDADE É UM VALOR INTEIRO")
-        # #         capacidade = input("Capacidade da sala: ")
-        # #         continue
-        # #     else:
-        # #         valid_capacidade = True
-
-        return {
-            "nomeSala" : nomeSala,
-            "capacidade" : capacidade
-        }
+        return button, values
