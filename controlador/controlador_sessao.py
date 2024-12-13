@@ -3,7 +3,7 @@ from entidade.filme import Filme
 from entidade.sala import Sala
 from entidade.funcionario import EntidadeFuncionario
 from tela.tela_sessao import TelaSessao
-
+import pickle
 
 class ControladorSessao:
     def __init__(self, controlador_sistema):
@@ -61,16 +61,17 @@ class ControladorSessao:
                 funcionario
             )
             self.__sessoes.append(nova_sessao)
-            print("Sessão criada com sucesso!")
-        else:
-            print("Uma sessão com este Id já existe")
+            arq_sessoes_escrita = open('sessoes.pkl', "wb")
+            pickle.dump(self.__sessoes,arq_sessoes_escrita)
 
     def editar_sessao(self):
         print()
         idSessao = self.__tela_sessao.pega_id_valido_sessao()
 
         sessao_encontrada = False
-        for sessao in self.__sessoes:
+        arq_sessoes = open('sessoes.pkl', "rb")
+        sessoes = pickle.load(arq_sessoes)
+        for sessao in sessoes:
             if sessao.idSessao == idSessao:
                 sessao_encontrada = True
                 dados_atualizados = self.__tela_sessao.pega_dados_nova_sessao()
@@ -98,15 +99,16 @@ class ControladorSessao:
 
         if sessao_encontrada:
             self.__sessoes.pop(i)
-            print("Sessão deletada com sucesso!")
-        else:
-            print("Id inválido, não há sessão com este id")
+            arq_sessoes_escrita = open('sessoes.pkl', "wb")
+            pickle.dump(self.__sessoes,arq_sessoes_escrita)
 
     def lista_sessoes(self):
-        if not self.__sessoes:
+        arq_sessoes = open('sessoes.pkl', "rb")
+        sessoes = pickle.load(arq_sessoes)
+        if not sessoes:
             print("Não há sessão criada ainda")
         else:
-            for sessao in self.__sessoes:
+            for sessao in sessoes:
                 print("-----------------------------")
                 print(f"IdSessão: {sessao.idSessao}")
                 print(f"Horário: {sessao.horario}")
@@ -117,7 +119,9 @@ class ControladorSessao:
 
     def mostrar_dados_sessao(self):
         idSessao = self.__tela_sessao.pega_id_valido_sessao()
-        sessao_encontrada = next((sessao for sessao in self.__sessoes if sessao.idSessao == idSessao), None)
+        arq_sessoes = open('sessoes.pkl', "rb")
+        sessoes = pickle.load(arq_sessoes)
+        sessao_encontrada = next((sessao for sessao in sessoes if sessao.idSessao == idSessao), None)
 
         if sessao_encontrada:
             print(f"IdSessão: {sessao_encontrada.idSessao}")

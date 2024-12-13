@@ -1,5 +1,6 @@
 from tela.tela_filme import TelaFilme
 from entidade.filme import Filme
+import pickle
 
 class ControladorFilme():
     def __init__(self, controlador_sistema):
@@ -33,9 +34,10 @@ class ControladorFilme():
         duracaoMinutos = dados_do_novo_filme["duracaoMinutos"]
         genero = dados_do_novo_filme["genero"]
         tipoExibicao = dados_do_novo_filme["tipoExibicao"]
-        
+        arq_filmes = open('filmes.pkl', "rb")
+        filmes = pickle.load(arq_filmes)
         filmeJaExiste = False
-        for filme in self.__filmes:
+        for filme in filmes:
             if filme.idFilme == idFilme and filme.titulo == titulo and filme.duracaoMinutos == duracaoMinutos and filme.genero == genero and filme.tipoExibicao == tipoExibicao:
                 filmeJaExiste = True
         
@@ -49,8 +51,8 @@ class ControladorFilme():
                     tipoExibicao
                 )
             )
-        print("Filme criado com sucesso!")
-        print(self.__filmes[0].titulo)
+            arq_filmes_escrita = open('filmes.pkl', "wb")
+            pickle.dump(self.__filmes,arq_filmes_escrita)
 
     def mostrar_dados_filme(self):
         print()
@@ -98,8 +100,9 @@ class ControladorFilme():
         idFilme = self.__telaFilme.pega_id_valido_filme()
 
         filme_encontrado = False
-
-        for filme in self.__filmes:
+        arq_filmes = open('filmes.pkl', "rb")
+        filmes = pickle.load(arq_filmes)
+        for filme in filmes:
             if filme.idFilme == idFilme:
                 filme_encontrado = True
                 

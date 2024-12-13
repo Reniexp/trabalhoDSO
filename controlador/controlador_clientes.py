@@ -4,6 +4,8 @@ from exceptions.ClienteJaExiste import ClienteJaExiste
 from exceptions.ClienteNaoEncontrado import ClienteNaoEncontrado
 from exceptions.ClienteNaoCadastrado import ClienteNaoCadastrado
 from exceptions.OpcaoInvalida import OpcaoValida
+import pickle
+
 class ControladorCliente:
     def __init__(self, controlador_sistema):
         self.__clientes = []
@@ -15,9 +17,13 @@ class ControladorCliente:
         return self.__clientes
 
     def pega_cliente_por_id(self, id_cliente: int):
-        for cliente in self.__clientes:
+        arq_clientes = open('clientes.pkl', "rb")
+        clientes = pickle.load(arq_clientes)
+
+        for cliente in clientes:
             if cliente.id_cliente == id_cliente:
                 return cliente
+        
         return None
 
     def incluir_cliente(self):
@@ -32,6 +38,8 @@ class ControladorCliente:
                 dados_cliente["cpf"], dados_cliente["id_cliente"], dados_cliente["nome"]
             )
             self.__clientes.append(novo_cliente)
+            arq_clientes_escrita = open('clientes.pkl', "wb")
+            pickle.dump(self.__clientes,arq_clientes_escrita)
             self.__tela_cliente.mostra_mensagem("Cliente incluído com sucesso!")
         else:
             try:

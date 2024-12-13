@@ -1,6 +1,6 @@
 from entidade.funcionario import EntidadeFuncionario
 from tela.tela_funcionario import TelaFuncionario
-
+import pickle
 
 class ControladorFuncionarios:
     def __init__(self, controlador_sistema):
@@ -9,7 +9,9 @@ class ControladorFuncionarios:
         self.__controlador_sistema = controlador_sistema
 
     def pega_funcionario_por_id(self, id_funcionario: int):
-        for funcionario in self.__funcionarios:
+        arq_funcionarios = open('funcionarios.pkl', "rb")
+        funcionarios = pickle.load(arq_funcionarios)
+        for funcionario in funcionarios:
             if funcionario.id_funcionario == id_funcionario:
                 return funcionario
         return None
@@ -31,6 +33,8 @@ class ControladorFuncionarios:
                 dados_funcionario["salario"],
                 dados_funcionario["periodo"]
             )
+            arq_funcionarios_escrita = open('funcionarios.pkl', "wb")
+            pickle.dump(self.__funcionarios,arq_funcionarios_escrita)
             self.__funcionarios.append(funcionario)
             self.__tela_funcionario.mostra_mensagem("Funcionário incluído com sucesso.")
         else:
@@ -65,7 +69,9 @@ class ControladorFuncionarios:
             self.__tela_funcionario.mostra_mensagem("Funcionário não encontrado.")
 
     def lista_funcionarios(self):
-        if not self.__funcionarios:
+        arq_funcionarios = open('funcionarios.pkl', "rb")
+        funcionarios = pickle.load(arq_funcionarios)
+        if not funcionarios:
             self.__tela_funcionario.mostra_mensagem("Nenhum funcionário cadastrado.")
         else:
             dados_funcionarios = [
@@ -94,6 +100,8 @@ class ControladorFuncionarios:
 
         if funcionario is not None:
             self.__funcionarios.remove(funcionario)
+            arq_funcionarios_escrita = open('funcionarios.pkl', "wb")
+            pickle.dump(self.__funcionarios,arq_funcionarios_escrita)
             self.__tela_funcionario.mostra_mensagem("Funcionário excluído com sucesso.")
         else:
             self.__tela_funcionario.mostra_mensagem("Funcionário não encontrado.")

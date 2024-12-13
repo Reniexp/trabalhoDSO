@@ -1,5 +1,6 @@
 from tela.tela_sala import TelaSala
 from entidade.sala import Sala
+import pickle
 
 class ControladorSala():
     def __init__(self, controlador_sistema):
@@ -31,7 +32,9 @@ class ControladorSala():
         capacidade = dados_nova_sala["capacidade"]
 
         salaJaExiste = False
-        for sala in self.__salas:
+        arq_sala = open('salas.pkl', "rb")
+        salas = pickle.load(arq_sala)
+        for sala in salas:
             if sala.idSala:
                 salaJaExiste = True
                 break
@@ -44,10 +47,8 @@ class ControladorSala():
                     capacidade
                 )
             )
-            print("Sala criada com sucesso!")
-        else:
-            print("Uma sala com este Id já existe")
-        print(self.__salas[0].idSala)
+            arq_salas_escrita = open('salas.pkl', "wb")
+            pickle.dump(self.__salas,arq_salas_escrita)
 
 
     def excluir_sala(self):
@@ -66,10 +67,8 @@ class ControladorSala():
         print()       
         if sala_encontrada:
             self.__salas.pop(i)
-            print("Sala deletada com sucesso!")
-        else:
-            print("Id inválido, não há sala com este id")
-        print()
+            arq_salas_escrita = open('salas.pkl', "wb")
+            pickle.dump(self.__salas,arq_salas_escrita)
 
     def lista_salas(self):
         if len(self.__salas) == 0:
@@ -90,7 +89,9 @@ class ControladorSala():
         id_sala = self.__telaSala.pega_id_valido_sala()
         
         salaAchada = False
-        for sala in self.__salas:
+        arq_salas = open('salas.pkl', "rb")
+        salas = pickle.load(arq_salas)
+        for sala in salas:
             if sala.idSala == id_sala:
                 print("IdSala: ", id_sala)
                 print("Nome da Sala: ", sala.nomeSala)
@@ -108,9 +109,9 @@ class ControladorSala():
         print()
         idSala = self.__telaSala.pega_id_valido_sala()
 
-        sala_encontrada = False
-
-        for sala in self.__salas:
+        arq_salas = open('salas.pkl', "rb")
+        salas = pickle.load(arq_salas)
+        for sala in salas:
             if sala.idSala == idSala:
                 sala_encontrada = True
                 
@@ -118,16 +119,11 @@ class ControladorSala():
 
                 sala.capacidade = dados_alterados_da_sala["capacidade"]
                 sala.nomeSala = dados_alterados_da_sala["nomeSala"]
-        print()
-        if not sala_encontrada:
-            print("Id inválido, não há sala com este id")
-        else:
-            print("Sala altualizada com sucesso!")
-        print()
-
 
     def pega_sala_pelo_id(self,id_sala:int):
-        for sala in self.__salas:
+        arq_salas = open('salas.pkl', "rb")
+        salas = pickle.load(arq_salas)
+        for sala in salas:
             if sala.idSala == id_sala:
                 return sala
         return -1
