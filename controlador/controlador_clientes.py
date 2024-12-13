@@ -20,14 +20,14 @@ class ControladorCliente:
         #return clientes
     
         try:
-            with open(os.getcwd()+r"\controlador\clientes.pkl", "rb") as arq_clientes:
+            with open(os.getcwd().replace("\\","/")+"/controlador/clientes.pkl", "rb") as arq_clientes:
                 return pickle.load(arq_clientes)
         except EOFError:
             return []
     
     def dump(self):
         try:
-            with open(os.getcwd()+r"\controlador\clientes.pkl", "wb") as arq_clientes:
+            with open(os.getcwd().replace("\\","/")+"/controlador/clientes.pkl", "wb") as arq_clientes:
                 return pickle.dump(self.__clientes,arq_clientes)
         except EOFError:
             raise NaoFoiPossivelPersistirOsDados()
