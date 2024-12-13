@@ -86,7 +86,7 @@ class ControladorSala:
                 raise SalaJaExiste()
             except SalaJaExiste:
                 return
-            
+
 
     def alterar_sala(self):
         if not self.__salas:
@@ -178,3 +178,7 @@ class ControladorSala:
                     raise OpcaoValida()
                 except OpcaoValida:
                     return
+
+                
+    def existe_sala(self):
+        return bool(self.lista_salas)

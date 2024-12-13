@@ -183,3 +183,6 @@ class ControladorFilme:
                     raise OpcaoValida()
                 except OpcaoValida:
                     return
+
+    def existe_filme(self):
+        return bool(self.listar_filmes)

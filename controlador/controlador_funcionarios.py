@@ -139,3 +139,6 @@ class ControladorFuncionarios:
                     break
             else:
                 self.__tela_funcionario.mostra_mensagem("Opção inválida.")
+
+    def existe_funcionario(self):
+        return bool(self.lista_funcionarios)

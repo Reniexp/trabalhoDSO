@@ -3,8 +3,8 @@ from .sala import Sala
 from .funcionario import EntidadeFuncionario
 
 class Sessao:
-    def __init__(self, idSessao: int, horario: str, filme: Filme, sala: Sala, funcionario: EntidadeFuncionario):
-        self.__idSessao = idSessao
+    def __init__(self, id_sessao: int, horario: str, filme: Filme, sala: Sala, funcionario: EntidadeFuncionario):
+        self.__id_sessao = id_sessao
         self.__horario = horario
         self.__filme = filme
         self.__sala = sala
@@ -12,12 +12,12 @@ class Sessao:
         self.__assentos_disponiveis = sala.capacidade
     
     @property
-    def idSessao(self):
-        return self.__idSessao
+    def id_sessao(self):
+        return self.__id_sessao
     
-    @idSessao.setter
-    def idSessao(self, idSessao: int):
-        self.__idSessao = idSessao
+    @id_sessao.setter
+    def id_sessao(self, id_sessao: int):
+        self.__id_sessao = id_sessao
 
     @property
     def horario(self):
