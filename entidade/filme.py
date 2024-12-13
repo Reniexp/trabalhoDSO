@@ -23,20 +23,20 @@ class TipoDeExibicao():
 
 
 class Filme:
-    def __init__(self, idFilme: int, titulo: str, duracaoMinutos: int, genero: str, tipoExibicao: TipoDeExibicao ):
-        self.__idFilme = idFilme
+    def __init__(self, id_filme: int, titulo: str, duracaoMinutos: int, genero: str, tipoExibicao: TipoDeExibicao ):
+        self.__id_filme = id_filme
         self.__titulo = titulo
         self.__duracaoMinutos = duracaoMinutos
         self.__genero = genero
         self.__tipoExibicao = tipoExibicao
     
     @property
-    def idFilme(self):
-        return self.__idFilme
+    def id_filme(self):
+        return self.__id_filme
     
-    @idFilme.setter
-    def idFilme(self, idFilme: int):
-        self.__idFilme = idFilme
+    @id_filme.setter
+    def id_filme(self, id_filme: int):
+        self.__id_filme = id_filme
 
     @property
     def titulo(self):
