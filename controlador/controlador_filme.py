@@ -1,182 +1,163 @@
 from tela.tela_filme import TelaFilme
 from entidade.filme import Filme
+from exceptions.FilmeNaoEncontrado import FilmeNaoEncontrado
+from exceptions.FilmeJaExiste import FilmeJaExiste
+from exceptions.OpcaoValida import OpcaoValida
 
-class ControladorFilme():
+class ControladorFilme:
     def __init__(self, controlador_sistema):
         self.__filmes = []
-        self.__telaFilme = TelaFilme()
+        self.__tela_filme = TelaFilme()
         self.__controlador_sistema = controlador_sistema
 
+    @property
+    def filmes(self):
+        return self.__filmes
 
-    def abre_tela_filme(self):
-        opcao_escolhida = 0
-        while opcao_escolhida != 6:
-            opcao_escolhida = self.__telaFilme.tela_opcoes_filme()
-            if opcao_escolhida == 1:
-                self.lista_filmes()
-            elif opcao_escolhida == 2:
-                self.incluir_filme()
-            elif opcao_escolhida == 3:
-                self.mostrar_dados_filme()
-            elif opcao_escolhida == 4:
-                self.altera_filme()
-            elif opcao_escolhida == 5:
-                self.excluir_filme()
+    def pega_filme_por_id(self, id_filme: int):
+        for filme in self.__filmes:
+            if filme.id_filme == id_filme:
+                return filme
+        return None
+    
+    def mostrar_dados_filme(self):
+        if not self.__filmes:
+            self.__tela_filme.mostra_mensagem("Nenhum filme cadastrado.")
+            return
+
+        
+        self.listar_filmes()
+        id_filme = self.__tela_filme.seleciona_filme()
+        if id_filme is None:
+            return
+
+        filme = self.pega_filme_por_id(id_filme)
+
+        if filme is not None:
+            dados_filme = {
+                "id_filme": filme.id_filme,
+                "titulo": filme.titulo,
+                "duracao": filme.duracaoMinutos,
+                "genero": filme.genero,
+                "tipo_exibicao": filme.tipoExibicao
+            }
+            
+            self.__tela_filme.mostra_dados_filme(dados_filme)
+        else:
+            try:
+                raise FilmeNaoEncontrado()
+            except FilmeNaoEncontrado:
+                return
 
     def incluir_filme(self):
-        dados_do_novo_filme = self.__telaFilme.pega_dados_novo_filme()
+        dados_filme = self.__tela_filme.pega_dados_novo_filme()
+        if not dados_filme:
+            return
 
-        print("\n")
+        id_filme = dados_filme["id_filme"]
+        filme = self.pega_filme_por_id(id_filme)
 
-        idFilme = dados_do_novo_filme["idFilme"]
-        titulo = dados_do_novo_filme["titulo"]
-        duracaoMinutos = dados_do_novo_filme["duracaoMinutos"]
-        genero = dados_do_novo_filme["genero"]
-        tipoExibicao = dados_do_novo_filme["tipoExibicao"]
-        
-        filmeJaExiste = False
-        for filme in self.__filmes:
-            if filme.idFilme == idFilme and filme.titulo == titulo and filme.duracaoMinutos == duracaoMinutos and filme.genero == genero and filme.tipoExibicao == tipoExibicao:
-                filmeJaExiste = True
-        
-        if not filmeJaExiste:
-            self.__filmes.append(
-            Filme(
-                    idFilme,
-                    titulo,
-                    duracaoMinutos,
-                    genero,
-                    tipoExibicao
-                )
+        if filme is None:
+            novo_filme = Filme(
+                dados_filme["id_filme"],
+                dados_filme["titulo"],
+                dados_filme["duracao"],
+                dados_filme["genero"],
+                dados_filme["tipo_exibicao"]
             )
-        print("Filme criado com sucesso!")
-        print(self.__filmes[0].titulo)
-
-    def mostrar_dados_filme(self):
-        print()
-        id_filme = self.__telaFilme.pega_id_valido_filme()
-        
-        filmeAchado = False
-        for filme in self.__filmes:
-            if filme.idFilme == id_filme:
-                print("Id: ",filme.idFilme)
-                print("Titulo: ", filme.titulo)
-                print("Duracao Em Minutos: ", filme.duracaoMinutos)
-
-                genero = ""
-                if filme.genero == 1:
-                    genero = "acao"
-                elif filme.genero == 2:
-                    genero = "comedia"
-                elif filme.genero == 3:
-                    genero = "romance"
-                elif filme.genero == 4:
-                    genero = "ficcao cientifica"
-
-                print("Genero: ", genero)
-                
-                tipo_de_exibicao = ""
-                if filme.tipoExibicao == 1:
-                    tipo_de_exibicao = "dublado"
-                elif filme.tipoExibicao == 2:
-                    tipo_de_exibicao = "legendado"
-                elif filme.tipoExibicao == 3:
-                    tipo_de_exibicao = "dublado e legendado"
-
-                print("Tipo de Exibicao: ", tipo_de_exibicao)
-
-                filmeAchado = True
-                break
-        if not filmeAchado:
-            print()
-            print("Não existe filme com este id")
-        
-        print("")
-
-    def altera_filme(self):
-        print()
-        idFilme = self.__telaFilme.pega_id_valido_filme()
-
-        filme_encontrado = False
-
-        for filme in self.__filmes:
-            if filme.idFilme == idFilme:
-                filme_encontrado = True
-                
-                dados_alterados_do_filme = self.__telaFilme.pega_dados_atualizar_filme()
-
-                filme.titulo = dados_alterados_do_filme["titulo"]
-                filme.duracaoMinutos = dados_alterados_do_filme["duracaoMinutos"]
-                filme.genero = dados_alterados_do_filme["genero"]
-                filme.tipoExibicao = dados_alterados_do_filme["tipoExibicao"]
-        print()
-        if not filme_encontrado:
-            print("Id inválido, não há filme com este id")
+            self.__filmes.append(novo_filme)
+            self.__tela_filme.mostra_mensagem("Filme incluído com sucesso!")
         else:
-            print("Filme altualizado! com sucesso!")
-        print()
+            try:
+                raise FilmeJaExiste()
+            except FilmeJaExiste:
+                return
+
+    def alterar_filme(self):
+        if not self.__filmes:
+            self.__tela_filme.mostra_mensagem("Nenhum filme cadastrado para alterar.")
+            return
+
+        self.listar_filmes()
+        id_filme = self.__tela_filme.seleciona_filme()
+        if id_filme is None:
+            return
+
+        filme = self.pega_filme_por_id(id_filme)
+
+        if filme is not None:
+            novos_dados_filme = self.__tela_filme.pega_dados_novo_filme()
+            if novos_dados_filme is None:
+                return
+
+            filme.titulo = novos_dados_filme["titulo"]
+            filme.duracaoMinutos = novos_dados_filme["duracao"]
+            filme.genero = novos_dados_filme["genero"]
+            filme.tipoExibicao = novos_dados_filme["tipo_exibicao"]
+            self.__tela_filme.mostra_mensagem("Filme alterado com sucesso!")
+        else:
+            try:
+                raise FilmeNaoEncontrado()
+            except FilmeNaoEncontrado:
+                return
+
+    def listar_filmes(self):
+        if not self.__filmes:
+            self.__tela_filme.mostra_mensagem("Nenhum filme cadastrado.")
+            try:
+                raise FilmeNaoEncontrado()
+            except FilmeNaoEncontrado:
+                return
+        else:
+            dados_filmes = [
+                {"id_filme": filme.id_filme, "titulo": filme.titulo, "duracao": filme.duracaoMinutos, "genero": filme.genero, "tipo_exibicao": filme.tipoExibicao}
+                for filme in self.__filmes
+            ]
+            self.__tela_filme.mostra_filme(dados_filmes)
 
     def excluir_filme(self):
-        idFilme = self.__telaFilme.pega_id_valido_filme()
-        
-        filme_encontrado = False
+        if not self.__filmes:
+            self.__tela_filme.mostra_mensagem("Nenhum filme cadastrado para excluir.")
+            return
 
-        i = 0
-        while i < len(self.__filmes):
-            filme = self.__filmes[i]
-            if filme.idFilme == idFilme:
-                filme_encontrado = True
+        self.listar_filmes()
+        id_filme = self.__tela_filme.seleciona_filme()
+        if id_filme is None:
+            return
+
+        filme = self.pega_filme_por_id(id_filme)
+
+        if filme is not None:
+            self.__filmes.remove(filme)
+            self.__tela_filme.mostra_mensagem("Filme excluído com sucesso.")
+        else:
+            try:
+                raise FilmeNaoEncontrado()
+            except FilmeNaoEncontrado:
+                return
+
+    def retornar(self):
+        self.__controlador_sistema.abre_tela_sistema()
+
+    def abre_tela_filme(self):
+        while True:
+            opcao = self.__tela_filme.tela_opcoes_filme()
+            if opcao == 1:
+                self.listar_filmes()
+            elif opcao == 2:
+                self.incluir_filme()
+            elif opcao == 3:
+                self.mostrar_dados_filme()
+            elif opcao == 4:
+                self.alterar_filme()
+            elif opcao == 5:
+                self.excluir_filme()
+            elif opcao == 0:
+                self.retornar()
                 break
-            i += 1
-
-        print()       
-        if filme_encontrado:
-            self.__filmes.pop(i)
-            print("Filme deletado com sucesso!")
-        else:
-            print("Id inválido, não há filme com este id")
-        print()
-    
-    def lista_filmes(self):
-        if len(self.__filmes) == 0:
-            print()
-            print("Não há filme criado ainda")
-            print()
-        else:
-            for filme in self.__filmes:
-                print("-----------------------------")
-                print("IdFilme: ",filme.idFilme)
-                print("Titulo: ",filme.titulo)
-                print("Duracao Em Minutos: ",filme.duracaoMinutos)
-                tipo_de_exibicao = ""
-                if filme.tipoExibicao == 1:
-                    tipo_de_exibicao = "dublado"
-                elif filme.tipoExibicao == 2:
-                    tipo_de_exibicao = "legendado"
-                elif filme.tipoExibicao == 3:
-                    tipo_de_exibicao = "dublado e legendado"
-
-                print("Tipo de Exibicao: ", tipo_de_exibicao)
-
-                genero = ""
-                if filme.genero == 1:
-                    genero = "acao"
-                elif filme.genero == 2:
-                    genero = "comedia"
-                elif filme.genero == 3:
-                    genero = "romance"
-                elif filme.genero == 4:
-                    genero = "ficcao cientifica"
-                    
-                print("Genero: ", genero)
-                print("-----------------------------")
-                print()
-
-    def pega_filme_pelo_id(self,id_filme:int):
-        for filme in self.__filmes:
-            if filme.idFilme == id_filme:
-                return filme
-        return -1
-    
-    def existe_filme(self):
-        return len(self.__filmes) > 0
+            else:
+                self.__tela_filme.mostra_mensagem("Opção inválida.")
+                try:
+                    raise OpcaoValida()
+                except OpcaoValida:
+                    return
