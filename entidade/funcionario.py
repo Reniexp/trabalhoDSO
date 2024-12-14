@@ -2,8 +2,6 @@
 
 class EntidadeFuncionario():
     def __init__(self, cpf, id_funcionario, nome, cargo, salario, periodo):
-        
-        
         self.__cpf = cpf
         self.__id_funcionario = id_funcionario
         self.__nome = nome
@@ -11,6 +9,9 @@ class EntidadeFuncionario():
         self.__salario = salario
         self.__periodo = periodo
 
+    def __eq__(self, value):
+        return self.__id_funcionario == value.id_funcionario
+    
     @property
     def cpf(self):
         return self.__cpf

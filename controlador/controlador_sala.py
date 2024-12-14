@@ -10,7 +10,7 @@ import os
 class ControladorSala:
     def __init__(self, controlador_sistema):
         self.__tela_sala = TelaSala()
-        self.__salas = []
+        self.__salas = self.load()
         self.__controlador_sistema = controlador_sistema
 
     @property

@@ -9,13 +9,12 @@ import os
 
 class ControladorSessao:
     def __init__(self, controlador_sistema):
-        self.__sessoes = []
-        self.__tela_sessao = TelaSessao()
+        self.__sessoes = self.load()
         self.__controlador_sistema = controlador_sistema
+        self.__tela_sessao = TelaSessao()
 
     def load(self):
         try:
-            #with open(os.getcwd() + r"\controlador\sessoes.pkl", "rb") as arq_sessoes:
             with open(os.getcwd().replace("\\","/")+"/controlador/sessoes.pkl", "rb") as arq_sessoes:
                 return pickle.load(arq_sessoes)
         except EOFError:
@@ -23,8 +22,6 @@ class ControladorSessao:
 
     def dump(self):
         try:
-            with open(os.getcwd() + r"\controlador\sessoes.pkl", "wb") as arq_sessoes:
-                return pickle.dump(self.__sessoes, arq_sessoes)
             with open(os.getcwd().replace("\\","/")+"/controlador/sessoes.pkl", "wb") as arq_sessoes_escrita:
                 pickle.dump(self.__sessoes,arq_sessoes_escrita)
         except EOFError:

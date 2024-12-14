@@ -6,7 +6,6 @@ class TipoDeExibicao():
             self.__tipo_de_exibicao = "legendado"
         elif codigo_do_tipo_de_exibicao == 3:
             self.__tipo_de_exibicao = "dublado e legendado"
-    
     @property
     def tipo_de_exibicao(self):
         return self.__tipo_de_exibicao
@@ -29,6 +28,8 @@ class Filme:
         self.__duracaoMinutos = duracaoMinutos
         self.__genero = genero
         self.__tipoExibicao = tipoExibicao
+    def __eq__(self, value):
+        return self.__id_filme == value.id_filme
     
     @property
     def id_filme(self):

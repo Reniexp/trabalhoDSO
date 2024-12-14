@@ -5,7 +5,8 @@ class Cliente:
         self.__nome = nome
         self.__filmes_vistos = []
         self.__sessoes_aguardando = []
-
+    def __eq__(self, value):
+        return self.id_cliente == value.id_cliente
     @property
     def cpf(self):
         return self.__cpf
