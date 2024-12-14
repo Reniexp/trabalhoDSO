@@ -112,7 +112,7 @@ class ControladorCliente:
                 return
 
     def lista_clientes(self):
-        if not self.__clientes:
+        if not self.load():
             self.__tela_cliente.mostra_mensagem("Nenhum cliente cadastrado.")
             try:
                 raise ClienteNaoCadastrado()
@@ -121,7 +121,7 @@ class ControladorCliente:
         else:
             dados_clientes = [
                 {"cpf": cliente.cpf, "id_cliente": cliente.id_cliente, "nome": cliente.nome}
-                for cliente in self.__clientes
+                for cliente in self.load()
             ]
             self.__tela_cliente.mostra_cliente(dados_clientes)
 

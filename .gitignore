@@ -1,8 +1,3 @@
-controlador/clientes.pkl
-controlador/funcionarios.pkl
-controlador/salas.pkl
-controlador/sessoes.pkl
-controlador/filmes.pkl
 controlador/__pycache__
 entidade/__pycache__
 exceptions/__pycache__
