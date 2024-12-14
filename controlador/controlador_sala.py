@@ -22,14 +22,14 @@ class ControladorSala:
         #sessoes = pickle.load(arq_sessoes)
         #return sessoes
         try:
-            with open(os.getcwd()+"\controlador\salas.pkl", "rb") as arq_salas:
+            with open(os.getcwd().replace("\\","/")+"/controlador/salas.pkl", "rb") as arq_salas:
                 return pickle.load(arq_salas)
         except EOFError:
             return [] 
     
     def dump(self):
         try:
-            with open(os.getcwd()+"\controlador\salas.pkl", "wb") as arq_salas_escrita:
+            with open(os.getcwd().replace("\\","/")+"/controlador/salas.pkl", "wb") as arq_salas_escrita:
                 pickle.dump(self.__salas,arq_salas_escrita)
         except EOFError:
             raise NaoFoiPossivelPersistirOsDados()

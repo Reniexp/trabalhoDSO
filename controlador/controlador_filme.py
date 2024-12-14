@@ -19,14 +19,14 @@ class ControladorFilme:
         #return filmes
     
         try:
-            with open(os.getcwd()+r"\controlador\filmes.pkl", "rb") as arq_filmes:
+            with open(os.getcwd().replace("\\","/")+"/controlador/filmes.pkl", "rb") as arq_filmes:
                 return pickle.load(arq_filmes)
         except EOFError:
             return []
     
     def dump(self):
         try:
-            with open(os.getcwd()+r"\controlador\filmes.pkl", "wb") as arq_filmes:
+            with open(os.getcwd().replace("\\","/")+"/controlador/filmes.pkl", "wb") as arq_filmes:
                 return pickle.dump(self.__filmes,arq_filmes)
         except EOFError:
             raise NaoFoiPossivelPersistirOsDados()
@@ -186,3 +186,4 @@ class ControladorFilme:
 
     def existe_filme(self):
         return bool(self.listar_filmes)
+    

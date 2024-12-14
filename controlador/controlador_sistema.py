@@ -84,7 +84,7 @@ class ControladorSistema:
             elif opcao == 4:
                 self.__controlador_sala.abre_tela_sala()
             elif opcao == 5:
-                self.__controlador_caixa.abre_tela()
+                self.__controlador_caixa.abre_tela_caixa()
             elif opcao == 6:
                 if self.requisitos_para_sessao():
                     self.__controlador_sessao.abre_tela_sessao()

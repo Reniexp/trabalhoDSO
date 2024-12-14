@@ -21,7 +21,7 @@ class ControladorFuncionarios:
     
     def dump(self):
         try:
-            with open(os.getcwd()+r"\controlador\funcionarios.pkl", "wb") as arq_funcionarios:
+            with open(os.getcwd().replace("\\","/")+"/controlador/funcionarios.pkl", "wb") as arq_funcionarios:
                 return pickle.dump(self.__funcionarios,arq_funcionarios)
         except EOFError:
             raise NaoFoiPossivelPersistirOsDados()
@@ -95,7 +95,7 @@ class ControladorFuncionarios:
                     "cargo": func.cargo,
                     "salario": func.salario,
                     "periodo": func.periodo
-                } for func in self.__funcionarios
+                } for func in self.load()
             ]
             self.__tela_funcionario.mostra_funcionarios(dados_funcionarios)
 
@@ -112,8 +112,8 @@ class ControladorFuncionarios:
         funcionario = self.pega_funcionario_por_id(id_funcionario)
 
         if funcionario is not None:
-            self.__funcionarios.remove(funcionario)
             self.dump()
+            self.__funcionarios.remove(funcionario)
             self.__tela_funcionario.mostra_mensagem("Funcionário excluído com sucesso.")
         else:
             self.__tela_funcionario.mostra_mensagem("Funcionário não encontrado.")
