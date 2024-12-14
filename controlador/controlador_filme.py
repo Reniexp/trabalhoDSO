@@ -9,7 +9,7 @@ import os
 
 class ControladorFilme:
     def __init__(self, controlador_sistema):
-        self.__filmes = []
+        self.__filmes = self.load()
         self.__tela_filme = TelaFilme()
         self.__controlador_sistema = controlador_sistema
     

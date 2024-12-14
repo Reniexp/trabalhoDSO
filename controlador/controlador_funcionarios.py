@@ -6,7 +6,7 @@ import os
 
 class ControladorFuncionarios:
     def __init__(self, controlador_sistema):
-        self.__funcionarios = []
+        self.__funcionarios = self.load()
         self.__tela_funcionario = TelaFuncionario()
         self.__controlador_sistema = controlador_sistema
     def load(self):
@@ -112,8 +112,8 @@ class ControladorFuncionarios:
         funcionario = self.pega_funcionario_por_id(id_funcionario)
 
         if funcionario is not None:
-            self.dump()
             self.__funcionarios.remove(funcionario)
+            self.dump()
             self.__tela_funcionario.mostra_mensagem("Funcionário excluído com sucesso.")
         else:
             self.__tela_funcionario.mostra_mensagem("Funcionário não encontrado.")

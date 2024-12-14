@@ -8,7 +8,7 @@ import pickle
 import os
 class ControladorSessao:
     def __init__(self, controlador_sistema):
-        self.__sessoes = []
+        self.__sessoes = self.load()
         self.__controlador_sistema = controlador_sistema
         self.__tela_sessao = TelaSessao()
 

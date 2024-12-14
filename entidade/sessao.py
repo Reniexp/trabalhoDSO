@@ -11,6 +11,9 @@ class Sessao:
         self.__funcionario = funcionario
         self.__assentos_disponiveis = sala.capacidade
     
+    def __eq__(self, value):
+        return self.__idSessao == value.idSessao
+    
     @property
     def idSessao(self):
         return self.__idSessao
