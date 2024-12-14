@@ -9,7 +9,7 @@ import os
 
 class ControladorFilme:
     def __init__(self, controlador_sistema):
-        self.__filmes = self.load()
+        self.__filmes = []
         self.__tela_filme = TelaFilme()
         self.__controlador_sistema = controlador_sistema
     
@@ -186,4 +186,3 @@ class ControladorFilme:
 
     def existe_filme(self):
         return bool(self.listar_filmes)
-    

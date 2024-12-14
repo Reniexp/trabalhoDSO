@@ -6,7 +6,7 @@ import os
 
 class ControladorFuncionarios:
     def __init__(self, controlador_sistema):
-        self.__funcionarios = self.load()
+        self.__funcionarios = []
         self.__tela_funcionario = TelaFuncionario()
         self.__controlador_sistema = controlador_sistema
     def load(self):
