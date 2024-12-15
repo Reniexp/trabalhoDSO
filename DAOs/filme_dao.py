@@ -6,7 +6,7 @@ class filmeDAO(DAO):
     def __init__(self):
         super().__init__('filme.pkl')
 
-    def add(self, filme: Filmeilme):
+    def add(self, filme: Filme):
         if((filme is not None) and isinstance(filme, Filme) and isinstance(filme.cpf, int)):
             super().add(filme.cpf, filme)
 
