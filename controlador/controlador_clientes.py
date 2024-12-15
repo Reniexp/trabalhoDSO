@@ -5,12 +5,14 @@ from exceptions.ClienteNaoEncontrado import ClienteNaoEncontrado
 from exceptions.ClienteNaoCadastrado import ClienteNaoCadastrado
 from exceptions.OpcaoInvalida import OpcaoValida
 from exceptions.NaoFoiPossivelPersistirOsDados import NaoFoiPossivelPersistirOsDados
+from DAOs.cliente_dao import ClienteDAO
 import pickle
 import os
 
 class ControladorCliente:
     def __init__(self, controlador_sistema):
-        self.__clientes = []
+        #self.__clientes = []
+        self.__cliente_DAO = ClienteDAO()
         self.__tela_cliente = TelaCliente()
         self.__controlador_sistema = controlador_sistema
 
@@ -37,10 +39,16 @@ class ControladorCliente:
         return self.__clientes
 
     def pega_cliente_por_id(self, id_cliente: int):
-        for cliente in self.load():
-            if cliente.id_cliente == id_cliente:
+        #for cliente in self.load():
+        #    if cliente.id_cliente == id_cliente:
+        #        return cliente
+        #return None
+        for cliente in self.__cliente_DAO.get_all():
+            #print(cliente.id_cliente)
+            if(cliente.id_cliente == id_cliente):
                 return cliente
         return None
+
 
     def incluir_cliente(self):
         dados_cliente = self.__tela_cliente.pega_dados_cliente()
@@ -53,7 +61,8 @@ class ControladorCliente:
             novo_cliente = Cliente(
                 dados_cliente["cpf"], dados_cliente["id_cliente"], dados_cliente["nome"]
             )
-            self.__clientes.append(novo_cliente)
+            self.__cliente_DAO.add(novo_cliente)
+            #self.__clientes.append(novo_cliente)
             self.dump()
             self.__tela_cliente.mostra_mensagem("Cliente incluído com sucesso!")
         else:
@@ -63,7 +72,7 @@ class ControladorCliente:
                 return
 
     def alterar_cliente(self):
-        if not self.__clientes:
+        if not self.__cliente_DAO:
             self.__tela_cliente.mostra_mensagem("Nenhum cliente cadastrado para alterar.")
             return
 
