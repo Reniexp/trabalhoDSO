@@ -132,7 +132,7 @@ class ControladorFilme:
         else:
             dados_filmes = [
                 {"id_filme": filme.id_filme, "titulo": filme.titulo, "duracao": filme.duracaoMinutos, "genero": filme.genero, "tipo_exibicao": filme.tipoExibicao}
-                for filme in self.__filmes
+                for filme in self.load()
             ]
             self.__tela_filme.mostra_filme(dados_filmes)
 

@@ -143,7 +143,7 @@ class ControladorSessao:
                     "sala": sessao.sala.numero,
                     "funcionario": sessao.funcionario.nome
                 }
-                for sessao in self.__sessoes
+                for sessao in self.load()
             ]
             self.__tela_sessao.mostra_sessoes(dados_sessoes)
 

@@ -114,7 +114,7 @@ class ControladorSala:
                 return
             
     def lista_salas(self):
-        if not self.__salas:
+        if not self.load():
             self.__tela_sala.mostra_mensagem("Nenhuma sala cadastrada.")
             try:
                 raise SalaNaoEncontrada()
@@ -127,7 +127,7 @@ class ControladorSala:
                     "id_sala": sala.id_sala,
                     "nome_sala": sala.nome_sala,
                     "capacidade": sala.capacidade
-                } for sala in self.__salas
+                } for sala in self.load()
             ]
             self.__tela_sala.mostra_sala(dados_salas)
 
