@@ -7,12 +7,12 @@ class sessaoDAO(DAO):
         super().__init__('sessao.pkl')
 
     def add(self, sessao: Sessao):
-        if((sessao is not None) and isinstance(sessao, Sessao) and isinstance(sessao.cpf, int)):
-            super().add(sessao.cpf, sessao)
+        if((sessao is not None) and isinstance(sessao, Sessao) and isinstance(sessao.id_sessao, int)):
+            super().add(sessao.id_sessao, sessao)
 
     def update(self, sessao: Sessao):
-        if((sessao is not None) and isinstance(sessao, Sessao) and isinstance(sessao.cpf, int)):
-            super().update(sessao.cpf, sessao)
+        if((sessao is not None) and isinstance(sessao, Sessao) and isinstance(sessao.id_sessao, int)):
+            super().update(sessao.id_sessao, sessao)
 
     def get(self, key:int):
         if isinstance(key, int):

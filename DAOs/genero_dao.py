@@ -7,12 +7,12 @@ class generoDAO(DAO):
         super().__init__('genero.pkl')
 
     def add(self, genero: Genero):
-        if((genero is not None) and isinstance(genero, Genero) and isinstance(genero.cpf, int)):
-            super().add(genero.cpf, genero)
+        if((genero is not None) and isinstance(genero, Genero) and isinstance(genero.nome, str)):
+            super().add(genero.nome, genero)
 
     def update(self, genero: Genero):
-        if((genero is not None) and isinstance(genero, Genero) and isinstance(genero.cpf, int)):
-            super().update(genero.cpf, genero)
+        if((genero is not None) and isinstance(genero, Genero) and isinstance(genero.nome, str)):
+            super().update(genero.nome, genero)
 
     def get(self, key:int):
         if isinstance(key, int):

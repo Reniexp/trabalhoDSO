@@ -12,7 +12,7 @@ class Sessao:
         self.__assentos_disponiveis = sala.capacidade
     
     def __eq__(self, value):
-        return self.__idSessao == value.idSessao
+        return self.__id_sessao == value.id_sessao
     
     @property
     def id_sessao(self):

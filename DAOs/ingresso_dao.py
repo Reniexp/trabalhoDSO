@@ -7,12 +7,12 @@ class ingressoDAO(DAO):
         super().__init__('ingresso.pkl')
 
     def add(self, ingresso: Ingresso):
-        if((ingresso is not None) and isinstance(ingresso, Ingresso) and isinstance(ingresso.cpf, int)):
-            super().add(ingresso.cpf, ingresso)
+        if((ingresso is not None) and isinstance(ingresso, Ingresso) and isinstance(ingresso.id_ingresso, int)):
+            super().add(ingresso.id_ingresso, ingresso)
 
     def update(self, ingresso: Ingresso):
-        if((ingresso is not None) and isinstance(ingresso, Ingresso) and isinstance(ingresso.cpf, int)):
-            super().update(ingresso.cpf, ingresso)
+        if((ingresso is not None) and isinstance(ingresso, Ingresso) and isinstance(ingresso.id_ingresso, int)):
+            super().update(ingresso.id_ingresso, ingresso)
 
     def get(self, key:int):
         if isinstance(key, int):
