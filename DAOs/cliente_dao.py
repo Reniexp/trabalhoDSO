@@ -10,7 +10,7 @@ class ClienteDAO(DAO):
         if((cliente is not None) and isinstance(cliente, Cliente) and isinstance(cliente.cpf, int)):
             super().add(cliente.cpf, cliente)
 
-    def update(self, cliente: Amigo):
+    def update(self, cliente: Cliente):
         if((cliente is not None) and isinstance(cliente, Cliente) and isinstance(cliente.cpf, int)):
             super().update(cliente.cpf, cliente)
 
