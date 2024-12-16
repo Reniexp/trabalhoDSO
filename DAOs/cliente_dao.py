@@ -7,7 +7,7 @@ class ClienteDAO(DAO):
         super().__init__(data_source)
 
     def add(self, cliente: Cliente):
-        if((cliente is not None) and isinstance(cliente, Cliente) and isinstance(cliente.cpf, int)):
+        if (cliente is not None) and isinstance(cliente, Cliente) : #and isinstance(cliente.cpf, int))
             super().add(cliente)
 
     def update(self, cliente: Cliente):

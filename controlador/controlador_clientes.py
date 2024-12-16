@@ -12,8 +12,8 @@ import os
 class ControladorCliente:
     def __init__(self, controlador_sistema):
         #self.__clientes = []
-        cliente_directory = os.getcwd().replace("\\","/")+"/controlador/clientes.pkl"
-        self.__cliente_DAO = ClienteDAO(cliente_directory)
+        #cliente_directory = os.getcwd().replace("\\","/")+"/controlador/clientes.pkl"
+        self.__cliente_DAO = ClienteDAO("clientes.pkl")
         self.__tela_cliente = TelaCliente()
         self.__controlador_sistema = controlador_sistema
 
@@ -116,7 +116,7 @@ class ControladorCliente:
             self.__tela_cliente.mostra_cliente(dados_clientes)
 
     def excluir_cliente(self):
-        if not self.__cliente_DAO.get_all():
+        if  len(self.__cliente_DAO.get_all()) == 0:
             self.__tela_cliente.mostra_mensagem("Nenhum cliente cadastrado para excluir.")
             return
 

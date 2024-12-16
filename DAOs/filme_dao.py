@@ -7,7 +7,7 @@ class FilmeDAO(DAO):
         super().__init__(data_source)
 
     def add(self, filme: Filme):
-        if((filme is not None) and isinstance(filme, Filme) and isinstance(filme.id_filme, int)):
+        if (filme is not None) and isinstance(filme, Filme) : #and isinstance(filme.id_filme, int))
             super().add(filme)
 
     def update(self, filme: Filme):
