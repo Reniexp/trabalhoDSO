@@ -49,7 +49,7 @@ class ControladorCaixa:
 
         if sessao.assentos_disponiveis <= 0:
             try:
-                raise AusenciaDeAssentosDisponiveis
+                raise AusenciaDeAssentosDisponiveis()
             except AusenciaDeAssentosDisponiveis:
                 return
 
