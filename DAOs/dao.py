@@ -3,9 +3,9 @@ from abc import ABC, abstractmethod
 
 class DAO(ABC):
     @abstractmethod
-    def __init__(self, datasource=''):
+    def __init__(self, datasource: str):
         self.__datasource = datasource
-        self.__cache = {} #é aqui que vai ficar a lista que estava no controlador. Nesse exemplo estamos usando um dicionario
+        self.__cache = [] 
         try:
             self.__load()
         except FileNotFoundError:
@@ -15,11 +15,14 @@ class DAO(ABC):
         pickle.dump(self.__cache, open(self.__datasource, 'wb'))
 
     def __load(self):
-        self.__cache = pickle.load(open(self.__datasource,'rb'))
+        try:
+            self.__cache = pickle.load(open(self.__datasource,'rb'))
+        except EOFError:
+            return []
 
     #esse método precisa chamar o self.__dump()
-    def add(self, key, obj):
-        self.__cache[key] = obj
+    def add(self, obj):
+        self.__cache.append(obj)
         self.__dump()  #atualiza o arquivo depois de add novo amigo
 
     #cuidado: esse update só funciona se o objeto com essa chave já existe
@@ -40,10 +43,10 @@ class DAO(ABC):
     # esse método precisa chamar o self.__dump()
     def remove(self, key):
         try:
-            self.__cache.pop(key)
+            self.__cache.remove(key)
             self.__dump() #atualiza o arquivo depois de remover um objeto
         except KeyError:
             pass #implementar aqui o tratamento da exceção
 
     def get_all(self):
-        return self.__cache.values()
+        return self.__cache

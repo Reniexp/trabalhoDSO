@@ -21,8 +21,8 @@ class TelaSala:
             opcao = 4
         elif values.get('5'):
             opcao = 5
-        elif values.get('6'):
-            opcao = 6
+        # elif values.get('6'):
+        #     opcao = 6
         elif values.get('0') or button in (None, 'Cancelar'):
             opcao = 0
 
@@ -36,7 +36,6 @@ class TelaSala:
             [sg.Text('Escolha sua opção', font=("Helvica", 15))],
             [sg.Radio('Mostrar Salas Disponíveis', "RD1", key='1')],
             [sg.Radio('Cadastrar Nova Sala', "RD1", key='2')],
-            [sg.Radio('Mostrar dados de Sala', "RD1", key='3')],
             [sg.Radio('Alterar Sala', "RD1", key='4')],
             [sg.Radio('Deletar Sala', "RD1", key='5')],
             [sg.Radio('Sair da Tela Sala', "RD1", key='6')],

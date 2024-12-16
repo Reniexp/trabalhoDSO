@@ -4,44 +4,28 @@ from exceptions.SessaoNaoEncontrada import SessaoNaoEncontrada
 from exceptions.SessaoJaExiste import SessaoJaExiste
 from exceptions.OpcaoValida import OpcaoValida
 from exceptions.NaoFoiPossivelPersistirOsDados import NaoFoiPossivelPersistirOsDados
+from DAOs.sessao_dao import SessaoDAO
 import pickle
 import os
 
 class ControladorSessao:
     def __init__(self, controlador_sistema):
-        self.__sessoes = []
+        self.__sessoes_DAO = SessaoDAO(os.getcwd().replace("\\","/")+"/controlador/sessoes.pkl")
         self.__tela_sessao = TelaSessao()
         self.__controlador_sistema = controlador_sistema
 
-    def load(self):
-        try:
-            #with open(os.getcwd() + r"\controlador\sessoes.pkl", "rb") as arq_sessoes:
-            with open(os.getcwd().replace("\\","/")+"/controlador/sessoes.pkl", "rb") as arq_sessoes:
-                return pickle.load(arq_sessoes)
-        except EOFError:
-            return []
-
-    def dump(self):
-        try:
-            with open(os.getcwd() + r"\controlador\sessoes.pkl", "wb") as arq_sessoes:
-                return pickle.dump(self.__sessoes, arq_sessoes)
-            with open(os.getcwd().replace("\\","/")+"/controlador/sessoes.pkl", "wb") as arq_sessoes_escrita:
-                pickle.dump(self.__sessoes,arq_sessoes_escrita)
-        except EOFError:
-            raise NaoFoiPossivelPersistirOsDados()
-
     @property
     def sessoes(self):
-        return self.load()
+        return self.__sessoes_DAO.get_all()
 
     def pega_sessao_por_id(self, id_sessao: int):
-        for sessao in self.load():
+        for sessao in self.__sessoes_DAO.get_all():
             if sessao.id_sessao == id_sessao:
                 return sessao
         return None
 
     def mostrar_dados_sessao(self):
-        if not self.load():
+        if  len(self.__sessoes_DAO.get_all()):
             self.__tela_sessao.mostra_mensagem("Nenhuma sessão cadastrada.")
             return
 
@@ -88,8 +72,7 @@ class ControladorSessao:
                     sala,
                     funcionario
                 )
-                self.__sessoes.append(nova_sessao)
-                self.dump()
+                self.__sessoes_DAO.add(nova_sessao)
                 self.__tela_sessao.mostra_mensagem("Sessão incluída com sucesso!")
             else:
                 self.__tela_sessao.mostra_mensagem("Dados inválidos. Verifique as IDs informadas.")
@@ -100,7 +83,7 @@ class ControladorSessao:
                 return
 
     def alterar_sessao(self):
-        if not self.__sessoes:
+        if not self.__sessoes_DAO.get_all():
             self.__tela_sessao.mostra_mensagem("Nenhuma sessão cadastrada para alterar.")
             return
 
@@ -128,7 +111,7 @@ class ControladorSessao:
                 return
 
     def listar_sessoes(self):
-        if not self.load():
+        if len(self.__sessoes_DAO.get_all()) == 0 :
             self.__tela_sessao.mostra_mensagem("Nenhuma sessão cadastrada.")
             try:
                 raise SessaoNaoEncontrada()
@@ -139,16 +122,16 @@ class ControladorSessao:
                 {
                     "id_sessao": sessao.id_sessao,
                     "horario": sessao.horario,
-                    "filme": sessao.filme.titulo,
-                    "sala": sessao.sala.numero,
-                    "funcionario": sessao.funcionario.nome
+                    "id_filme": sessao.filme.id_filme,
+                    "id_sala": sessao.sala.id_sala, #sala.numero,
+                    "id_funcionario": sessao.funcionario.id_funcionario
                 }
-                for sessao in self.load()
+                for sessao in self.__sessoes_DAO.get_all()
             ]
-            self.__tela_sessao.mostra_sessoes(dados_sessoes)
+            self.__tela_sessao.mostra_sessao(dados_sessoes)
 
     def excluir_sessao(self):
-        if not self.load():
+        if not self.__sessoes_DAO.get_all():
             self.__tela_sessao.mostra_mensagem("Nenhuma sessão cadastrada para excluir.")
             return
 
@@ -160,8 +143,7 @@ class ControladorSessao:
         sessao = self.pega_sessao_por_id(id_sessao)
 
         if sessao is not None:
-            self.__sessoes.remove(sessao)
-            self.dump()
+            self.__sessoes_DAO.remove(sessao)
             self.__tela_sessao.mostra_mensagem("Sessão excluída com sucesso.")
         else:
             try:

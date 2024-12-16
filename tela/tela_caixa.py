@@ -20,8 +20,8 @@ class TelaCaixa:
             opcao = 4
         elif values.get('5'):
             opcao = 5
-        elif values.get('6'):
-            opcao = 6
+        # elif values.get('6'):
+        #     opcao = 6
         elif values.get('0') or button in (None, 'Cancelar'):
             opcao = 0
 

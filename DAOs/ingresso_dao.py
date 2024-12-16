@@ -3,8 +3,8 @@ from entidade.ingresso import Ingresso
 
 
 class ingressoDAO(DAO):
-    def __init__(self):
-        super().__init__('ingresso.pkl')
+    def __init__(self, data_source):
+        super().__init__(data_source) #'ingresso.pkl'
 
     def add(self, ingresso: Ingresso):
         if((ingresso is not None) and isinstance(ingresso, Ingresso) and isinstance(ingresso.id_ingresso, int)):
@@ -14,10 +14,10 @@ class ingressoDAO(DAO):
         if((ingresso is not None) and isinstance(ingresso, Ingresso) and isinstance(ingresso.id_ingresso, int)):
             super().update(ingresso.id_ingresso, ingresso)
 
-    def get(self, key:int):
-        if isinstance(key, int):
-            return super().get(key)
+    def get(self, ingresso: Ingresso):
+        if isinstance(ingresso, Ingresso):
+            return super().get(ingresso)
 
-    def remove(selfself, key:int):
-        if(isinstance(key, int)):
-            return super().remove(key)
+    def remove(selfself, ingresso: Ingresso):
+        if(isinstance(ingresso, Ingresso)):
+            return super().remove(ingresso)

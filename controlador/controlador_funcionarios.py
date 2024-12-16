@@ -1,33 +1,18 @@
 from entidade.funcionario import EntidadeFuncionario
 from tela.tela_funcionario import TelaFuncionario
 from exceptions.NaoFoiPossivelPersistirOsDados import NaoFoiPossivelPersistirOsDados
+from DAOs.funcionario_dao import FuncionarioDAO
 import pickle
 import os
 
 class ControladorFuncionarios:
     def __init__(self, controlador_sistema):
-        self.__funcionarios = []
+        self.__funcionarios_DAO = FuncionarioDAO(os.getcwd().replace("\\","/")+"/controlador/funcionarios.pkl")
         self.__tela_funcionario = TelaFuncionario()
         self.__controlador_sistema = controlador_sistema
-    def load(self):
-        #arq_funcionarios = open('funcionarios.pkl', "rb")
-        #funcionarios = pickle.load(arq_funcionarios)
-        #return funcionarios
-        try:
-            with open(os.getcwd()+r"\controlador\funcionarios.pkl", "rb") as arq_funcionarios:
-                return pickle.load(arq_funcionarios)
-        except EOFError:
-            return []
-    
-    def dump(self):
-        try:
-            with open(os.getcwd().replace("\\","/")+"/controlador/funcionarios.pkl", "wb") as arq_funcionarios:
-                return pickle.dump(self.__funcionarios,arq_funcionarios)
-        except EOFError:
-            raise NaoFoiPossivelPersistirOsDados()
 
     def pega_funcionario_por_id(self, id_funcionario: int):
-        for funcionario in self.load():
+        for funcionario in self.__funcionarios_DAO.get_all():
             if funcionario.id_funcionario == id_funcionario:
                 return funcionario
         return None
@@ -49,14 +34,13 @@ class ControladorFuncionarios:
                 dados_funcionario["salario"],
                 dados_funcionario["periodo"]
             )
-            self.__funcionarios.append(funcionario)
-            self.dump()
+            self.__funcionarios_DAO.add(funcionario)
             self.__tela_funcionario.mostra_mensagem("Funcionário incluído com sucesso.")
         else:
             self.__tela_funcionario.mostra_mensagem(f"Funcionário com ID {id_funcionario} já existe.")
 
     def alterar_funcionario(self):
-        if not self.__funcionarios:
+        if  len(self.__funcionarios_DAO.get_all()) == 0:
             self.__tela_funcionario.mostra_mensagem("Nenhum funcionário cadastrado para alterar.")
             return
 
@@ -84,7 +68,7 @@ class ControladorFuncionarios:
             self.__tela_funcionario.mostra_mensagem("Funcionário não encontrado.")
 
     def lista_funcionarios(self):
-        if not self.load():
+        if  len(self.__funcionarios_DAO.get_all()) == 0:
             self.__tela_funcionario.mostra_mensagem("Nenhum funcionário cadastrado.")
         else:
             dados_funcionarios = [
@@ -95,12 +79,12 @@ class ControladorFuncionarios:
                     "cargo": func.cargo,
                     "salario": func.salario,
                     "periodo": func.periodo
-                } for func in self.load()
+                } for func in self.__funcionarios_DAO.get_all()
             ]
             self.__tela_funcionario.mostra_funcionarios(dados_funcionarios)
 
     def excluir_funcionario(self):
-        if not self.__funcionarios:
+        if len(self.__funcionarios_DAO.get_all()) == 0:
             self.__tela_funcionario.mostra_mensagem("Nenhum funcionário cadastrado para excluir.")
             return
 
@@ -112,8 +96,7 @@ class ControladorFuncionarios:
         funcionario = self.pega_funcionario_por_id(id_funcionario)
 
         if funcionario is not None:
-            self.dump()
-            self.__funcionarios.remove(funcionario)
+            self.__funcionarios_DAO.remove(funcionario)
             self.__tela_funcionario.mostra_mensagem("Funcionário excluído com sucesso.")
         else:
             self.__tela_funcionario.mostra_mensagem("Funcionário não encontrado.")

@@ -2,22 +2,22 @@ from DAOs.dao import DAO
 from entidade.sessao import Sessao
 
 
-class sessaoDAO(DAO):
-    def __init__(self):
-        super().__init__('sessao.pkl')
+class SessaoDAO(DAO):
+    def __init__(self,data_source):
+        super().__init__(data_source)
 
     def add(self, sessao: Sessao):
         if((sessao is not None) and isinstance(sessao, Sessao) and isinstance(sessao.id_sessao, int)):
-            super().add(sessao.id_sessao, sessao)
+            super().add(sessao)
 
     def update(self, sessao: Sessao):
         if((sessao is not None) and isinstance(sessao, Sessao) and isinstance(sessao.id_sessao, int)):
-            super().update(sessao.id_sessao, sessao)
+            super().update(sessao)
 
-    def get(self, key:int):
-        if isinstance(key, int):
-            return super().get(key)
+    def get(self, sessao:Sessao):
+        if isinstance(sessao, Sessao):
+            return super().get(sessao)
 
-    def remove(selfself, key:int):
-        if(isinstance(key, int)):
-            return super().remove(key)
+    def remove(selfself, sessao: Sessao):
+        if(isinstance(sessao, Sessao)):
+            return super().remove(sessao)

@@ -20,8 +20,8 @@ class TelaFilme:
             opcao = 4
         elif values.get('5'):
             opcao = 5
-        elif values.get('6'):
-            opcao = 6
+        # elif values.get('6'):
+        #     opcao = 6
         elif values.get('0') or button in (None, 'Cancelar'):
             opcao = 0
 
@@ -35,7 +35,6 @@ class TelaFilme:
             [sg.Text('Escolha sua opção', font=("Helvica", 15))],
             [sg.Radio('Mostrar Filmes Disponíveis', "RD1", key='1')],
             [sg.Radio('Cadastrar Novo Filme', "RD1", key='2')],
-            [sg.Radio('Mostrar dados de Filme', "RD1", key='3')],
             [sg.Radio('Alterar Filme', "RD1", key='4')],
             [sg.Radio('Deletar Filme', "RD1", key='5')],
             [sg.Radio('Sair da Tela Filme', "RD1", key='6')],

@@ -2,9 +2,9 @@ from DAOs.dao import DAO
 from entidade.funcionario import EntidadeFuncionario
 
 
-class funcionarioDAO(DAO):
-    def __init__(self):
-        super().__init__('funcionario.pkl')
+class FuncionarioDAO(DAO):
+    def __init__(self, data_source: str):
+        super().__init__(data_source)
 
     def add(self, funcionario: EntidadeFuncionario):
         if((funcionario is not None) and isinstance(funcionario, EntidadeFuncionario) and isinstance(funcionario.cpf, int)):
@@ -14,10 +14,10 @@ class funcionarioDAO(DAO):
         if((funcionario is not None) and isinstance(funcionario, EntidadeFuncionario) and isinstance(funcionario.cpf, int)):
             super().update(funcionario.cpf, funcionario)
 
-    def get(self, key:int):
-        if isinstance(key, int):
-            return super().get(key)
+    def get(self, funcionario: EntidadeFuncionario):
+        if isinstance(funcionario, EntidadeFuncionario):
+            return super().get(funcionario)
 
-    def remove(selfself, key:int):
-        if(isinstance(key, int)):
-            return super().remove(key)
+    def remove(selfself, funcionario:EntidadeFuncionario):
+        if(isinstance(funcionario, EntidadeFuncionario)):
+            return super().remove(funcionario)

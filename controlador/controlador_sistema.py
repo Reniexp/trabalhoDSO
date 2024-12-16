@@ -54,7 +54,7 @@ class ControladorSistema:
     def obter_sessao_por_id(self, id_sessao):
         self.sessoes = self.__controlador_sessao.sessoes
         for sessao in self.sessoes:
-            if sessao.idSessao == id_sessao:
+            if sessao.id_sessao == id_sessao:
                 return sessao
         return None 
 

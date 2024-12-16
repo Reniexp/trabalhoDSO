@@ -4,45 +4,32 @@ from exceptions.FilmeNaoEncontrado import FilmeNaoEncontrado
 from exceptions.FilmeJaExiste import FilmeJaExiste
 from exceptions.OpcaoValida import OpcaoValida
 from exceptions.NaoFoiPossivelPersistirOsDados import NaoFoiPossivelPersistirOsDados
+from DAOs.filme_dao import FilmeDAO
 import pickle
 import os
 
 class ControladorFilme:
     def __init__(self, controlador_sistema):
-        self.__filmes = []
+        self.__filme_DAO = FilmeDAO(os.getcwd().replace("\\","/")+"/controlador/filmes.pkl")
         self.__tela_filme = TelaFilme()
         self.__controlador_sistema = controlador_sistema
     
-    def load(self):
-        #rq_filmes = open('filmes.pkl', "rb")
-        #filmes = pickle.load(arq_filmes)
-        #return filmes
-    
-        try:
-            with open(os.getcwd().replace("\\","/")+"/controlador/filmes.pkl", "rb") as arq_filmes:
-                return pickle.load(arq_filmes)
-        except EOFError:
-            return []
-    
-    def dump(self):
-        try:
-            with open(os.getcwd().replace("\\","/")+"/controlador/filmes.pkl", "wb") as arq_filmes:
-                return pickle.dump(self.__filmes,arq_filmes)
-        except EOFError:
-            raise NaoFoiPossivelPersistirOsDados()
-    
     @property
     def filmes(self):
-        return self.load()
+        return self.__filme_DAO.get_all()
 
     def pega_filme_por_id(self, id_filme: int):
-        for filme in self.load():
+        # for filme in self.load():
+        #     if filme.id_filme == id_filme:
+        #         return filme
+        # return None
+        for filme in self.__filme_DAO.get_all():
             if filme.id_filme == id_filme:
                 return filme
         return None
     
     def mostrar_dados_filme(self):
-        if not self.load():
+        if  len(self.__filme_DAO.get_all()) == 0 :
             self.__tela_filme.mostra_mensagem("Nenhum filme cadastrado.")
             return
 
@@ -86,7 +73,7 @@ class ControladorFilme:
                 dados_filme["genero"],
                 dados_filme["tipo_exibicao"]
             )
-            self.__filmes.append(novo_filme)
+            self.__filme_DAO.add(novo_filme)
             self.__tela_filme.mostra_mensagem("Filme incluído com sucesso!")
         else:
             try:
@@ -95,9 +82,11 @@ class ControladorFilme:
                 return
 
     def alterar_filme(self):
-        if not self.__filmes:
+        # if not self.__filmes:
+        #     self.__tela_filme.mostra_mensagem("Nenhum filme cadastrado para alterar.")
+        #     return
+        if not self.__filme_DAO:
             self.__tela_filme.mostra_mensagem("Nenhum filme cadastrado para alterar.")
-            return
 
         self.listar_filmes()
         id_filme = self.__tela_filme.seleciona_filme()
@@ -123,7 +112,7 @@ class ControladorFilme:
                 return
 
     def listar_filmes(self):
-        if not self.load():
+        if  len(self.__filme_DAO.get_all()) == 0 :
             self.__tela_filme.mostra_mensagem("Nenhum filme cadastrado.")
             try:
                 raise FilmeNaoEncontrado()
@@ -132,12 +121,12 @@ class ControladorFilme:
         else:
             dados_filmes = [
                 {"id_filme": filme.id_filme, "titulo": filme.titulo, "duracao": filme.duracaoMinutos, "genero": filme.genero, "tipo_exibicao": filme.tipoExibicao}
-                for filme in self.load()
+                for filme in self.__filme_DAO.get_all()
             ]
             self.__tela_filme.mostra_filme(dados_filmes)
 
     def excluir_filme(self):
-        if not self.load():
+        if  len(self.__filme_DAO.get_all()) == 0:
             self.__tela_filme.mostra_mensagem("Nenhum filme cadastrado para excluir.")
             return
 
@@ -149,8 +138,7 @@ class ControladorFilme:
         filme = self.pega_filme_por_id(id_filme)
 
         if filme is not None:
-            self.__filmes.remove(filme)
-            self.dump()
+            self.__filme_DAO.remove(filme)
             self.__tela_filme.mostra_mensagem("Filme excluído com sucesso.")
         else:
             try:

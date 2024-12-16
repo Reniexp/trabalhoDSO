@@ -12,31 +12,14 @@ import os
 class ControladorCliente:
     def __init__(self, controlador_sistema):
         #self.__clientes = []
-        self.__cliente_DAO = ClienteDAO()
+        cliente_directory = os.getcwd().replace("\\","/")+"/controlador/clientes.pkl"
+        self.__cliente_DAO = ClienteDAO(cliente_directory)
         self.__tela_cliente = TelaCliente()
         self.__controlador_sistema = controlador_sistema
 
-    def load(self):
-        #arq_clientes = open('clientes.pkl', "rb")
-        #clientes = pickle.load(arq_clientes)
-        #return clientes
-    
-        try:
-            with open(os.getcwd().replace("\\","/")+"/controlador/clientes.pkl", "rb") as arq_clientes:
-                return pickle.load(arq_clientes)
-        except EOFError:
-            return []
-    
-    def dump(self):
-        try:
-            with open(os.getcwd().replace("\\","/")+"/controlador/clientes.pkl", "wb") as arq_clientes:
-                return pickle.dump(self.__clientes,arq_clientes)
-        except EOFError:
-            raise NaoFoiPossivelPersistirOsDados()
-
     @property
     def clientes(self):
-        return self.__clientes
+        return self.__cliente_DAO.get_all()
 
     def pega_cliente_por_id(self, id_cliente: int):
         #for cliente in self.load():
@@ -62,8 +45,6 @@ class ControladorCliente:
                 dados_cliente["cpf"], dados_cliente["id_cliente"], dados_cliente["nome"]
             )
             self.__cliente_DAO.add(novo_cliente)
-            #self.__clientes.append(novo_cliente)
-            self.dump()
             self.__tela_cliente.mostra_mensagem("Cliente incluído com sucesso!")
         else:
             try:
@@ -72,7 +53,7 @@ class ControladorCliente:
                 return
 
     def alterar_cliente(self):
-        if not self.__cliente_DAO:
+        if  len(self.__cliente_DAO.get_all()) == 0:
             self.__tela_cliente.mostra_mensagem("Nenhum cliente cadastrado para alterar.")
             return
 
@@ -121,7 +102,7 @@ class ControladorCliente:
                 return
 
     def lista_clientes(self):
-        if not self.load():
+        if len(self.__cliente_DAO.get_all()) == 0:
             self.__tela_cliente.mostra_mensagem("Nenhum cliente cadastrado.")
             try:
                 raise ClienteNaoCadastrado()
@@ -130,12 +111,12 @@ class ControladorCliente:
         else:
             dados_clientes = [
                 {"cpf": cliente.cpf, "id_cliente": cliente.id_cliente, "nome": cliente.nome}
-                for cliente in self.load()
+                for cliente in self.__cliente_DAO.get_all()
             ]
             self.__tela_cliente.mostra_cliente(dados_clientes)
 
     def excluir_cliente(self):
-        if not self.__clientes:
+        if not self.__cliente_DAO.get_all():
             self.__tela_cliente.mostra_mensagem("Nenhum cliente cadastrado para excluir.")
             return
 
@@ -147,8 +128,7 @@ class ControladorCliente:
         cliente = self.pega_cliente_por_id(id_cliente)
 
         if cliente is not None:
-            self.__clientes.remove(cliente)
-            self.dump()
+            self.__cliente_DAO.remove(cliente)
             self.__tela_cliente.mostra_mensagem("Cliente excluído com sucesso.")
         else:
             try:

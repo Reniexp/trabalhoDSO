@@ -6,42 +6,29 @@ from exceptions.SessaoNaoEncontrada import SessaoNaoEncontrada
 from exceptions.AusenciaDeAssentosDisponiveis import AusenciaDeAssentosDisponiveis
 from exceptions.NenhumIngressoVendido import NenhumIngressoVendido
 from exceptions.NenhumaSessaoVendida import NenhumaSessaoVendida
+from DAOs.caixa_dao import CaixaDAO
 import pickle
 import os
 
 class ControladorCaixa:
     def __init__(self, controlador_sistema):
-        self.__caixa = Caixa()
+        self.__caixa_DAO = CaixaDAO(os.getcwd().replace("\\", "/") + "/controlador/caixa.pkl")
         self.__tela_caixa = TelaCaixa()
         self.__controlador_sistema = controlador_sistema
 
-    def load(self):
-        try:
-            with open(os.getcwd().replace("\\", "/") + "/controlador/caixa.pkl", "rb") as arq_caixa:
-                return pickle.load(arq_caixa)
-        except EOFError:
-            return []
-
-    def dump(self):
-        try:
-            with open(os.getcwd().replace("\\", "/") + "/controlador/caixa.pkl", "wb") as arq_caixa:
-                return pickle.dump(self.__caixa.ingressos_vendidos, arq_caixa)
-        except EOFError:
-            raise NenhumIngressoVendido()
-
     @property
     def ingressos_vendidos(self):
-        return self.load()
+        return self.__caixa_DAO.get_all()
 
     def pegar_ingresso_por_id(self, id_ingresso: int):
-        for ingresso in self.load():
+        for ingresso in self.__caixa_DAO.get_all():
             if ingresso.id_ingresso == id_ingresso:
                 return ingresso
         return None
 
     def vender_ingresso(self):
         dados_ingresso = self.__tela_caixa.pegar_dados_ingresso()
-        id_sessao = dados_ingresso["sessao"]
+        id_sessao = dados_ingresso["id_sessao"]
         assento = dados_ingresso["assento"]
         id_ingresso = dados_ingresso["id_ingresso"]
         id_cliente = dados_ingresso["id_cliente"]
@@ -67,13 +54,13 @@ class ControladorCaixa:
                 return
 
         ingresso = Ingresso(id_ingresso, assento, cliente, sessao)
-        self.__caixa.registrar_venda(ingresso)
+        self.__caixa_DAO.add(ingresso)
         sessao.assentos_disponiveis -= 1
 
         self.__tela_caixa.mostra_mensagem(f"Ingresso para '{sessao.filme.titulo}' vendido com sucesso!")
 
     def mostrar_total_vendas(self):
-        total = self.__caixa.total_vendas
+        total = len(self.__caixa_DAO.get_all())
         self.__tela_caixa.mostra_mensagem(f"Total arrecadado: R$ {total:.2f}")
 
     def listar_ingressos_vendidos(self):
@@ -85,15 +72,15 @@ class ControladorCaixa:
         else:
             dados_ingressos = [
                 {"id_ingresso": ingresso.id_ingresso, "assento": ingresso.assento, "cliente": ingresso.cliente.nome, "sessao": ingresso.sessao.id_sessao}
-                for ingresso in self.__caixa.ingressos_vendidos
+                for ingresso in self.__caixa_DAO.get_all()
             ]
             self.__tela_caixa.mostrar_detalhes_ingresso(dados_ingressos)
 
     def obter_sessoes_populares(self):
         sessoes_com_vendas = dict()
 
-        for venda in self.__caixa.ingressos_vendidos:
-            sessao = venda.sessao
+        for venda in self.__caixa_DAO.get_all():
+            sessao = venda.sessao.id_sessao #venda.sessao
             sessoes_com_vendas[sessao] = sessoes_com_vendas.get(sessao, 0) + 1
 
         maior_num_de_vendas = 0

@@ -4,44 +4,28 @@ from exceptions.OpcaoValida import OpcaoValida
 from exceptions.SalaNaoEncontrada import SalaNaoEncontrada
 from exceptions.SalaJaExiste import SalaJaExiste
 from exceptions.NaoFoiPossivelPersistirOsDados import NaoFoiPossivelPersistirOsDados
+from DAOs.sala_dao import SalaDAO
 import pickle
 import os
 
 class ControladorSala:
     def __init__(self, controlador_sistema):
         self.__tela_sala = TelaSala()
-        self.__salas = []
+        self.__salas_DAO = SalaDAO(os.getcwd().replace("\\","/")+"/controlador/salas.pkl")
         self.__controlador_sistema = controlador_sistema
 
     @property
     def salas(self):
-        return self.load()
-
-    def load(self):
-        #arq_sessoes = open(os.getcwd()+"\controlador\sessoes.pkl", "rb")
-        #sessoes = pickle.load(arq_sessoes)
-        #return sessoes
-        try:
-            with open(os.getcwd().replace("\\","/")+"/controlador/salas.pkl", "rb") as arq_salas:
-                return pickle.load(arq_salas)
-        except EOFError:
-            return [] 
-    
-    def dump(self):
-        try:
-            with open(os.getcwd().replace("\\","/")+"/controlador/salas.pkl", "wb") as arq_salas_escrita:
-                pickle.dump(self.__salas,arq_salas_escrita)
-        except EOFError:
-            raise NaoFoiPossivelPersistirOsDados()
+        return self.__salas_DAO.get_all()
 
     def pega_sala_pelo_id(self, id_sala: int):
-        for sala in self.__salas:
+        for sala in self.__salas_DAO.get_all():
             if sala.id_sala == id_sala:
                 return sala
         return None
 
     def mostrar_dados_sala(self):
-        if not self.__salas:
+        if len(self.__salas_DAO.get_all()) == 0:
             self.__tela_sala.mostra_mensagem("Nenhuma sala cadastrada.")
             return
 
@@ -79,7 +63,7 @@ class ControladorSala:
                 dados_sala["nome_sala"],
                 dados_sala["capacidade"]
             )
-            self.__salas.append(nova_sala)
+            self.__salas_DAO.add(nova_sala)
             self.__tela_sala.mostra_mensagem("Sala criada com sucesso!")
         else:
             try:
@@ -89,7 +73,7 @@ class ControladorSala:
 
 
     def alterar_sala(self):
-        if not self.__salas:
+        if len(self.__salas_DAO.get_all()) == 0:
             self.__tela_sala.mostra_mensagem("Nenhuma sala cadastrada para alterar.")
             return
 
@@ -114,7 +98,7 @@ class ControladorSala:
                 return
             
     def lista_salas(self):
-        if not self.load():
+        if len(self.__salas_DAO.get_all()) == 0:
             self.__tela_sala.mostra_mensagem("Nenhuma sala cadastrada.")
             try:
                 raise SalaNaoEncontrada()
@@ -127,12 +111,12 @@ class ControladorSala:
                     "id_sala": sala.id_sala,
                     "nome_sala": sala.nome_sala,
                     "capacidade": sala.capacidade
-                } for sala in self.load()
+                } for sala in self.__salas_DAO.get_all()
             ]
             self.__tela_sala.mostra_sala(dados_salas)
 
     def excluir_sala(self):
-        if not self.__salas:
+        if len(self.__salas_DAO.get_all()) == 0:
             self.__tela_sala.mostra_mensagem("Nenhuma sala cadastrada para excluir.")
             return
 
@@ -144,7 +128,7 @@ class ControladorSala:
         sala = self.pega_sala_pelo_id(id_sala)
 
         if sala is not None:
-            self.__salas.remove(sala)
+            self.__salas_DAO.remove(sala)
             self.__tela_sala.mostra_mensagem("Sala excluída com sucesso.")
         else:
             try:
