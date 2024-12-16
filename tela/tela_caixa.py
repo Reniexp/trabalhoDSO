@@ -87,3 +87,15 @@ class TelaCaixa:
     def open(self):
         button, values = self.__window.Read()
         return button, values
+    
+    def mostrar_detalhes_ingresso(self, dados_ingresso: list):
+        string_todas_sessoes = ""
+        for dado in dados_ingresso:
+            string_todas_sessoes += (
+                f"ID: {dado['id_ingresso']}\n"
+                f"ASSENTO: {dado['assento']}\n"
+                f"ID SESSAO: {dado['id_sessao']}\n"
+                f"CLIENTE: {dado['cliente']}\n"
+            )
+
+        sg.Popup('-------- LISTA DE INGRESSOS ----------', string_todas_sessoes)

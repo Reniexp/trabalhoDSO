@@ -7,7 +7,7 @@ class SalaDAO(DAO):
         super().__init__(data_source)
 
     def add(self, sala: Sala):
-        if((sala is not None) and isinstance(sala, Sala) and isinstance(sala.id_sala, int)):
+        if (sala is not None) and isinstance(sala, Sala) : #and isinstance(sala.id_sala, int))
             super().add(sala)
 
     def update(self, sala: Sala):

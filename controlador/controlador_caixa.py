@@ -60,11 +60,11 @@ class ControladorCaixa:
         self.__tela_caixa.mostra_mensagem(f"Ingresso para '{sessao.filme.titulo}' vendido com sucesso!")
 
     def mostrar_total_vendas(self):
-        total = len(self.__caixa_DAO.get_all())
+        total = len(self.__caixa_DAO.get_all()) * 10
         self.__tela_caixa.mostra_mensagem(f"Total arrecadado: R$ {total:.2f}")
 
     def listar_ingressos_vendidos(self):
-        if not self.__caixa.ingressos_vendidos:
+        if  len(self.__caixa_DAO.get_all()):
             try:
                 raise NenhumIngressoVendido()
             except NenhumIngressoVendido:
